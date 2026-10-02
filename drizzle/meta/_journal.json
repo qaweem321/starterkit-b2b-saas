@@ -15,6 +15,13 @@
       "when": 1790950984396,
       "tag": "0001_free_boomerang",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1790952684519,
+      "tag": "0002_bent_silver_sable",
+      "breakpoints": true
     }
   ]
 }

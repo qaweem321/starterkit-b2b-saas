@@ -1,8 +1,11 @@
 import Link from "next/link";
-import { connection } from "next/server";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
 import { db } from "@/db";
 import { organizations } from "@/db/schema";
+import { auth } from "@/lib/auth";
+import { SignOutButton } from "./sign-out-button";
 
 const navItems = [
   { label: "Overview", href: "/dashboard" },
@@ -12,7 +15,11 @@ const navItems = [
 ];
 
 export default async function DashboardLayout({ children }: { children: ReactNode }) {
-  await connection();
+  const session = await auth.api.getSession({ headers: await headers() });
+  if (!session) {
+    redirect("/login");
+  }
+
   const [organization] = await db.select().from(organizations).limit(1);
 
   return (
@@ -39,8 +46,14 @@ export default async function DashboardLayout({ children }: { children: ReactNod
           <span className="text-sm font-medium text-gray-500">
             {organization?.name ?? "No organization yet"}
           </span>
-          <div className="h-8 w-8 rounded-full bg-blue-600 text-white text-sm flex items-center justify-center">
-            Q
+          <div className="flex items-center gap-4">
+            <SignOutButton />
+            <div
+              title={session.user.email}
+              className="h-8 w-8 rounded-full bg-blue-600 text-white text-sm flex items-center justify-center"
+            >
+              {session.user.name.charAt(0).toUpperCase()}
+            </div>
           </div>
         </header>
         <main className="flex-1 p-6">{children}</main>

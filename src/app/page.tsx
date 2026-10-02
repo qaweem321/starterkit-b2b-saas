@@ -28,7 +28,7 @@ export default function HomePage() {
               Log in
             </Link>
             <Link
-              href="/dashboard"
+              href="/signup"
               className="text-sm bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
             >
               Get started
@@ -48,7 +48,7 @@ export default function HomePage() {
           </p>
           <div className="mt-10 flex justify-center gap-4">
             <Link
-              href="/dashboard"
+              href="/signup"
               className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700"
             >
               Start free
