@@ -8,6 +8,13 @@
       "when": 1790939526820,
       "tag": "0000_mighty_hemingway",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1790950984396,
+      "tag": "0001_free_boomerang",
+      "breakpoints": true
     }
   ]
 }
