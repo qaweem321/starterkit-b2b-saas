@@ -1,5 +1,8 @@
 import Link from "next/link";
+import { connection } from "next/server";
 import type { ReactNode } from "react";
+import { db } from "@/db";
+import { organizations } from "@/db/schema";
 
 const navItems = [
   { label: "Overview", href: "/dashboard" },
@@ -8,7 +11,10 @@ const navItems = [
   { label: "Settings", href: "/dashboard/settings" },
 ];
 
-export default function DashboardLayout({ children }: { children: ReactNode }) {
+export default async function DashboardLayout({ children }: { children: ReactNode }) {
+  await connection();
+  const [organization] = await db.select().from(organizations).limit(1);
+
   return (
     <div className="min-h-screen flex">
       <aside className="w-60 shrink-0 border-r border-gray-200 bg-gray-50 p-4 hidden md:block">
@@ -30,7 +36,9 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
       <div className="flex-1 flex flex-col">
         <header className="h-16 border-b border-gray-200 px-6 flex items-center justify-between">
-          <span className="text-sm font-medium text-gray-500">Acme Inc.</span>
+          <span className="text-sm font-medium text-gray-500">
+            {organization?.name ?? "No organization yet"}
+          </span>
           <div className="h-8 w-8 rounded-full bg-blue-600 text-white text-sm flex items-center justify-center">
             Q
           </div>

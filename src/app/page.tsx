@@ -53,12 +53,12 @@ export default function HomePage() {
             >
               Start free
             </Link>
-            <Link
+            <a
               href="#features"
               className="border border-gray-300 px-6 py-3 rounded-lg font-medium hover:bg-gray-50"
             >
               Learn more
-            </Link>
+            </a>
           </div>
         </section>
 
