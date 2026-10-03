@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { PasswordInput } from "@/components/password-input";
 import { authClient } from "@/lib/auth-client";
+import { getNextPath } from "@/lib/safe-redirect";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -27,7 +28,7 @@ export default function LoginPage() {
       setError(error.message ?? "Something went wrong");
       return;
     }
-    router.push("/dashboard");
+    router.push(getNextPath());
   }
 
   return (

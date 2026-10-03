@@ -4,6 +4,7 @@ export type Role = (typeof roles)[number];
 const permissions = {
   "organization:update": ["owner", "admin"],
   "member:remove": ["owner", "admin"],
+  "member:invite": ["owner", "admin"],
   "member:update-role": ["owner"],
 } satisfies Record<string, Role[]>;
 

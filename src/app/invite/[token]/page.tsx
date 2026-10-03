@@ -1,0 +1,79 @@
+import Link from "next/link";
+import { headers } from "next/headers";
+import { SignOutButton } from "@/components/sign-out-button";
+import { auth } from "@/lib/auth";
+import { findValidInvitation } from "@/lib/invitations";
+import { acceptInvitation } from "./actions";
+
+export default async function InvitePage({ params }: { params: Promise<{ token: string }> }) {
+  const { token } = await params;
+  const found = await findValidInvitation(token);
+  const session = await auth.api.getSession({ headers: await headers() });
+
+  if (!found) {
+    return (
+      <Card title="Invitation not found">
+        <p className="text-gray-600">This invitation link is invalid or has expired. Ask for a new one.</p>
+      </Card>
+    );
+  }
+
+  const { invitation, organization } = found;
+  const next = encodeURIComponent(`/invite/${token}`);
+
+  if (!session) {
+    return (
+      <Card title={`Join ${organization.name}`}>
+        <p className="text-gray-600">
+          You were invited as <strong>{invitation.role}</strong>. Sign up or log in with{" "}
+          <strong>{invitation.email}</strong> to accept.
+        </p>
+        <div className="flex gap-3">
+          <Link href={`/signup?next=${next}`} className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
+            Sign up
+          </Link>
+          <Link href={`/login?next=${next}`} className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium hover:bg-gray-50">
+            Log in
+          </Link>
+        </div>
+      </Card>
+    );
+  }
+
+  if (session.user.email.toLowerCase() !== invitation.email) {
+    return (
+      <Card title="Wrong account">
+        <p className="text-gray-600">
+          This invitation is for <strong>{invitation.email}</strong>, but you are logged in as{" "}
+          <strong>{session.user.email}</strong>. Log out and use the invited email.
+        </p>
+        <SignOutButton />
+      </Card>
+    );
+  }
+
+  return (
+    <Card title={`Join ${organization.name}`}>
+      <p className="text-gray-600">
+        You were invited as <strong>{invitation.role}</strong>.
+      </p>
+      <form action={acceptInvitation}>
+        <input type="hidden" name="token" value={token} />
+        <button className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
+          Accept invitation
+        </button>
+      </form>
+    </Card>
+  );
+}
+
+function Card({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <main className="min-h-screen flex items-center justify-center px-6">
+      <div className="w-full max-w-sm space-y-4">
+        <h1 className="text-2xl font-bold">{title}</h1>
+        {children}
+      </div>
+    </main>
+  );
+}

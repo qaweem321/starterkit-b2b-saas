@@ -1,9 +1,10 @@
 import { asc, eq } from "drizzle-orm";
 import { db } from "@/db";
-import { memberships, users } from "@/db/schema";
+import { invitations, memberships, users } from "@/db/schema";
 import { can, roles } from "@/lib/permissions";
 import { requireMembership } from "@/lib/session";
-import { removeMember, updateMemberRole } from "./actions";
+import { removeMember, revokeInvitation, updateMemberRole } from "./actions";
+import { InviteForm } from "./invite-form";
 
 const roleStyles = {
   owner: "bg-purple-100 text-purple-700",
@@ -28,10 +29,22 @@ export default async function MembersPage({ params }: { params: Promise<{ slug: 
     .where(eq(memberships.organizationId, organization.id))
     .orderBy(asc(memberships.createdAt));
 
+  const canInvite = can(myRole, "member:invite");
+  const pendingInvitations = canInvite
+    ? await db
+        .select()
+        .from(invitations)
+        .where(eq(invitations.organizationId, organization.id))
+        .orderBy(asc(invitations.createdAt))
+    : [];
+  const invitableRoles = myRole === "owner" ? roles : roles.filter((role) => role !== "owner");
+
   return (
     <div>
       <h1 className="text-2xl font-bold">Members</h1>
       <p className="mt-1 text-gray-600">Everyone who has access to {organization.name}.</p>
+
+      {canInvite && <InviteForm slug={slug} roles={invitableRoles} />}
 
       <ul className="mt-8 divide-y divide-gray-200 rounded-xl border border-gray-200">
         {members.map((member) => {
@@ -89,6 +102,37 @@ export default async function MembersPage({ params }: { params: Promise<{ slug: 
           );
         })}
       </ul>
+
+      {pendingInvitations.length > 0 && (
+        <>
+          <h2 className="mt-10 text-lg font-semibold">Pending invitations</h2>
+          <ul className="mt-4 divide-y divide-gray-200 rounded-xl border border-gray-200">
+            {pendingInvitations.map((invitation) => {
+              const expired = invitation.expiresAt < new Date();
+              return (
+                <li key={invitation.id} className="flex flex-wrap items-center justify-between gap-3 p-4">
+                  <div>
+                    <p className="font-medium">{invitation.email}</p>
+                    <p className="text-sm text-gray-500">
+                      Invited as {invitation.role} ·{" "}
+                      {expired ? (
+                        <span className="text-red-600">expired</span>
+                      ) : (
+                        `expires ${invitation.expiresAt.toLocaleDateString()}`
+                      )}
+                    </p>
+                  </div>
+                  <form action={revokeInvitation}>
+                    <input type="hidden" name="slug" value={slug} />
+                    <input type="hidden" name="invitationId" value={invitation.id} />
+                    <button className="text-sm text-red-600 hover:underline">Revoke</button>
+                  </form>
+                </li>
+              );
+            })}
+          </ul>
+        </>
+      )}
     </div>
   );
 }

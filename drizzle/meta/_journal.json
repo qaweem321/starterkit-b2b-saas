@@ -22,6 +22,13 @@
       "when": 1790952684519,
       "tag": "0002_bent_silver_sable",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1791033719912,
+      "tag": "0003_ambitious_outlaw_kid",
+      "breakpoints": true
     }
   ]
 }
