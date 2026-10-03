@@ -1,7 +1,7 @@
 import { asc, eq } from "drizzle-orm";
-import { connection } from "next/server";
 import { db } from "@/db";
-import { memberships, organizations, users } from "@/db/schema";
+import { memberships, users } from "@/db/schema";
+import { requireMembership } from "@/lib/session";
 
 const roleStyles = {
   owner: "bg-purple-100 text-purple-700",
@@ -9,13 +9,9 @@ const roleStyles = {
   member: "bg-gray-100 text-gray-700",
 };
 
-export default async function MembersPage() {
-  await connection();
-  const [organization] = await db.select().from(organizations).limit(1);
-
-  if (!organization) {
-    return <p className="text-gray-600">No organization yet. Run npm run db:seed.</p>;
-  }
+export default async function MembersPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const { organization } = await requireMembership(slug);
 
   const members = await db
     .select({
