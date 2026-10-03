@@ -5,6 +5,7 @@ import { cache } from "react";
 import { db } from "@/db";
 import { memberships, organizations } from "@/db/schema";
 import { auth } from "@/lib/auth";
+import { can, type Permission } from "@/lib/permissions";
 
 export const requireUser = cache(async () => {
   const session = await auth.api.getSession({ headers: await headers() });
@@ -38,3 +39,11 @@ export const requireMembership = cache(async (slug: string) => {
   }
   return { user, organization: membership.organization, role: membership.role };
 });
+
+export async function requirePermission(slug: string, permission: Permission) {
+  const membership = await requireMembership(slug);
+  if (!can(membership.role, permission)) {
+    throw new Error("You don't have permission to do that.");
+  }
+  return membership;
+}
