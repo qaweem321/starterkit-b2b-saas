@@ -5,7 +5,7 @@ import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { db } from "@/db";
 import { invitations, memberships, users } from "@/db/schema";
-import { sendEmail } from "@/lib/email";
+import { buttonEmailHtml, sendEmail } from "@/lib/email";
 import { isRole } from "@/lib/permissions";
 import { requirePermission } from "@/lib/session";
 
@@ -106,6 +106,13 @@ export async function inviteMember(_previous: InviteState, formData: FormData): 
       to: email,
       subject: `${user.name} invited you to join ${organization.name}`,
       text: `${user.name} invited you to join ${organization.name} as ${role}.\n\nAccept the invitation: ${link}\n\nThis link expires in ${INVITE_DAYS} days.`,
+      html: buttonEmailHtml({
+        heading: `Join ${organization.name}`,
+        message: `${user.name} invited you to join ${organization.name} as ${role}.`,
+        buttonText: "Accept invitation",
+        url: link,
+        footer: `This link expires in ${INVITE_DAYS} days.`,
+      }),
     });
   } catch (error) {
     console.error(error);
