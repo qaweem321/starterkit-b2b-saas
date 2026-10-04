@@ -3,6 +3,7 @@ import { planFromStatus, plans } from "@/lib/billing/plans";
 import { can } from "@/lib/permissions";
 import { requireMembership } from "@/lib/session";
 import { openBillingPortal, startCheckout } from "./actions";
+import { BillingButton } from "./billing-button";
 
 export default async function BillingPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -32,12 +33,11 @@ export default async function BillingPage({ params }: { params: Promise<{ slug: 
         )}
 
         {canManage ? (
-          <form action={planId === "pro" ? openBillingPortal : startCheckout} className="mt-6">
-            <input type="hidden" name="slug" value={slug} />
-            <button className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
-              {planId === "pro" ? "Manage subscription" : `Upgrade to Pro (${plans.pro.price})`}
-            </button>
-          </form>
+          planId === "pro" ? (
+            <BillingButton slug={slug} action={openBillingPortal} label="Manage subscription" />
+          ) : (
+            <BillingButton slug={slug} action={startCheckout} label={`Upgrade to Pro (${plans.pro.price})`} />
+          )
         ) : (
           <p className="mt-6 text-sm text-gray-500">Only owners can change the plan.</p>
         )}

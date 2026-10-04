@@ -3,7 +3,7 @@ import { headers } from "next/headers";
 import { SignOutButton } from "@/components/sign-out-button";
 import { auth } from "@/lib/auth";
 import { findValidInvitation } from "@/lib/invitations";
-import { acceptInvitation } from "./actions";
+import { AcceptForm } from "./accept-form";
 
 export default async function InvitePage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params;
@@ -57,12 +57,7 @@ export default async function InvitePage({ params }: { params: Promise<{ token: 
       <p className="text-gray-600">
         You were invited as <strong>{invitation.role}</strong>.
       </p>
-      <form action={acceptInvitation}>
-        <input type="hidden" name="token" value={token} />
-        <button className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
-          Accept invitation
-        </button>
-      </form>
+      <AcceptForm token={token} />
     </Card>
   );
 }

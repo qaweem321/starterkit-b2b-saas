@@ -7,12 +7,14 @@ import { invitations, memberships } from "@/db/schema";
 import { findValidInvitation } from "@/lib/invitations";
 import { requireUser } from "@/lib/session";
 
-export async function acceptInvitation(formData: FormData) {
+export type AcceptState = { error?: string };
+
+export async function acceptInvitation(_previous: AcceptState, formData: FormData): Promise<AcceptState> {
   const user = await requireUser();
   const found = await findValidInvitation(String(formData.get("token")));
 
   if (!found || found.invitation.email !== user.email.toLowerCase()) {
-    throw new Error("This invitation is invalid, expired, or for a different email.");
+    return { error: "This invitation is no longer valid. It may have expired or been revoked. Ask for a new one." };
   }
 
   await db.batch([
