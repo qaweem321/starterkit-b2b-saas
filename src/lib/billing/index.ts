@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { db } from "@/db";
-import { subscriptions } from "@/db/schema";
+import { organizations, subscriptions } from "@/db/schema";
 import { planFromStatus, type PlanId } from "./plans";
 import { polarProvider } from "./polar";
 import type { BillingProvider } from "./types";
@@ -13,7 +13,17 @@ export function getBillingProvider(): BillingProvider {
   throw new Error(`Unknown BILLING_PROVIDER "${provider}". Use "polar".`);
 }
 
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 export async function syncSubscription(organizationId: string) {
+  if (!UUID_PATTERN.test(organizationId)) {
+    return;
+  }
+  const exists = await db.$count(organizations, eq(organizations.id, organizationId));
+  if (exists === 0) {
+    return;
+  }
+
   const provider = getBillingProvider();
   const subscription = await provider.fetchSubscription(organizationId);
 
