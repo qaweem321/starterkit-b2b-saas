@@ -33,7 +33,7 @@ export default function ForgotPasswordPage() {
             and spam folder.
           </p>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form method="post" onSubmit={handleSubmit} className="space-y-4">
             <p className="text-gray-600">Enter your email and we&apos;ll send you a reset link.</p>
             <input
               name="email"

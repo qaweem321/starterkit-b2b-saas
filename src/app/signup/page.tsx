@@ -34,7 +34,7 @@ export default function SignUpPage() {
 
   return (
     <main className="min-h-screen flex items-center justify-center px-6">
-      <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-4">
+      <form method="post" onSubmit={handleSubmit} className="w-full max-w-sm space-y-4">
         <h1 className="text-2xl font-bold">Create your account</h1>
 
         <input name="name" required placeholder="Full name" className="w-full rounded-lg border border-gray-300 px-3 py-2" />

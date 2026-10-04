@@ -33,7 +33,7 @@ export default function LoginPage() {
 
   return (
     <main className="min-h-screen flex items-center justify-center px-6">
-      <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-4">
+      <form method="post" onSubmit={handleSubmit} className="w-full max-w-sm space-y-4">
         <h1 className="text-2xl font-bold">Log in</h1>
 
         <input name="email" type="email" required placeholder="Email" className="w-full rounded-lg border border-gray-300 px-3 py-2" />
