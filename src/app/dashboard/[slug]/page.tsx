@@ -1,6 +1,8 @@
 import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { memberships } from "@/db/schema";
+import { getOrganizationPlan } from "@/lib/billing";
+import { plans } from "@/lib/billing/plans";
 import { requireMembership } from "@/lib/session";
 
 export default async function OverviewPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -12,7 +14,7 @@ export default async function OverviewPage({ params }: { params: Promise<{ slug:
   const stats = [
     { label: "Members", value: String(memberCount) },
     { label: "Your role", value: role },
-    { label: "Plan", value: "Free" },
+    { label: "Plan", value: plans[await getOrganizationPlan(organization.id)].name },
   ];
 
   return (

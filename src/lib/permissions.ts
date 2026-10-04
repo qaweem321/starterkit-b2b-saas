@@ -6,6 +6,7 @@ const permissions = {
   "member:remove": ["owner", "admin"],
   "member:invite": ["owner", "admin"],
   "member:update-role": ["owner"],
+  "billing:manage": ["owner"],
 } satisfies Record<string, Role[]>;
 
 export type Permission = keyof typeof permissions;

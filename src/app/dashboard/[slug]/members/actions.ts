@@ -1,10 +1,12 @@
 "use server";
 
 import { randomBytes } from "node:crypto";
-import { and, eq } from "drizzle-orm";
+import { and, eq, ne } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { db } from "@/db";
 import { invitations, memberships, users } from "@/db/schema";
+import { getOrganizationPlan } from "@/lib/billing";
+import { plans } from "@/lib/billing/plans";
 import { buttonEmailHtml, sendEmail } from "@/lib/email";
 import { isRole } from "@/lib/permissions";
 import { requirePermission } from "@/lib/session";
@@ -85,6 +87,19 @@ export async function inviteMember(_previous: InviteState, formData: FormData): 
     .where(and(eq(memberships.organizationId, organization.id), eq(users.email, email)));
   if (alreadyMember.length > 0) {
     return { error: "That person is already a member.", email };
+  }
+
+  const plan = plans[await getOrganizationPlan(organization.id)];
+  const memberCount = await db.$count(memberships, eq(memberships.organizationId, organization.id));
+  const otherInvites = await db.$count(
+    invitations,
+    and(eq(invitations.organizationId, organization.id), ne(invitations.email, email)),
+  );
+  if (memberCount + otherInvites >= plan.memberLimit) {
+    return {
+      error: `The ${plan.name} plan allows up to ${plan.memberLimit} members (including pending invites). Upgrade to Pro for unlimited members.`,
+      email,
+    };
   }
 
   const token = randomBytes(32).toString("base64url");
