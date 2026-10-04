@@ -1,6 +1,9 @@
+import type { Metadata } from "next";
 import { can } from "@/lib/permissions";
 import { requireMembership } from "@/lib/session";
 import { renameOrganization } from "./actions";
+
+export const metadata: Metadata = { title: "Settings" };
 
 export default async function SettingsPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

@@ -1,9 +1,12 @@
+import type { Metadata } from "next";
 import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { memberships } from "@/db/schema";
 import { getOrganizationPlan } from "@/lib/billing";
 import { plans } from "@/lib/billing/plans";
 import { requireMembership } from "@/lib/session";
+
+export const metadata: Metadata = { title: "Overview" };
 
 export default async function OverviewPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

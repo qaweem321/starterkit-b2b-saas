@@ -1,5 +1,8 @@
+import type { Metadata } from "next";
 import { requireUser } from "@/lib/session";
 import { createOrganization } from "./actions";
+
+export const metadata: Metadata = { title: "Create organization" };
 
 export default async function OnboardingPage() {
   const user = await requireUser();

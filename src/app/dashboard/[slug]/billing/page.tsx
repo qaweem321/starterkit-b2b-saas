@@ -1,9 +1,12 @@
+import type { Metadata } from "next";
 import { getOrganizationSubscription } from "@/lib/billing";
 import { planFromStatus, plans } from "@/lib/billing/plans";
 import { can } from "@/lib/permissions";
 import { requireMembership } from "@/lib/session";
 import { openBillingPortal, startCheckout } from "./actions";
 import { BillingButton } from "./billing-button";
+
+export const metadata: Metadata = { title: "Billing" };
 
 export default async function BillingPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

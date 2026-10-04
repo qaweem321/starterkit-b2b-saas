@@ -1,5 +1,8 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ResetPasswordForm } from "./reset-password-form";
+
+export const metadata: Metadata = { title: "Reset password" };
 
 type Props = {
   searchParams: Promise<{ token?: string; error?: string }>;

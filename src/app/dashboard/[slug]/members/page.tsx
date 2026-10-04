@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { asc, eq } from "drizzle-orm";
 import { db } from "@/db";
 import { invitations, memberships, users } from "@/db/schema";
@@ -5,6 +6,8 @@ import { can, roles } from "@/lib/permissions";
 import { requireMembership } from "@/lib/session";
 import { removeMember, revokeInvitation, updateMemberRole } from "./actions";
 import { InviteForm } from "./invite-form";
+
+export const metadata: Metadata = { title: "Members" };
 
 const roleStyles = {
   owner: "bg-purple-100 text-purple-700",
