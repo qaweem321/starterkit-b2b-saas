@@ -3,6 +3,7 @@ import { db } from "@/db";
 import { organizations, subscriptions } from "@/db/schema";
 import { planFromStatus, type PlanId } from "./plans";
 import { polarProvider } from "./polar";
+import { stripeProvider } from "./stripe";
 import type { BillingProvider } from "./types";
 
 export function getBillingProvider(): BillingProvider {
@@ -10,7 +11,10 @@ export function getBillingProvider(): BillingProvider {
   if (provider === "polar") {
     return polarProvider;
   }
-  throw new Error(`Unknown BILLING_PROVIDER "${provider}". Use "polar".`);
+  if (provider === "stripe") {
+    return stripeProvider;
+  }
+  throw new Error(`Unknown BILLING_PROVIDER "${provider}". Use "polar" or "stripe".`);
 }
 
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;

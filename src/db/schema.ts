@@ -77,6 +77,23 @@ export const subscriptions = pgTable("subscriptions", {
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
+export const billingCustomers = pgTable(
+  "billing_customers",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    provider: text("provider").notNull(),
+    providerCustomerId: text("provider_customer_id").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [
+    unique().on(table.organizationId, table.provider),
+    unique().on(table.provider, table.providerCustomerId),
+  ],
+);
+
 // --- Tables required by Better Auth (Lesson 5) ---
 
 export const sessions = pgTable(

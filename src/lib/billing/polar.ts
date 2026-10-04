@@ -1,14 +1,7 @@
 import { PolarClientError } from "@polar-sh/sdk";
 import { createPolar } from "@polar-sh/sdk/2026-10";
+import { requireEnv } from "./env";
 import type { BillingProvider } from "./types";
-
-function requireEnv(name: string) {
-  const value = process.env[name];
-  if (!value) {
-    throw new Error(`${name} is not set. See .env.example.`);
-  }
-  return value;
-}
 
 function getClient() {
   return createPolar({
@@ -20,11 +13,12 @@ function getClient() {
 export const polarProvider: BillingProvider = {
   name: "polar",
 
-  async createCheckoutUrl({ organizationId, successUrl }) {
+  async createCheckoutUrl({ organizationId, successUrl, cancelUrl }) {
     const checkout = await getClient().checkouts.create({
       products: [requireEnv("POLAR_PRO_PRODUCT_ID")],
       external_customer_id: organizationId,
       success_url: successUrl,
+      return_url: cancelUrl,
     });
     return checkout.url;
   },

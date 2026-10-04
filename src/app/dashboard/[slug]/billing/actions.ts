@@ -11,6 +11,7 @@ export async function startCheckout(formData: FormData) {
   const url = await getBillingProvider().createCheckoutUrl({
     organizationId: organization.id,
     successUrl: `${process.env.BETTER_AUTH_URL}/dashboard/${slug}/billing/success`,
+    cancelUrl: `${process.env.BETTER_AUTH_URL}/dashboard/${slug}/billing`,
   });
   redirect(url);
 }

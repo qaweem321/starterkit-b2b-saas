@@ -1,5 +1,5 @@
 import { webhooks } from "@polar-sh/sdk/2026-10";
-import { syncSubscription } from "@/lib/billing";
+import { getBillingProvider, syncSubscription } from "@/lib/billing";
 
 export async function POST(request: Request) {
   const secret = process.env.POLAR_WEBHOOK_SECRET;
@@ -34,7 +34,7 @@ export async function POST(request: Request) {
     organizationId = event.data.customer.external_id;
   }
 
-  if (organizationId) {
+  if (organizationId && getBillingProvider().name === "polar") {
     await syncSubscription(organizationId);
   }
   return new Response(null, { status: 202 });

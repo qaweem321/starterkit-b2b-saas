@@ -8,7 +8,11 @@ export type ProviderSubscription = {
 
 export type BillingProvider = {
   name: "polar" | "stripe";
-  createCheckoutUrl(input: { organizationId: string; successUrl: string }): Promise<string>;
+  createCheckoutUrl(input: {
+    organizationId: string;
+    successUrl: string;
+    cancelUrl: string;
+  }): Promise<string>;
   createPortalUrl(input: { organizationId: string; returnUrl: string }): Promise<string>;
   fetchSubscription(organizationId: string): Promise<ProviderSubscription | null>;
 };

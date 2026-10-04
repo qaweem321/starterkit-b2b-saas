@@ -36,6 +36,13 @@
       "when": 1791090900166,
       "tag": "0004_stale_lionheart",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1791094212244,
+      "tag": "0005_familiar_maddog",
+      "breakpoints": true
     }
   ]
 }
