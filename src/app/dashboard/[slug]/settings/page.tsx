@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { can } from "@/lib/permissions";
 import { requireMembership } from "@/lib/session";
 import { renameOrganization } from "./actions";
+import { DangerZone } from "./danger-zone";
 
 export const metadata: Metadata = { title: "Settings" };
 
@@ -37,6 +38,8 @@ export default async function SettingsPage({ params }: { params: Promise<{ slug:
           <p className="text-sm text-subtle-foreground">Only owners and admins can change these settings.</p>
         )}
       </form>
+
+      <DangerZone slug={slug} organizationName={organization.name} canDelete={can(role, "organization:delete")} />
     </div>
   );
 }

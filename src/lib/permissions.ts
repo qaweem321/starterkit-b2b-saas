@@ -3,6 +3,7 @@ export type Role = (typeof roles)[number];
 
 const permissions = {
   "organization:update": ["owner", "admin"],
+  "organization:delete": ["owner"],
   "member:remove": ["owner", "admin"],
   "member:invite": ["owner", "admin"],
   "member:update-role": ["owner"],
