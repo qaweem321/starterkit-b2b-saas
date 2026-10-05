@@ -113,8 +113,20 @@ export default function HomePage() {
         </section>
       </main>
 
-      <footer className="border-t border-border py-6 text-center text-sm text-subtle-foreground">
-        © {new Date().getFullYear()} {siteConfig.name}
+      <footer className="border-t border-border py-6 text-sm text-subtle-foreground">
+        <div className="mx-auto max-w-6xl px-6 flex flex-wrap items-center justify-between gap-4">
+          <p>
+            © {new Date().getFullYear()} {siteConfig.name}
+          </p>
+          <nav aria-label="Legal" className="flex gap-6">
+            <Link href="/terms" className="hover:text-foreground">
+              Terms
+            </Link>
+            <Link href="/privacy" className="hover:text-foreground">
+              Privacy
+            </Link>
+          </nav>
+        </div>
       </footer>
     </div>
   );

@@ -71,6 +71,18 @@ export default function SignUpPage() {
 
         {error && <p className="text-sm text-danger">{error}</p>}
 
+        <p className="text-xs text-subtle-foreground">
+          By signing up, you agree to our{" "}
+          <Link href="/terms" className="text-link hover:underline">
+            Terms
+          </Link>{" "}
+          and{" "}
+          <Link href="/privacy" className="text-link hover:underline">
+            Privacy Policy
+          </Link>
+          .
+        </p>
+
         <Button disabled={loading} size="full">
           {loading ? "Creating account..." : "Sign up"}
         </Button>
