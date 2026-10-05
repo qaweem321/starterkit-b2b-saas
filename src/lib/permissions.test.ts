@@ -10,6 +10,8 @@ test("owners can do everything", () => {
     "member:invite",
     "member:update-role",
     "billing:manage",
+    "project:create",
+    "project:delete",
   ] as const) {
     assert.equal(can("owner", permission), true, permission);
   }
@@ -34,4 +36,10 @@ test("isRole only accepts real roles", () => {
   assert.equal(isRole("admin"), true);
   assert.equal(isRole("superadmin"), false);
   assert.equal(isRole(""), false);
+});
+
+test("everyone can create projects, only owners and admins can delete them", () => {
+  assert.equal(can("member", "project:create"), true);
+  assert.equal(can("member", "project:delete"), false);
+  assert.equal(can("admin", "project:delete"), true);
 });

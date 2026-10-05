@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { eq, inArray } from "drizzle-orm";
 import { db } from "./index";
-import { memberships, organizations, users } from "./schema";
+import { memberships, organizations, projects, users } from "./schema";
 
 const demoMembers = [
   { name: "Olivia Owner", email: "owner@acme.test", role: "owner" },
@@ -53,7 +53,15 @@ async function seed() {
     )
     .onConflictDoNothing({ target: [memberships.organizationId, memberships.userId] });
 
-  console.log(`Seeded ${acme.name} with ${demoMembers.length} members.`);
+  // Demo data for the example Projects page. Only added once.
+  if ((await db.$count(projects, eq(projects.organizationId, acme.id))) === 0) {
+    await db.insert(projects).values([
+      { organizationId: acme.id, name: "Website redesign", description: "New landing page." },
+      { organizationId: acme.id, name: "Mobile app", description: "iOS and Android." },
+    ]);
+  }
+
+  console.log(`Seeded ${acme.name} with ${demoMembers.length} members and demo projects.`);
 }
 
 seed().catch((error) => {

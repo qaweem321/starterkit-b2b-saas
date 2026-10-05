@@ -63,6 +63,23 @@ export const invitations = pgTable(
   (table) => [unique().on(table.organizationId, table.email)],
 );
 
+// Example feature: replace "projects" with whatever your product manages.
+// Every row belongs to one organization, and every query filters by it.
+export const projects = pgTable(
+  "projects",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    name: text("name").notNull(),
+    description: text("description"),
+    createdById: text("created_by_id").references(() => users.id, { onDelete: "set null" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [index("projects_organization_id_idx").on(table.organizationId)],
+);
+
 export const subscriptions = pgTable("subscriptions", {
   id: uuid("id").primaryKey().defaultRandom(),
   organizationId: uuid("organization_id")

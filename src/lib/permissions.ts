@@ -8,6 +8,9 @@ const permissions = {
   "member:invite": ["owner", "admin"],
   "member:update-role": ["owner"],
   "billing:manage": ["owner"],
+  // Example feature: everyone can add projects, only owners and admins can delete them.
+  "project:create": ["owner", "admin", "member"],
+  "project:delete": ["owner", "admin"],
 } satisfies Record<string, Role[]>;
 
 export type Permission = keyof typeof permissions;
