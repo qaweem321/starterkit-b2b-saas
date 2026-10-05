@@ -46,7 +46,10 @@ export default function LoginPage() {
 
         <Input name="email" type="email" required placeholder="Email" autoComplete="email" />
         <PasswordInput name="password" autoComplete="current-password" placeholder="Password" />
-        <Link href="/forgot-password" className="block text-right text-sm text-link hover:underline">
+        <Link
+          href="/forgot-password"
+          className="block text-right text-sm text-link hover:underline"
+        >
           Forgot password?
         </Link>
 

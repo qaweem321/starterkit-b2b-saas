@@ -2,7 +2,7 @@
 
 import { useEffect, useLayoutEffect, useState } from "react";
 import { Select } from "@/components/ui/input";
-import { isTheme, THEME_STORAGE_KEY, themes, type Theme } from "@/lib/theme";
+import { isTheme, THEME_STORAGE_KEY, type Theme, themes } from "@/lib/theme";
 
 const DARK_QUERY = "(prefers-color-scheme: dark)";
 

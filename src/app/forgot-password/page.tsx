@@ -31,12 +31,14 @@ export default function ForgotPasswordPage() {
 
         {sent ? (
           <p className="text-muted-foreground">
-            If an account exists for that email, we&apos;ve sent a link to reset your password. Check your inbox
-            and spam folder.
+            If an account exists for that email, we&apos;ve sent a link to reset your password.
+            Check your inbox and spam folder.
           </p>
         ) : (
           <form method="post" onSubmit={handleSubmit} className="space-y-4">
-            <p className="text-muted-foreground">Enter your email and we&apos;ll send you a reset link.</p>
+            <p className="text-muted-foreground">
+              Enter your email and we&apos;ll send you a reset link.
+            </p>
             <Input name="email" type="email" required placeholder="Email" autoComplete="email" />
             <Button disabled={loading} size="full">
               {loading ? "Sending..." : "Send reset link"}

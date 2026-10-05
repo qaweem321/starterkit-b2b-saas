@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { Logo } from "@/components/logo";
 import { ButtonLink, buttonClasses } from "@/components/ui/button";
+import { siteConfig } from "@/config/site";
 
 const features = [
   {
@@ -21,9 +23,7 @@ export default function HomePage() {
     <div className="min-h-screen flex flex-col">
       <header className="border-b border-border">
         <nav className="mx-auto max-w-6xl px-6 h-16 flex items-center justify-between">
-          <Link href="/" className="text-lg font-bold">
-            Starter<span className="text-link">Kit</span>
-          </Link>
+          <Logo />
           <div className="flex items-center gap-4">
             <Link href="/login" className="text-sm text-muted-foreground hover:text-foreground">
               Log in
@@ -39,15 +39,15 @@ export default function HomePage() {
             The fastest way to launch your B2B SaaS
           </h1>
           <p className="mt-6 text-lg text-muted-foreground">
-            Teams, roles, and billing are already done. You build the part that makes your
-            product unique.
+            Teams, roles, and billing are already done. You build the part that makes your product
+            unique.
           </p>
           <div className="mt-10 flex justify-center gap-4">
             <ButtonLink href="/signup" size="lg">
               Start free
             </ButtonLink>
             <a href="#features" className={buttonClasses({ variant: "outline", size: "lg" })}>
-              Learn more
+              See features
             </a>
           </div>
         </section>
@@ -55,7 +55,10 @@ export default function HomePage() {
         <section id="features" className="bg-surface py-20">
           <div className="mx-auto max-w-6xl px-6 grid gap-8 sm:grid-cols-3">
             {features.map((feature) => (
-              <div key={feature.title} className="bg-background p-6 rounded-xl border border-border">
+              <div
+                key={feature.title}
+                className="bg-background p-6 rounded-xl border border-border"
+              >
                 <h3 className="font-semibold">{feature.title}</h3>
                 <p className="mt-2 text-sm text-muted-foreground">{feature.description}</p>
               </div>
@@ -65,7 +68,7 @@ export default function HomePage() {
       </main>
 
       <footer className="border-t border-border py-6 text-center text-sm text-subtle-foreground">
-        © {new Date().getFullYear()} StarterKit
+        © {new Date().getFullYear()} {siteConfig.name}
       </footer>
     </div>
   );

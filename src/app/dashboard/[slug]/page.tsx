@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
 import { eq } from "drizzle-orm";
+import type { Metadata } from "next";
 import { db } from "@/db";
 import { memberships } from "@/db/schema";
 import { getOrganizationPlan } from "@/lib/billing";

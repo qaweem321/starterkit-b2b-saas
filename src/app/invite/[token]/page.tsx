@@ -16,7 +16,9 @@ export default async function InvitePage({ params }: { params: Promise<{ token: 
   if (!found) {
     return (
       <Card title="Invitation not found">
-        <p className="text-muted-foreground">This invitation link is invalid or has expired. Ask for a new one.</p>
+        <p className="text-muted-foreground">
+          This invitation link is invalid or has expired. Ask for a new one.
+        </p>
       </Card>
     );
   }

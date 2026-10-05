@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
 import { asc, eq } from "drizzle-orm";
+import type { Metadata } from "next";
 import { db } from "@/db";
 import { invitations, memberships, users } from "@/db/schema";
 import { can, roles } from "@/lib/permissions";
@@ -56,13 +56,16 @@ export default async function MembersPage({ params }: { params: Promise<{ slug: 
           const isMe = member.userId === user.id;
           const canChangeRole = can(myRole, "member:update-role") && !isMe;
           const canRemove =
-            can(myRole, "member:remove") && !isMe && !(member.role === "owner" && myRole !== "owner");
+            can(myRole, "member:remove") &&
+            !isMe &&
+            !(member.role === "owner" && myRole !== "owner");
 
           return (
             <li key={member.id} className="flex flex-wrap items-center justify-between gap-3 p-4">
               <div>
                 <p className="font-medium">
-                  {member.name} {isMe && <span className="text-sm text-faint-foreground">(you)</span>}
+                  {member.name}{" "}
+                  {isMe && <span className="text-sm text-faint-foreground">(you)</span>}
                 </p>
                 <p className="text-sm text-subtle-foreground">{member.email}</p>
               </div>
@@ -87,10 +90,14 @@ export default async function MembersPage({ params }: { params: Promise<{ slug: 
                         </option>
                       ))}
                     </select>
-                    <button className="text-sm text-link hover:underline">Save</button>
+                    <button type="submit" className="text-sm text-link hover:underline">
+                      Save
+                    </button>
                   </form>
                 ) : (
-                  <span className={`rounded-full px-3 py-1 text-xs font-medium ${roleStyles[member.role]}`}>
+                  <span
+                    className={`rounded-full px-3 py-1 text-xs font-medium ${roleStyles[member.role]}`}
+                  >
                     {member.role}
                   </span>
                 )}
@@ -99,7 +106,9 @@ export default async function MembersPage({ params }: { params: Promise<{ slug: 
                   <form action={removeMember}>
                     <input type="hidden" name="slug" value={slug} />
                     <input type="hidden" name="membershipId" value={member.id} />
-                    <button className="text-sm text-danger hover:underline">Remove</button>
+                    <button type="submit" className="text-sm text-danger hover:underline">
+                      Remove
+                    </button>
                   </form>
                 )}
               </div>
@@ -115,7 +124,10 @@ export default async function MembersPage({ params }: { params: Promise<{ slug: 
             {pendingInvitations.map((invitation) => {
               const expired = invitation.expiresAt < new Date();
               return (
-                <li key={invitation.id} className="flex flex-wrap items-center justify-between gap-3 p-4">
+                <li
+                  key={invitation.id}
+                  className="flex flex-wrap items-center justify-between gap-3 p-4"
+                >
                   <div>
                     <p className="font-medium">{invitation.email}</p>
                     <p className="text-sm text-subtle-foreground">
@@ -130,7 +142,9 @@ export default async function MembersPage({ params }: { params: Promise<{ slug: 
                   <form action={revokeInvitation}>
                     <input type="hidden" name="slug" value={slug} />
                     <input type="hidden" name="invitationId" value={invitation.id} />
-                    <button className="text-sm text-danger hover:underline">Revoke</button>
+                    <button type="submit" className="text-sm text-danger hover:underline">
+                      Revoke
+                    </button>
                   </form>
                 </li>
               );

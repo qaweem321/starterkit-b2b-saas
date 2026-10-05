@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { organizations, subscriptions } from "@/db/schema";
-import { planFromStatus, type PlanId } from "./plans";
+import { type PlanId, planFromStatus } from "./plans";
 import { polarProvider } from "./polar";
 import { stripeProvider } from "./stripe";
 import type { BillingProvider } from "./types";

@@ -20,22 +20,36 @@ async function seed() {
 
   await db
     .insert(users)
-    .values(demoMembers.map((m) => ({ id: randomUUID(), name: m.name, email: m.email, emailVerified: true })))
+    .values(
+      demoMembers.map((m) => ({
+        id: randomUUID(),
+        name: m.name,
+        email: m.email,
+        emailVerified: true,
+      })),
+    )
     .onConflictDoNothing({ target: users.email });
 
   const savedUsers = await db
     .select()
     .from(users)
-    .where(inArray(users.email, demoMembers.map((m) => m.email)));
+    .where(
+      inArray(
+        users.email,
+        demoMembers.map((m) => m.email),
+      ),
+    );
 
   await db
     .insert(memberships)
     .values(
-      demoMembers.map((m) => ({
-        organizationId: acme.id,
-        userId: savedUsers.find((u) => u.email === m.email)!.id,
-        role: m.role,
-      })),
+      demoMembers.map((m) => {
+        const user = savedUsers.find((u) => u.email === m.email);
+        if (!user) {
+          throw new Error(`Seed user ${m.email} was not saved.`);
+        }
+        return { organizationId: acme.id, userId: user.id, role: m.role };
+      }),
     )
     .onConflictDoNothing({ target: [memberships.organizationId, memberships.userId] });
 

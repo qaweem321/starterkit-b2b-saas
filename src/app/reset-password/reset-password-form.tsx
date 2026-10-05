@@ -45,8 +45,18 @@ export function ResetPasswordForm({ token }: { token: string }) {
 
   return (
     <form method="post" onSubmit={handleSubmit} className="space-y-4">
-      <PasswordInput name="password" minLength={8} autoComplete="new-password" placeholder="New password (8+ characters)" />
-      <PasswordInput name="confirmPassword" minLength={8} autoComplete="new-password" placeholder="Confirm new password" />
+      <PasswordInput
+        name="password"
+        minLength={8}
+        autoComplete="new-password"
+        placeholder="New password (8+ characters)"
+      />
+      <PasswordInput
+        name="confirmPassword"
+        minLength={8}
+        autoComplete="new-password"
+        placeholder="Confirm new password"
+      />
 
       {error && <p className="text-sm text-danger">{error}</p>}
 

@@ -4,7 +4,7 @@ import { useActionState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input, Select } from "@/components/ui/input";
 import type { Role } from "@/lib/permissions";
-import { inviteMember, type InviteState } from "./actions";
+import { type InviteState, inviteMember } from "./actions";
 
 type Props = {
   slug: string;

@@ -3,6 +3,7 @@
 import { randomBytes } from "node:crypto";
 import { and, eq, ne } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { absoluteUrl } from "@/config/site";
 import { db } from "@/db";
 import { invitations, memberships, users } from "@/db/schema";
 import { getOrganizationPlan } from "@/lib/billing";
@@ -64,9 +65,14 @@ export type InviteState = {
   email?: string;
 };
 
-export async function inviteMember(_previous: InviteState, formData: FormData): Promise<InviteState> {
+export async function inviteMember(
+  _previous: InviteState,
+  formData: FormData,
+): Promise<InviteState> {
   const slug = String(formData.get("slug"));
-  const email = String(formData.get("email") ?? "").trim().toLowerCase();
+  const email = String(formData.get("email") ?? "")
+    .trim()
+    .toLowerCase();
   const role = String(formData.get("role"));
   const { user, role: myRole, organization } = await requirePermission(slug, "member:invite");
 
@@ -107,7 +113,14 @@ export async function inviteMember(_previous: InviteState, formData: FormData): 
 
   await db
     .insert(invitations)
-    .values({ organizationId: organization.id, email, role, token, invitedById: user.id, expiresAt })
+    .values({
+      organizationId: organization.id,
+      email,
+      role,
+      token,
+      invitedById: user.id,
+      expiresAt,
+    })
     .onConflictDoUpdate({
       target: [invitations.organizationId, invitations.email],
       set: { role, token, invitedById: user.id, expiresAt },
@@ -115,7 +128,7 @@ export async function inviteMember(_previous: InviteState, formData: FormData): 
 
   revalidatePath(`/dashboard/${slug}/members`);
 
-  const link = `${process.env.BETTER_AUTH_URL}/invite/${token}`;
+  const link = absoluteUrl(`/invite/${token}`);
   try {
     await sendEmail({
       to: email,

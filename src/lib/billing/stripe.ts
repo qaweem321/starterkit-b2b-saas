@@ -2,7 +2,7 @@ import { and, eq } from "drizzle-orm";
 import Stripe from "stripe";
 import { db } from "@/db";
 import { billingCustomers } from "@/db/schema";
-import { requireEnv } from "./env";
+import { requireEnv } from "@/lib/env";
 import type { BillingProvider } from "./types";
 
 const ENDED_STATUSES = ["canceled", "incomplete_expired"];
@@ -15,7 +15,12 @@ async function findCustomerId(organizationId: string) {
   const [row] = await db
     .select({ providerCustomerId: billingCustomers.providerCustomerId })
     .from(billingCustomers)
-    .where(and(eq(billingCustomers.organizationId, organizationId), eq(billingCustomers.provider, "stripe")));
+    .where(
+      and(
+        eq(billingCustomers.organizationId, organizationId),
+        eq(billingCustomers.provider, "stripe"),
+      ),
+    );
   return row?.providerCustomerId ?? null;
 }
 
@@ -23,7 +28,12 @@ export async function findOrganizationIdByStripeCustomer(customerId: string) {
   const [row] = await db
     .select({ organizationId: billingCustomers.organizationId })
     .from(billingCustomers)
-    .where(and(eq(billingCustomers.provider, "stripe"), eq(billingCustomers.providerCustomerId, customerId)));
+    .where(
+      and(
+        eq(billingCustomers.provider, "stripe"),
+        eq(billingCustomers.providerCustomerId, customerId),
+      ),
+    );
   return row?.organizationId ?? null;
 }
 

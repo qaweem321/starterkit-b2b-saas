@@ -24,7 +24,9 @@ export default async function OrganizationLayout({ children, params }: Props) {
         <header className="h-16 border-b border-border px-4 md:px-6 flex items-center justify-between gap-4">
           <div className="flex items-center gap-2 min-w-0">
             <MobileMenu slug={slug} organizations={organizations} />
-            <span className="truncate text-sm font-medium text-subtle-foreground">{organization.name}</span>
+            <span className="truncate text-sm font-medium text-subtle-foreground">
+              {organization.name}
+            </span>
           </div>
           <div className="flex shrink-0 items-center gap-4">
             <SignOutButton />

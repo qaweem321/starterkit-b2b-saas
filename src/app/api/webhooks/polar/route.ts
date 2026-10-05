@@ -14,7 +14,7 @@ export async function POST(request: Request) {
     "webhook-signature": request.headers.get("webhook-signature") ?? "",
   };
 
-  let event;
+  let event: Awaited<ReturnType<typeof webhooks.validateEvent>>;
   try {
     event = await webhooks.validateEvent(body, headers, secret);
   } catch (error) {

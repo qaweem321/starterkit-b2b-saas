@@ -14,13 +14,18 @@ export default async function AccountPage({ params }: { params: Promise<{ slug: 
   return (
     <div className="max-w-lg">
       <h1 className="text-2xl font-bold">Account</h1>
-      <p className="mt-1 text-muted-foreground">Your personal settings. These apply in every organization.</p>
+      <p className="mt-1 text-muted-foreground">
+        Your personal settings. These apply in every organization.
+      </p>
 
       <Section title="Profile" description={`Signed in as ${user.email}.`}>
         <ProfileForm name={user.name} />
       </Section>
 
-      <Section title="Password" description="Changing your password logs you out on your other devices.">
+      <Section
+        title="Password"
+        description="Changing your password logs you out on your other devices."
+      >
         <PasswordForm />
       </Section>
 
@@ -37,7 +42,15 @@ export default async function AccountPage({ params }: { params: Promise<{ slug: 
   );
 }
 
-function Section({ title, description, children }: { title: string; description: string; children: ReactNode }) {
+function Section({
+  title,
+  description,
+  children,
+}: {
+  title: string;
+  description: string;
+  children: ReactNode;
+}) {
   return (
     <section className="mt-10 border-t border-border pt-8 space-y-4">
       <div>

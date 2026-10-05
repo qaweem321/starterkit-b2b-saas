@@ -29,10 +29,20 @@ export function buttonClasses({ variant = "primary", size = "md", className }: B
   return cn(base, variants[variant], sizes[size], className);
 }
 
-export function Button({ variant, size, className, ...props }: ComponentProps<"button"> & ButtonStyle) {
+export function Button({
+  variant,
+  size,
+  className,
+  ...props
+}: ComponentProps<"button"> & ButtonStyle) {
   return <button className={buttonClasses({ variant, size, className })} {...props} />;
 }
 
-export function ButtonLink({ variant, size, className, ...props }: ComponentProps<typeof Link> & ButtonStyle) {
+export function ButtonLink({
+  variant,
+  size,
+  className,
+  ...props
+}: ComponentProps<typeof Link> & ButtonStyle) {
   return <Link className={buttonClasses({ variant, size, className })} {...props} />;
 }

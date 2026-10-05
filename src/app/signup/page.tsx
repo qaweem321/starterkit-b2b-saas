@@ -41,8 +41,8 @@ export default function SignUpPage() {
         <div className="w-full max-w-sm space-y-4">
           <h1 className="text-2xl font-bold">Check your email</h1>
           <p className="text-muted-foreground">
-            We sent a verification link to <strong className="text-foreground">{sentTo}</strong>. Click it to finish
-            creating your account. Don&apos;t forget to check your spam folder.
+            We sent a verification link to <strong className="text-foreground">{sentTo}</strong>.
+            Click it to finish creating your account. Don&apos;t forget to check your spam folder.
           </p>
           <p className="text-sm text-muted-foreground">
             Already verified?{" "}
@@ -62,7 +62,12 @@ export default function SignUpPage() {
 
         <Input name="name" required placeholder="Full name" autoComplete="name" />
         <Input name="email" type="email" required placeholder="Email" autoComplete="email" />
-        <PasswordInput name="password" minLength={8} autoComplete="new-password" placeholder="Password (8+ characters)" />
+        <PasswordInput
+          name="password"
+          minLength={8}
+          autoComplete="new-password"
+          placeholder="Password (8+ characters)"
+        />
 
         {error && <p className="text-sm text-danger">{error}</p>}
 

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Logo } from "@/components/logo";
 
 type Organization = { name: string; slug: string };
 
@@ -25,9 +26,7 @@ function NavContent({ slug, organizations, onNavigate }: NavProps) {
 
   return (
     <>
-      <Link href="/" onClick={onNavigate} className="block px-2 mb-8 text-lg font-bold">
-        Starter<span className="text-link">Kit</span>
-      </Link>
+      <Logo onClick={onNavigate} className="block px-2 mb-8" />
 
       <nav className="flex flex-col gap-1">
         {navItems.map((item) => {
@@ -39,7 +38,9 @@ function NavContent({ slug, organizations, onNavigate }: NavProps) {
               onClick={onNavigate}
               aria-current={active ? "page" : undefined}
               className={`px-2 py-2 rounded-md text-sm ${
-                active ? "bg-accent font-medium text-foreground" : "text-secondary-foreground hover:bg-accent"
+                active
+                  ? "bg-accent font-medium text-foreground"
+                  : "text-secondary-foreground hover:bg-accent"
               }`}
             >
               {item.label}
@@ -49,7 +50,9 @@ function NavContent({ slug, organizations, onNavigate }: NavProps) {
       </nav>
 
       <div className="mt-auto pt-6">
-        <p className="px-2 mb-2 text-xs font-semibold uppercase text-faint-foreground">Your organizations</p>
+        <p className="px-2 mb-2 text-xs font-semibold uppercase text-faint-foreground">
+          Your organizations
+        </p>
         {organizations.map((org) => (
           <Link
             key={org.slug}
@@ -107,14 +110,29 @@ export function MobileMenu(props: NavProps) {
         aria-expanded={open}
         className="-ml-2 p-2 text-muted-foreground hover:text-foreground"
       >
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+        <svg
+          aria-hidden="true"
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+        >
           <path d="M4 6h16M4 12h16M4 18h16" />
         </svg>
       </button>
 
       {open && (
         <div className="fixed inset-0 z-40">
-          <div className="absolute inset-0 bg-black/40" onClick={() => setOpen(false)} />
+          <button
+            type="button"
+            tabIndex={-1}
+            aria-label="Close menu"
+            onClick={() => setOpen(false)}
+            className="absolute inset-0 cursor-default bg-black/40"
+          />
           <div className="absolute inset-y-0 left-0 w-64 bg-surface p-4 flex flex-col shadow-xl">
             <button
               type="button"
@@ -122,7 +140,16 @@ export function MobileMenu(props: NavProps) {
               aria-label="Close menu"
               className="absolute right-3 top-3 p-2 text-subtle-foreground hover:text-foreground"
             >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <svg
+                aria-hidden="true"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              >
                 <path d="M6 6l12 12M18 6L6 18" />
               </svg>
             </button>

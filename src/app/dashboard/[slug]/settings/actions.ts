@@ -24,7 +24,10 @@ export async function renameOrganization(formData: FormData) {
 
 export type DangerZoneState = { error?: string };
 
-export async function leaveOrganization(_previous: DangerZoneState, formData: FormData): Promise<DangerZoneState> {
+export async function leaveOrganization(
+  _previous: DangerZoneState,
+  formData: FormData,
+): Promise<DangerZoneState> {
   const slug = String(formData.get("slug"));
   const { user, role, organization } = await requireMembership(slug);
 
@@ -35,7 +38,8 @@ export async function leaveOrganization(_previous: DangerZoneState, formData: Fo
     );
     if (owners <= 1) {
       return {
-        error: "You're the only owner. Make another member an owner first, or delete the organization.",
+        error:
+          "You're the only owner. Make another member an owner first, or delete the organization.",
       };
     }
   }
@@ -46,7 +50,10 @@ export async function leaveOrganization(_previous: DangerZoneState, formData: Fo
   redirect("/dashboard");
 }
 
-export async function deleteOrganization(_previous: DangerZoneState, formData: FormData): Promise<DangerZoneState> {
+export async function deleteOrganization(
+  _previous: DangerZoneState,
+  formData: FormData,
+): Promise<DangerZoneState> {
   const slug = String(formData.get("slug"));
   const { organization } = await requirePermission(slug, "organization:delete");
 
@@ -55,9 +62,14 @@ export async function deleteOrganization(_previous: DangerZoneState, formData: F
   }
 
   const subscription = await getOrganizationSubscription(organization.id);
-  if (subscription && planFromStatus(subscription.status) === "pro" && !subscription.cancelAtPeriodEnd) {
+  if (
+    subscription &&
+    planFromStatus(subscription.status) === "pro" &&
+    !subscription.cancelAtPeriodEnd
+  ) {
     return {
-      error: "This organization has an active subscription. Cancel it under Billing > Manage subscription first, so you aren't charged again.",
+      error:
+        "This organization has an active subscription. Cancel it under Billing > Manage subscription first, so you aren't charged again.",
     };
   }
 

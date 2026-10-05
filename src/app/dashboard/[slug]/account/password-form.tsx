@@ -34,17 +34,36 @@ export function PasswordForm() {
       return;
     }
     form.reset();
-    setMessage({ type: "success", text: "Password changed. You've been logged out on your other devices." });
+    setMessage({
+      type: "success",
+      text: "Password changed. You've been logged out on your other devices.",
+    });
   }
 
   return (
     <form method="post" onSubmit={handleSubmit} className="space-y-3">
-      <PasswordInput name="currentPassword" autoComplete="current-password" placeholder="Current password" />
-      <PasswordInput name="newPassword" minLength={8} autoComplete="new-password" placeholder="New password (8+ characters)" />
-      <PasswordInput name="confirmPassword" minLength={8} autoComplete="new-password" placeholder="Confirm new password" />
+      <PasswordInput
+        name="currentPassword"
+        autoComplete="current-password"
+        placeholder="Current password"
+      />
+      <PasswordInput
+        name="newPassword"
+        minLength={8}
+        autoComplete="new-password"
+        placeholder="New password (8+ characters)"
+      />
+      <PasswordInput
+        name="confirmPassword"
+        minLength={8}
+        autoComplete="new-password"
+        placeholder="Confirm new password"
+      />
       <Button disabled={loading}>{loading ? "Saving..." : "Change password"}</Button>
       {message && (
-        <p className={`text-sm ${message.type === "success" ? "text-success" : "text-danger"}`}>{message.text}</p>
+        <p className={`text-sm ${message.type === "success" ? "text-success" : "text-danger"}`}>
+          {message.text}
+        </p>
       )}
     </form>
   );

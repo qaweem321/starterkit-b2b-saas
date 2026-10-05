@@ -22,7 +22,8 @@ export const auth = betterAuth({
             message: `Hi ${user.name}, click the button below to choose a new password.`,
             buttonText: "Reset password",
             url,
-            footer: "This link expires in 1 hour. If you didn't ask for this, you can ignore this email.",
+            footer:
+              "This link expires in 1 hour. If you didn't ask for this, you can ignore this email.",
           }),
         });
       } catch (error) {

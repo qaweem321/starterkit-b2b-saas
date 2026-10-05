@@ -38,10 +38,19 @@ export function ProfileForm({ name }: { name: string }) {
       <label htmlFor="account-name" className="block text-sm font-medium">
         Name
       </label>
-      <Input id="account-name" name="name" required maxLength={60} defaultValue={name} autoComplete="name" />
+      <Input
+        id="account-name"
+        name="name"
+        required
+        maxLength={60}
+        defaultValue={name}
+        autoComplete="name"
+      />
       <Button disabled={loading}>{loading ? "Saving..." : "Save"}</Button>
       {message && (
-        <p className={`text-sm ${message.type === "success" ? "text-success" : "text-danger"}`}>{message.text}</p>
+        <p className={`text-sm ${message.type === "success" ? "text-success" : "text-danger"}`}>
+          {message.text}
+        </p>
       )}
     </form>
   );

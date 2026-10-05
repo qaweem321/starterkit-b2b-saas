@@ -3,7 +3,10 @@ import { test } from "node:test";
 import { buttonEmailHtml, escapeHtml } from "./email";
 
 test("escapeHtml neutralises HTML", () => {
-  assert.equal(escapeHtml(`<script>"x"&'y'</script>`), "&lt;script&gt;&quot;x&quot;&amp;&#39;y&#39;&lt;/script&gt;");
+  assert.equal(
+    escapeHtml(`<script>"x"&'y'</script>`),
+    "&lt;script&gt;&quot;x&quot;&amp;&#39;y&#39;&lt;/script&gt;",
+  );
 });
 
 test("email template never contains raw user HTML", () => {

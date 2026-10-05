@@ -25,7 +25,9 @@ export default async function BillingPage({ params }: { params: Promise<{ slug: 
         <p className="text-sm text-subtle-foreground">Current plan</p>
         <p className="mt-1 text-3xl font-semibold">{plan.name}</p>
         <p className="mt-1 text-sm text-muted-foreground">
-          {plan.memberLimit === Infinity ? "Unlimited members" : `Up to ${plan.memberLimit} members`}
+          {plan.memberLimit === Infinity
+            ? "Unlimited members"
+            : `Up to ${plan.memberLimit} members`}
         </p>
 
         {subscription?.currentPeriodEnd && (
@@ -39,7 +41,11 @@ export default async function BillingPage({ params }: { params: Promise<{ slug: 
           planId === "pro" ? (
             <BillingButton slug={slug} action={openBillingPortal} label="Manage subscription" />
           ) : (
-            <BillingButton slug={slug} action={startCheckout} label={`Upgrade to Pro (${plans.pro.price})`} />
+            <BillingButton
+              slug={slug}
+              action={startCheckout}
+              label={`Upgrade to Pro (${plans.pro.price})`}
+            />
           )
         ) : (
           <p className="mt-6 text-sm text-subtle-foreground">Only owners can change the plan.</p>

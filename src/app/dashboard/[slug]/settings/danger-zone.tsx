@@ -22,7 +22,9 @@ export function DangerZone({ slug, organizationName, canDelete }: Props) {
       <form
         action={leaveAction}
         onSubmit={(event) => {
-          if (!window.confirm(`Leave ${organizationName}? You'll need a new invitation to come back.`)) {
+          if (
+            !window.confirm(`Leave ${organizationName}? You'll need a new invitation to come back.`)
+          ) {
             event.preventDefault();
           }
         }}
@@ -31,7 +33,9 @@ export function DangerZone({ slug, organizationName, canDelete }: Props) {
         <input type="hidden" name="slug" value={slug} />
         <div>
           <p className="font-medium">Leave organization</p>
-          <p className="text-sm text-muted-foreground">You will lose access to {organizationName}.</p>
+          <p className="text-sm text-muted-foreground">
+            You will lose access to {organizationName}.
+          </p>
         </div>
         <Button disabled={leaving} variant="danger-outline">
           {leaving ? "Leaving..." : "Leave organization"}
@@ -45,8 +49,8 @@ export function DangerZone({ slug, organizationName, canDelete }: Props) {
           <div>
             <p className="font-medium">Delete organization</p>
             <p className="text-sm text-muted-foreground">
-              Permanently deletes {organizationName}, its members&apos; access and pending invitations. This cannot be
-              undone.
+              Permanently deletes {organizationName}, its members&apos; access and pending
+              invitations. This cannot be undone.
             </p>
           </div>
           <label htmlFor="confirmName" className="block text-sm">

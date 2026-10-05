@@ -1,3 +1,5 @@
+import { siteConfig } from "@/config/site";
+
 type Email = {
   to: string;
   subject: string;
@@ -9,7 +11,9 @@ export async function sendEmail({ to, subject, text, html }: Email) {
   const apiKey = process.env.RESEND_API_KEY;
 
   if (!apiKey) {
-    console.log(`\n--- Email (dev mode, not sent) ---\nTo: ${to}\nSubject: ${subject}\n\n${text}\n---------------------------------\n`);
+    console.log(
+      `\n--- Email (dev mode, not sent) ---\nTo: ${to}\nSubject: ${subject}\n\n${text}\n---------------------------------\n`,
+    );
     return;
   }
 
@@ -17,7 +21,7 @@ export async function sendEmail({ to, subject, text, html }: Email) {
     method: "POST",
     headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
     body: JSON.stringify({
-      from: process.env.EMAIL_FROM ?? "StarterKit <onboarding@resend.dev>",
+      from: process.env.EMAIL_FROM || `${siteConfig.name} <onboarding@resend.dev>`,
       to,
       subject,
       text,

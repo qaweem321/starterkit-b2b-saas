@@ -1,6 +1,6 @@
 import { PolarClientError } from "@polar-sh/sdk";
 import { createPolar } from "@polar-sh/sdk/2026-10";
-import { requireEnv } from "./env";
+import { requireEnv } from "@/lib/env";
 import type { BillingProvider } from "./types";
 
 function getClient() {

@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { absoluteUrl } from "@/config/site";
 import { getBillingProvider } from "@/lib/billing";
 import { requirePermission } from "@/lib/session";
 
@@ -8,7 +9,10 @@ export type BillingActionState = { error?: string };
 
 const PROVIDER_ERROR = "We couldn't reach the payment provider. Please try again in a moment.";
 
-export async function startCheckout(_previous: BillingActionState, formData: FormData): Promise<BillingActionState> {
+export async function startCheckout(
+  _previous: BillingActionState,
+  formData: FormData,
+): Promise<BillingActionState> {
   const slug = String(formData.get("slug"));
   const { organization } = await requirePermission(slug, "billing:manage");
 
@@ -16,8 +20,8 @@ export async function startCheckout(_previous: BillingActionState, formData: For
   try {
     url = await getBillingProvider().createCheckoutUrl({
       organizationId: organization.id,
-      successUrl: `${process.env.BETTER_AUTH_URL}/dashboard/${slug}/billing/success`,
-      cancelUrl: `${process.env.BETTER_AUTH_URL}/dashboard/${slug}/billing`,
+      successUrl: absoluteUrl(`/dashboard/${slug}/billing/success`),
+      cancelUrl: absoluteUrl(`/dashboard/${slug}/billing`),
     });
   } catch (error) {
     console.error("Checkout failed:", error);
@@ -26,7 +30,10 @@ export async function startCheckout(_previous: BillingActionState, formData: For
   redirect(url);
 }
 
-export async function openBillingPortal(_previous: BillingActionState, formData: FormData): Promise<BillingActionState> {
+export async function openBillingPortal(
+  _previous: BillingActionState,
+  formData: FormData,
+): Promise<BillingActionState> {
   const slug = String(formData.get("slug"));
   const { organization } = await requirePermission(slug, "billing:manage");
 
@@ -34,7 +41,7 @@ export async function openBillingPortal(_previous: BillingActionState, formData:
   try {
     url = await getBillingProvider().createPortalUrl({
       organizationId: organization.id,
-      returnUrl: `${process.env.BETTER_AUTH_URL}/dashboard/${slug}/billing`,
+      returnUrl: absoluteUrl(`/dashboard/${slug}/billing`),
     });
   } catch (error) {
     console.error("Billing portal failed:", error);
