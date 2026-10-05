@@ -1,6 +1,8 @@
 "use client";
 
 import { useActionState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input, Select } from "@/components/ui/input";
 import type { Role } from "@/lib/permissions";
 import { inviteMember, type InviteState } from "./actions";
 
@@ -16,27 +18,22 @@ export function InviteForm({ slug, roles }: Props) {
     <form action={formAction} className="mt-8">
       <input type="hidden" name="slug" value={slug} />
       <div className="flex flex-wrap gap-2">
-        <input
+        <Input
           name="email"
           type="email"
           required
           defaultValue={state.email}
           placeholder="teammate@company.com"
-          className="flex-1 min-w-56 rounded-lg border border-input px-3 py-2"
+          className="flex-1 min-w-56"
         />
-        <select name="role" defaultValue="member" className="rounded-lg border border-input px-3 py-2">
+        <Select name="role" defaultValue="member">
           {roles.map((role) => (
             <option key={role} value={role}>
               {role}
             </option>
           ))}
-        </select>
-        <button
-          disabled={isPending}
-          className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
-        >
-          {isPending ? "Sending..." : "Invite"}
-        </button>
+        </Select>
+        <Button disabled={isPending}>{isPending ? "Sending..." : "Invite"}</Button>
       </div>
 
       {state.error && <p className="mt-2 text-sm text-danger">{state.error}</p>}

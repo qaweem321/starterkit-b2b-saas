@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { can } from "@/lib/permissions";
 import { requireMembership } from "@/lib/session";
 import { renameOrganization } from "./actions";
@@ -21,19 +23,9 @@ export default async function SettingsPage({ params }: { params: Promise<{ slug:
         <label htmlFor="name" className="block text-sm font-medium">
           Organization name
         </label>
-        <input
-          id="name"
-          name="name"
-          required
-          maxLength={60}
-          defaultValue={organization.name}
-          disabled={!canEdit}
-          className="w-full rounded-lg border border-input px-3 py-2 disabled:bg-muted disabled:text-subtle-foreground"
-        />
+        <Input id="name" name="name" required maxLength={60} defaultValue={organization.name} disabled={!canEdit} />
         {canEdit ? (
-          <button className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
-            Save
-          </button>
+          <Button>Save</Button>
         ) : (
           <p className="text-sm text-subtle-foreground">Only owners and admins can change these settings.</p>
         )}

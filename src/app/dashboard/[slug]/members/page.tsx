@@ -19,27 +19,29 @@ export default async function MembersPage({ params }: { params: Promise<{ slug: 
   const { slug } = await params;
   const { user, role: myRole, organization } = await requireMembership(slug);
 
-  const members = await db
-    .select({
-      id: memberships.id,
-      userId: memberships.userId,
-      role: memberships.role,
-      name: users.name,
-      email: users.email,
-    })
-    .from(memberships)
-    .innerJoin(users, eq(memberships.userId, users.id))
-    .where(eq(memberships.organizationId, organization.id))
-    .orderBy(asc(memberships.createdAt));
-
   const canInvite = can(myRole, "member:invite");
-  const pendingInvitations = canInvite
-    ? await db
-        .select()
-        .from(invitations)
-        .where(eq(invitations.organizationId, organization.id))
-        .orderBy(asc(invitations.createdAt))
-    : [];
+
+  const [members, pendingInvitations] = await Promise.all([
+    db
+      .select({
+        id: memberships.id,
+        userId: memberships.userId,
+        role: memberships.role,
+        name: users.name,
+        email: users.email,
+      })
+      .from(memberships)
+      .innerJoin(users, eq(memberships.userId, users.id))
+      .where(eq(memberships.organizationId, organization.id))
+      .orderBy(asc(memberships.createdAt)),
+    canInvite
+      ? db
+          .select()
+          .from(invitations)
+          .where(eq(invitations.organizationId, organization.id))
+          .orderBy(asc(invitations.createdAt))
+      : Promise.resolve([]),
+  ]);
   const invitableRoles = myRole === "owner" ? roles : roles.filter((role) => role !== "owner");
 
   return (

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useState } from "react";
+import { Select } from "@/components/ui/input";
 import { isTheme, THEME_STORAGE_KEY, themes, type Theme } from "@/lib/theme";
 
 const DARK_QUERY = "(prefers-color-scheme: dark)";
@@ -65,17 +66,12 @@ export function ThemeSelect() {
   }
 
   return (
-    <select
-      id="theme"
-      value={theme}
-      onChange={(event) => handleChange(event.target.value)}
-      className="rounded-lg border border-input bg-background px-3 py-2"
-    >
+    <Select id="theme" value={theme} onChange={(event) => handleChange(event.target.value)}>
       {themes.map((option) => (
         <option key={option} value={option}>
           {labels[option]}
         </option>
       ))}
-    </select>
+    </Select>
   );
 }

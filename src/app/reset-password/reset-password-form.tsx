@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import { PasswordInput } from "@/components/password-input";
+import { Button, ButtonLink } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
 
 export function ResetPasswordForm({ token }: { token: string }) {
@@ -36,9 +36,9 @@ export function ResetPasswordForm({ token }: { token: string }) {
     return (
       <div className="space-y-4">
         <p className="text-success">Your password has been changed. You can now log in with it.</p>
-        <Link href="/login" className="block w-full rounded-lg bg-blue-600 py-2 text-center font-medium text-white hover:bg-blue-700">
+        <ButtonLink href="/login" size="full">
           Log in
-        </Link>
+        </ButtonLink>
       </div>
     );
   }
@@ -50,12 +50,9 @@ export function ResetPasswordForm({ token }: { token: string }) {
 
       {error && <p className="text-sm text-danger">{error}</p>}
 
-      <button
-        disabled={loading}
-        className="w-full rounded-lg bg-blue-600 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-50"
-      >
+      <Button disabled={loading} size="full">
         {loading ? "Saving..." : "Save new password"}
-      </button>
+      </Button>
     </form>
   );
 }

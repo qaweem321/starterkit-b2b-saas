@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { inputClasses } from "@/components/ui/input";
+import { cn } from "@/lib/cn";
 
 type PasswordInputProps = {
   name: string;
@@ -21,7 +23,7 @@ export function PasswordInput({ name, placeholder, minLength, autoComplete }: Pa
         minLength={minLength}
         autoComplete={autoComplete}
         placeholder={placeholder}
-        className="w-full rounded-lg border border-input px-3 py-2 pr-10"
+        className={cn(inputClasses, "pr-10")}
       />
       <button
         type="button"

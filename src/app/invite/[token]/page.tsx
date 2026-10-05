@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { headers } from "next/headers";
 import { SignOutButton } from "@/components/sign-out-button";
+import { ButtonLink } from "@/components/ui/button";
 import { auth } from "@/lib/auth";
 import { findValidInvitation } from "@/lib/invitations";
 import { AcceptForm } from "./accept-form";
@@ -32,12 +32,10 @@ export default async function InvitePage({ params }: { params: Promise<{ token: 
           <strong>{invitation.email}</strong> to accept.
         </p>
         <div className="flex gap-3">
-          <Link href={`/signup?next=${next}`} className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
-            Sign up
-          </Link>
-          <Link href={`/login?next=${next}`} className="rounded-lg border border-input px-4 py-2 text-sm font-medium hover:bg-surface">
+          <ButtonLink href={`/signup?next=${next}`}>Sign up</ButtonLink>
+          <ButtonLink href={`/login?next=${next}`} variant="outline">
             Log in
-          </Link>
+          </ButtonLink>
         </div>
       </Card>
     );

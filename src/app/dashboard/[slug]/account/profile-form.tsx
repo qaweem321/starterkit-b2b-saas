@@ -2,6 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 
 export function ProfileForm({ name }: { name: string }) {
@@ -36,21 +38,8 @@ export function ProfileForm({ name }: { name: string }) {
       <label htmlFor="account-name" className="block text-sm font-medium">
         Name
       </label>
-      <input
-        id="account-name"
-        name="name"
-        required
-        maxLength={60}
-        defaultValue={name}
-        autoComplete="name"
-        className="w-full rounded-lg border border-input px-3 py-2"
-      />
-      <button
-        disabled={loading}
-        className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
-      >
-        {loading ? "Saving..." : "Save"}
-      </button>
+      <Input id="account-name" name="name" required maxLength={60} defaultValue={name} autoComplete="name" />
+      <Button disabled={loading}>{loading ? "Saving..." : "Save"}</Button>
       {message && (
         <p className={`text-sm ${message.type === "success" ? "text-success" : "text-danger"}`}>{message.text}</p>
       )}

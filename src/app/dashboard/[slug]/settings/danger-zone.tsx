@@ -1,6 +1,8 @@
 "use client";
 
 import { useActionState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { deleteOrganization, leaveOrganization } from "./actions";
 
 type Props = {
@@ -31,12 +33,9 @@ export function DangerZone({ slug, organizationName, canDelete }: Props) {
           <p className="font-medium">Leave organization</p>
           <p className="text-sm text-muted-foreground">You will lose access to {organizationName}.</p>
         </div>
-        <button
-          disabled={leaving}
-          className="rounded-lg border border-danger/60 px-4 py-2 text-sm font-medium text-danger hover:bg-danger/10 disabled:opacity-50"
-        >
+        <Button disabled={leaving} variant="danger-outline">
           {leaving ? "Leaving..." : "Leave organization"}
-        </button>
+        </Button>
         {leaveState.error && <p className="text-sm text-danger">{leaveState.error}</p>}
       </form>
 
@@ -53,19 +52,10 @@ export function DangerZone({ slug, organizationName, canDelete }: Props) {
           <label htmlFor="confirmName" className="block text-sm">
             Type <strong>{organizationName}</strong> to confirm.
           </label>
-          <input
-            id="confirmName"
-            name="confirmName"
-            autoComplete="off"
-            required
-            className="w-full rounded-lg border border-input px-3 py-2"
-          />
-          <button
-            disabled={deleting}
-            className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 disabled:opacity-50"
-          >
+          <Input id="confirmName" name="confirmName" autoComplete="off" required />
+          <Button disabled={deleting} variant="danger">
             {deleting ? "Deleting..." : "Delete organization"}
-          </button>
+          </Button>
           {deleteState.error && <p className="text-sm text-danger">{deleteState.error}</p>}
         </form>
       )}

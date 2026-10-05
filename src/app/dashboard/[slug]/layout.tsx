@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { DesktopSidebar, MobileMenu } from "@/components/dashboard-nav";
 import { SignOutButton } from "@/components/sign-out-button";
-import { getUserOrganizations, requireMembership } from "@/lib/session";
+import { getUserOrganizations, requireMembership, requireUser } from "@/lib/session";
 
 type Props = {
   children: ReactNode;
@@ -10,8 +10,11 @@ type Props = {
 
 export default async function OrganizationLayout({ children, params }: Props) {
   const { slug } = await params;
-  const { user, organization } = await requireMembership(slug);
-  const organizations = await getUserOrganizations(user.id);
+  const user = await requireUser();
+  const [{ organization }, organizations] = await Promise.all([
+    requireMembership(slug),
+    getUserOrganizations(user.id),
+  ]);
 
   return (
     <div className="min-h-screen flex">

@@ -12,12 +12,15 @@ export default async function OverviewPage({ params }: { params: Promise<{ slug:
   const { slug } = await params;
   const { organization, role } = await requireMembership(slug);
 
-  const memberCount = await db.$count(memberships, eq(memberships.organizationId, organization.id));
+  const [memberCount, planId] = await Promise.all([
+    db.$count(memberships, eq(memberships.organizationId, organization.id)),
+    getOrganizationPlan(organization.id),
+  ]);
 
   const stats = [
     { label: "Members", value: String(memberCount) },
     { label: "Your role", value: role },
-    { label: "Plan", value: plans[await getOrganizationPlan(organization.id)].name },
+    { label: "Plan", value: plans[planId].name },
   ];
 
   return (

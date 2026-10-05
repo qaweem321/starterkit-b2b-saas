@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 
 export default function ForgotPasswordPage() {
@@ -35,19 +37,10 @@ export default function ForgotPasswordPage() {
         ) : (
           <form method="post" onSubmit={handleSubmit} className="space-y-4">
             <p className="text-muted-foreground">Enter your email and we&apos;ll send you a reset link.</p>
-            <input
-              name="email"
-              type="email"
-              required
-              placeholder="Email"
-              className="w-full rounded-lg border border-input px-3 py-2"
-            />
-            <button
-              disabled={loading}
-              className="w-full rounded-lg bg-blue-600 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-50"
-            >
+            <Input name="email" type="email" required placeholder="Email" autoComplete="email" />
+            <Button disabled={loading} size="full">
               {loading ? "Sending..." : "Send reset link"}
-            </button>
+            </Button>
           </form>
         )}
 

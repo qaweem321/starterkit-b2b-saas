@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { requireUser } from "@/lib/session";
 import { createOrganization } from "./actions";
 
@@ -15,17 +17,9 @@ export default async function OnboardingPage() {
           Hi {user.name}! An organization is your team&apos;s workspace. You can invite teammates later.
         </p>
 
-        <input
-          name="name"
-          required
-          maxLength={60}
-          placeholder="Company or team name"
-          className="w-full rounded-lg border border-input px-3 py-2"
-        />
+        <Input name="name" required maxLength={60} placeholder="Company or team name" autoComplete="organization" />
 
-        <button className="w-full rounded-lg bg-blue-600 py-2 font-medium text-white hover:bg-blue-700">
-          Create organization
-        </button>
+        <Button size="full">Create organization</Button>
       </form>
     </main>
   );

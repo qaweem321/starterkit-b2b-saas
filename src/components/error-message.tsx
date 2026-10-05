@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect } from "react";
+import { Button, ButtonLink } from "@/components/ui/button";
 
 type Props = {
   error: Error & { digest?: string };
@@ -26,15 +26,10 @@ export function ErrorMessage({ error, retry }: Props) {
         .
       </p>
       <div className="flex gap-3">
-        <button
-          onClick={() => retry()}
-          className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-        >
-          Try again
-        </button>
-        <Link href="/dashboard" className="rounded-lg border border-input px-4 py-2 text-sm font-medium hover:bg-surface">
+        <Button onClick={() => retry()}>Try again</Button>
+        <ButtonLink href="/dashboard" variant="outline">
           Go to dashboard
-        </Link>
+        </ButtonLink>
       </div>
     </div>
   );

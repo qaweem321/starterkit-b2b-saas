@@ -6,15 +6,7 @@ import { redirect } from "next/navigation";
 import { db } from "@/db";
 import { memberships, organizations } from "@/db/schema";
 import { requireUser } from "@/lib/session";
-
-function slugify(name: string) {
-  const slug = name
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-  return slug || "org";
-}
+import { slugify } from "@/lib/slug";
 
 export async function createOrganization(formData: FormData) {
   const user = await requireUser();

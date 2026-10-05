@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { ButtonLink } from "@/components/ui/button";
 
 export const metadata: Metadata = { title: "Page not found" };
 
@@ -13,12 +13,10 @@ export default function NotFound() {
           This page doesn&apos;t exist, or you don&apos;t have access to it.
         </p>
         <div className="flex justify-center gap-3">
-          <Link href="/dashboard" className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
-            Go to dashboard
-          </Link>
-          <Link href="/" className="rounded-lg border border-input px-4 py-2 text-sm font-medium hover:bg-surface">
+          <ButtonLink href="/dashboard">Go to dashboard</ButtonLink>
+          <ButtonLink href="/" variant="outline">
             Home
-          </Link>
+          </ButtonLink>
         </div>
       </div>
     </main>

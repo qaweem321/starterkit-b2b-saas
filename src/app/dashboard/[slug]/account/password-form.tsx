@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { PasswordInput } from "@/components/password-input";
+import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
 
 export function PasswordForm() {
@@ -41,12 +42,7 @@ export function PasswordForm() {
       <PasswordInput name="currentPassword" autoComplete="current-password" placeholder="Current password" />
       <PasswordInput name="newPassword" minLength={8} autoComplete="new-password" placeholder="New password (8+ characters)" />
       <PasswordInput name="confirmPassword" minLength={8} autoComplete="new-password" placeholder="Confirm new password" />
-      <button
-        disabled={loading}
-        className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
-      >
-        {loading ? "Saving..." : "Change password"}
-      </button>
+      <Button disabled={loading}>{loading ? "Saving..." : "Change password"}</Button>
       {message && (
         <p className={`text-sm ${message.type === "success" ? "text-success" : "text-danger"}`}>{message.text}</p>
       )}

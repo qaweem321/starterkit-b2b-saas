@@ -1,7 +1,11 @@
-export function getNextPath(fallback = "/dashboard") {
-  const next = new URLSearchParams(window.location.search).get("next");
-  if (next && next.startsWith("/") && !next.startsWith("//")) {
+// Only allow redirects to pages on this site: "/path", never "https://..." or "//other.site".
+export function safeNextPath(next: string | null | undefined, fallback = "/dashboard") {
+  if (next && next.startsWith("/") && !next.startsWith("//") && !next.startsWith("/\\")) {
     return next;
   }
   return fallback;
+}
+
+export function getNextPath(fallback = "/dashboard") {
+  return safeNextPath(new URLSearchParams(window.location.search).get("next"), fallback);
 }

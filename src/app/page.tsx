@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ButtonLink, buttonClasses } from "@/components/ui/button";
 
 const features = [
   {
@@ -27,12 +28,7 @@ export default function HomePage() {
             <Link href="/login" className="text-sm text-muted-foreground hover:text-foreground">
               Log in
             </Link>
-            <Link
-              href="/signup"
-              className="text-sm bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-            >
-              Get started
-            </Link>
+            <ButtonLink href="/signup">Get started</ButtonLink>
           </div>
         </nav>
       </header>
@@ -47,16 +43,10 @@ export default function HomePage() {
             product unique.
           </p>
           <div className="mt-10 flex justify-center gap-4">
-            <Link
-              href="/signup"
-              className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700"
-            >
+            <ButtonLink href="/signup" size="lg">
               Start free
-            </Link>
-            <a
-              href="#features"
-              className="border border-input px-6 py-3 rounded-lg font-medium hover:bg-surface"
-            >
+            </ButtonLink>
+            <a href="#features" className={buttonClasses({ variant: "outline", size: "lg" })}>
               Learn more
             </a>
           </div>
