@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getOrganizationSubscription } from "@/lib/billing";
-import { planFromStatus, plans } from "@/lib/billing/plans";
+import { memberLimitLabel, planFromStatus, plans } from "@/lib/billing/plans";
 import { can } from "@/lib/permissions";
 import { requireMembership } from "@/lib/session";
 import { openBillingPortal, startCheckout } from "./actions";
@@ -24,11 +24,7 @@ export default async function BillingPage({ params }: { params: Promise<{ slug: 
       <div className="mt-8 rounded-xl border border-border p-6">
         <p className="text-sm text-subtle-foreground">Current plan</p>
         <p className="mt-1 text-3xl font-semibold">{plan.name}</p>
-        <p className="mt-1 text-sm text-muted-foreground">
-          {plan.memberLimit === Infinity
-            ? "Unlimited members"
-            : `Up to ${plan.memberLimit} members`}
-        </p>
+        <p className="mt-1 text-sm text-muted-foreground">{memberLimitLabel(plan.memberLimit)}</p>
 
         {subscription?.currentPeriodEnd && (
           <p className="mt-3 text-sm text-muted-foreground">

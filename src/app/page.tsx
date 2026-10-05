@@ -2,6 +2,8 @@ import Link from "next/link";
 import { Logo } from "@/components/logo";
 import { ButtonLink, buttonClasses } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
+import { memberLimitLabel, plans } from "@/lib/billing/plans";
+import { cn } from "@/lib/cn";
 
 const features = [
   {
@@ -25,6 +27,9 @@ export default function HomePage() {
         <nav className="mx-auto max-w-6xl px-6 h-16 flex items-center justify-between">
           <Logo />
           <div className="flex items-center gap-4">
+            <a href="#pricing" className="text-sm text-muted-foreground hover:text-foreground">
+              Pricing
+            </a>
             <Link href="/login" className="text-sm text-muted-foreground hover:text-foreground">
               Log in
             </Link>
@@ -63,6 +68,47 @@ export default function HomePage() {
                 <p className="mt-2 text-sm text-muted-foreground">{feature.description}</p>
               </div>
             ))}
+          </div>
+        </section>
+
+        <section id="pricing" className="py-20">
+          <div className="mx-auto max-w-4xl px-6">
+            <h2 className="text-3xl font-bold tracking-tight text-center">Simple pricing</h2>
+            <p className="mt-3 text-center text-muted-foreground">
+              Start free. Upgrade any time from your organization&apos;s Billing page.
+            </p>
+            <div className="mt-12 grid gap-8 sm:grid-cols-2">
+              {Object.entries(plans).map(([id, plan]) => (
+                <div
+                  key={id}
+                  className={cn(
+                    "flex flex-col rounded-xl border p-8",
+                    id === "pro" ? "border-link" : "border-border",
+                  )}
+                >
+                  <h3 className="text-lg font-semibold">{plan.name}</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">{plan.description}</p>
+                  <p className="mt-6 text-4xl font-bold">{plan.price}</p>
+                  <ul className="mt-6 flex-1 space-y-2 text-sm">
+                    {[memberLimitLabel(plan.memberLimit), ...plan.features].map((feature) => (
+                      <li key={feature} className="flex gap-2">
+                        <span aria-hidden="true" className="text-success">
+                          ✓
+                        </span>
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                  <ButtonLink
+                    href="/signup"
+                    variant={id === "pro" ? "primary" : "outline"}
+                    className="mt-8"
+                  >
+                    {id === "pro" ? "Start with Pro" : "Start free"}
+                  </ButtonLink>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
       </main>
