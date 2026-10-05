@@ -54,5 +54,8 @@ export const auth = betterAuth({
       }
     },
   },
+  // Limits login attempts and email sending per IP (on in production only).
+  // Stored in the database because serverless instances don't share memory.
+  rateLimit: { storage: "database" },
   plugins: [nextCookies()],
 });

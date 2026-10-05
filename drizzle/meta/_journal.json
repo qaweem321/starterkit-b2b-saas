@@ -43,6 +43,13 @@
       "when": 1791094212244,
       "tag": "0005_familiar_maddog",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1791216357565,
+      "tag": "0006_lively_killmonger",
+      "breakpoints": true
     }
   ]
 }
