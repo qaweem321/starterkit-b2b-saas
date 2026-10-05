@@ -65,7 +65,7 @@ export default async function MembersPage({ params }: { params: Promise<{ slug: 
               <div>
                 <p className="font-medium">
                   {member.name}{" "}
-                  {isMe && <span className="text-sm text-faint-foreground">(you)</span>}
+                  {isMe && <span className="text-sm text-subtle-foreground">(you)</span>}
                 </p>
                 <p className="text-sm text-subtle-foreground">{member.email}</p>
               </div>
@@ -81,6 +81,7 @@ export default async function MembersPage({ params }: { params: Promise<{ slug: 
                     <input type="hidden" name="membershipId" value={member.id} />
                     <select
                       name="role"
+                      aria-label={`Role for ${member.name}`}
                       defaultValue={member.role}
                       className="rounded-md border border-input px-2 py-1 text-sm"
                     >
@@ -90,7 +91,11 @@ export default async function MembersPage({ params }: { params: Promise<{ slug: 
                         </option>
                       ))}
                     </select>
-                    <button type="submit" className="text-sm text-link hover:underline">
+                    <button
+                      type="submit"
+                      aria-label={`Save role for ${member.name}`}
+                      className="text-sm text-link hover:underline"
+                    >
                       Save
                     </button>
                   </form>
@@ -106,7 +111,11 @@ export default async function MembersPage({ params }: { params: Promise<{ slug: 
                   <form action={removeMember}>
                     <input type="hidden" name="slug" value={slug} />
                     <input type="hidden" name="membershipId" value={member.id} />
-                    <button type="submit" className="text-sm text-danger hover:underline">
+                    <button
+                      type="submit"
+                      aria-label={`Remove ${member.name}`}
+                      className="text-sm text-danger hover:underline"
+                    >
                       Remove
                     </button>
                   </form>
@@ -142,7 +151,11 @@ export default async function MembersPage({ params }: { params: Promise<{ slug: 
                   <form action={revokeInvitation}>
                     <input type="hidden" name="slug" value={slug} />
                     <input type="hidden" name="invitationId" value={invitation.id} />
-                    <button type="submit" className="text-sm text-danger hover:underline">
+                    <button
+                      type="submit"
+                      aria-label={`Revoke invitation for ${invitation.email}`}
+                      className="text-sm text-danger hover:underline"
+                    >
                       Revoke
                     </button>
                   </form>

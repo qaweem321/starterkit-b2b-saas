@@ -11,6 +11,10 @@ export const metadata: Metadata = {
     template: `%s · ${siteConfig.name}`,
   },
   description: siteConfig.description,
+  // Turns relative image paths (like the generated preview image) into full URLs.
+  metadataBase: new URL(process.env.BETTER_AUTH_URL ?? "http://localhost:3000"),
+  openGraph: { type: "website", siteName: siteConfig.name },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

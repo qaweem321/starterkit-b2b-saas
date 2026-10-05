@@ -24,9 +24,10 @@ export function InviteForm({ slug, roles }: Props) {
           required
           defaultValue={state.email}
           placeholder="teammate@company.com"
+          aria-label="Email address to invite"
           className="flex-1 min-w-56"
         />
-        <Select name="role" defaultValue="member">
+        <Select name="role" defaultValue="member" aria-label="Role">
           {roles.map((role) => (
             <option key={role} value={role}>
               {role}

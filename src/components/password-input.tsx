@@ -23,6 +23,7 @@ export function PasswordInput({ name, placeholder, minLength, autoComplete }: Pa
         minLength={minLength}
         autoComplete={autoComplete}
         placeholder={placeholder}
+        aria-label={placeholder}
         className={cn(inputClasses, "pr-10")}
       />
       <button

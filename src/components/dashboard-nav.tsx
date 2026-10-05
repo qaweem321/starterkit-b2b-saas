@@ -50,7 +50,7 @@ function NavContent({ slug, organizations, onNavigate }: NavProps) {
       </nav>
 
       <div className="mt-auto pt-6">
-        <p className="px-2 mb-2 text-xs font-semibold uppercase text-faint-foreground">
+        <p className="px-2 mb-2 text-xs font-semibold uppercase text-subtle-foreground">
           Your organizations
         </p>
         {organizations.map((org) => (
