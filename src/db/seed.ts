@@ -20,7 +20,7 @@ async function seed() {
 
   await db
     .insert(users)
-    .values(demoMembers.map((m) => ({ id: randomUUID(), name: m.name, email: m.email })))
+    .values(demoMembers.map((m) => ({ id: randomUUID(), name: m.name, email: m.email, emailVerified: true })))
     .onConflictDoNothing({ target: users.email });
 
   const savedUsers = await db

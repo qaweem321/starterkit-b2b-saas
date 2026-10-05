@@ -9,6 +9,7 @@ export const auth = betterAuth({
   database: drizzleAdapter(db, { provider: "pg", schema, usePlural: true }),
   emailAndPassword: {
     enabled: true,
+    requireEmailVerification: true,
     revokeSessionsOnPasswordReset: true,
     sendResetPassword: async ({ user, url }) => {
       try {
@@ -22,6 +23,29 @@ export const auth = betterAuth({
             buttonText: "Reset password",
             url,
             footer: "This link expires in 1 hour. If you didn't ask for this, you can ignore this email.",
+          }),
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    },
+  },
+  emailVerification: {
+    sendOnSignUp: true,
+    sendOnSignIn: true,
+    autoSignInAfterVerification: true,
+    sendVerificationEmail: async ({ user, url }) => {
+      try {
+        await sendEmail({
+          to: user.email,
+          subject: "Verify your email",
+          text: `Hi ${user.name},\n\nPlease confirm your email address:\n${url}\n\nIf you didn't create an account, you can ignore this email.`,
+          html: buttonEmailHtml({
+            heading: "Verify your email",
+            message: `Hi ${user.name}, please confirm your email address to finish creating your account.`,
+            buttonText: "Verify email",
+            url,
+            footer: "If you didn't create an account, you can ignore this email.",
           }),
         });
       } catch (error) {

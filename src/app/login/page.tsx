@@ -18,14 +18,20 @@ export default function LoginPage() {
     setLoading(true);
 
     const form = new FormData(event.currentTarget);
+    const email = String(form.get("email"));
     const { error } = await authClient.signIn.email({
-      email: String(form.get("email")),
+      email,
       password: String(form.get("password")),
+      callbackURL: getNextPath(),
     });
 
     setLoading(false);
     if (error) {
-      setError(error.message ?? "Something went wrong");
+      setError(
+        error.code === "EMAIL_NOT_VERIFIED"
+          ? `Please verify your email first. We've sent a new link to ${email}.`
+          : (error.message ?? "Something went wrong"),
+      );
       return;
     }
     router.push(getNextPath());

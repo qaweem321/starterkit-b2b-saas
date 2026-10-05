@@ -1,16 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { PasswordInput } from "@/components/password-input";
 import { authClient } from "@/lib/auth-client";
 import { getNextPath } from "@/lib/safe-redirect";
 
 export default function SignUpPage() {
-  const router = useRouter();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [sentTo, setSentTo] = useState("");
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -18,10 +17,12 @@ export default function SignUpPage() {
     setLoading(true);
 
     const form = new FormData(event.currentTarget);
+    const email = String(form.get("email"));
     const { error } = await authClient.signUp.email({
       name: String(form.get("name")),
-      email: String(form.get("email")),
+      email,
       password: String(form.get("password")),
+      callbackURL: getNextPath(),
     });
 
     setLoading(false);
@@ -29,7 +30,27 @@ export default function SignUpPage() {
       setError(error.message ?? "Something went wrong");
       return;
     }
-    router.push(getNextPath());
+    setSentTo(email);
+  }
+
+  if (sentTo) {
+    return (
+      <main className="min-h-screen flex items-center justify-center px-6">
+        <div className="w-full max-w-sm space-y-4">
+          <h1 className="text-2xl font-bold">Check your email</h1>
+          <p className="text-muted-foreground">
+            We sent a verification link to <strong className="text-foreground">{sentTo}</strong>. Click it to finish
+            creating your account. Don&apos;t forget to check your spam folder.
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Already verified?{" "}
+            <Link href="/login" className="text-link hover:underline">
+              Log in
+            </Link>
+          </p>
+        </div>
+      </main>
+    );
   }
 
   return (
