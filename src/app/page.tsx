@@ -11,7 +11,7 @@ const features = [
   },
   {
     title: "Subscription billing",
-    description: "Charge each organization monthly with Stripe, built in from day one.",
+    description: "Charge each organization monthly with Polar or Stripe, built in from day one.",
   },
 ];
 
