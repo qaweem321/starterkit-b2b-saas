@@ -16,11 +16,11 @@ export function ErrorMessage({ error, retry }: Props) {
   return (
     <div className="max-w-md space-y-4">
       <h1 className="text-2xl font-bold">Something went wrong</h1>
-      <p className="text-gray-600">
+      <p className="text-muted-foreground">
         Sorry, we couldn&apos;t complete that. Please try again. If it keeps happening, contact support
         {error.digest ? (
           <>
-            {" "}and mention code <code className="rounded bg-gray-100 px-1">{error.digest}</code>
+            {" "}and mention code <code className="rounded bg-muted px-1">{error.digest}</code>
           </>
         ) : null}
         .
@@ -32,7 +32,7 @@ export function ErrorMessage({ error, retry }: Props) {
         >
           Try again
         </button>
-        <Link href="/dashboard" className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium hover:bg-gray-50">
+        <Link href="/dashboard" className="rounded-lg border border-input px-4 py-2 text-sm font-medium hover:bg-surface">
           Go to dashboard
         </Link>
       </div>

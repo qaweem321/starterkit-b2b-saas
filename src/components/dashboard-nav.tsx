@@ -25,7 +25,7 @@ function NavContent({ slug, organizations, onNavigate }: NavProps) {
   return (
     <>
       <Link href="/" onClick={onNavigate} className="block px-2 mb-8 text-lg font-bold">
-        Starter<span className="text-blue-600">Kit</span>
+        Starter<span className="text-link">Kit</span>
       </Link>
 
       <nav className="flex flex-col gap-1">
@@ -38,7 +38,7 @@ function NavContent({ slug, organizations, onNavigate }: NavProps) {
               onClick={onNavigate}
               aria-current={active ? "page" : undefined}
               className={`px-2 py-2 rounded-md text-sm ${
-                active ? "bg-gray-200 font-medium text-gray-900" : "text-gray-700 hover:bg-gray-200"
+                active ? "bg-accent font-medium text-foreground" : "text-secondary-foreground hover:bg-accent"
               }`}
             >
               {item.label}
@@ -48,14 +48,14 @@ function NavContent({ slug, organizations, onNavigate }: NavProps) {
       </nav>
 
       <div className="mt-auto pt-6">
-        <p className="px-2 mb-2 text-xs font-semibold uppercase text-gray-400">Your organizations</p>
+        <p className="px-2 mb-2 text-xs font-semibold uppercase text-faint-foreground">Your organizations</p>
         {organizations.map((org) => (
           <Link
             key={org.slug}
             href={`/dashboard/${org.slug}`}
             onClick={onNavigate}
-            className={`block px-2 py-1.5 rounded-md text-sm hover:bg-gray-200 ${
-              org.slug === slug ? "font-semibold text-gray-900" : "text-gray-600"
+            className={`block px-2 py-1.5 rounded-md text-sm hover:bg-accent ${
+              org.slug === slug ? "font-semibold text-foreground" : "text-muted-foreground"
             }`}
           >
             {org.name}
@@ -64,7 +64,7 @@ function NavContent({ slug, organizations, onNavigate }: NavProps) {
         <Link
           href="/onboarding"
           onClick={onNavigate}
-          className="block px-2 py-1.5 text-sm text-blue-600 hover:underline"
+          className="block px-2 py-1.5 text-sm text-link hover:underline"
         >
           + New organization
         </Link>
@@ -75,7 +75,7 @@ function NavContent({ slug, organizations, onNavigate }: NavProps) {
 
 export function DesktopSidebar(props: NavProps) {
   return (
-    <aside className="w-60 shrink-0 border-r border-gray-200 bg-gray-50 p-4 hidden md:flex md:flex-col">
+    <aside className="w-60 shrink-0 border-r border-border bg-surface p-4 hidden md:flex md:flex-col">
       <NavContent {...props} />
     </aside>
   );
@@ -104,7 +104,7 @@ export function MobileMenu(props: NavProps) {
         onClick={() => setOpen(true)}
         aria-label="Open menu"
         aria-expanded={open}
-        className="-ml-2 p-2 text-gray-600 hover:text-gray-900"
+        className="-ml-2 p-2 text-muted-foreground hover:text-foreground"
       >
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
           <path d="M4 6h16M4 12h16M4 18h16" />
@@ -114,12 +114,12 @@ export function MobileMenu(props: NavProps) {
       {open && (
         <div className="fixed inset-0 z-40">
           <div className="absolute inset-0 bg-black/40" onClick={() => setOpen(false)} />
-          <div className="absolute inset-y-0 left-0 w-64 bg-gray-50 p-4 flex flex-col shadow-xl">
+          <div className="absolute inset-y-0 left-0 w-64 bg-surface p-4 flex flex-col shadow-xl">
             <button
               type="button"
               onClick={() => setOpen(false)}
               aria-label="Close menu"
-              className="absolute right-3 top-3 p-2 text-gray-500 hover:text-gray-900"
+              className="absolute right-3 top-3 p-2 text-subtle-foreground hover:text-foreground"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                 <path d="M6 6l12 12M18 6L6 18" />

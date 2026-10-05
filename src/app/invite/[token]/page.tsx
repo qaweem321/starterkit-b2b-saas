@@ -16,7 +16,7 @@ export default async function InvitePage({ params }: { params: Promise<{ token: 
   if (!found) {
     return (
       <Card title="Invitation not found">
-        <p className="text-gray-600">This invitation link is invalid or has expired. Ask for a new one.</p>
+        <p className="text-muted-foreground">This invitation link is invalid or has expired. Ask for a new one.</p>
       </Card>
     );
   }
@@ -27,7 +27,7 @@ export default async function InvitePage({ params }: { params: Promise<{ token: 
   if (!session) {
     return (
       <Card title={`Join ${organization.name}`}>
-        <p className="text-gray-600">
+        <p className="text-muted-foreground">
           You were invited as <strong>{invitation.role}</strong>. Sign up or log in with{" "}
           <strong>{invitation.email}</strong> to accept.
         </p>
@@ -35,7 +35,7 @@ export default async function InvitePage({ params }: { params: Promise<{ token: 
           <Link href={`/signup?next=${next}`} className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
             Sign up
           </Link>
-          <Link href={`/login?next=${next}`} className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium hover:bg-gray-50">
+          <Link href={`/login?next=${next}`} className="rounded-lg border border-input px-4 py-2 text-sm font-medium hover:bg-surface">
             Log in
           </Link>
         </div>
@@ -46,7 +46,7 @@ export default async function InvitePage({ params }: { params: Promise<{ token: 
   if (session.user.email.toLowerCase() !== invitation.email) {
     return (
       <Card title="Wrong account">
-        <p className="text-gray-600">
+        <p className="text-muted-foreground">
           This invitation is for <strong>{invitation.email}</strong>, but you are logged in as{" "}
           <strong>{session.user.email}</strong>. Log out and use the invited email.
         </p>
@@ -57,7 +57,7 @@ export default async function InvitePage({ params }: { params: Promise<{ token: 
 
   return (
     <Card title={`Join ${organization.name}`}>
-      <p className="text-gray-600">
+      <p className="text-muted-foreground">
         You were invited as <strong>{invitation.role}</strong>.
       </p>
       <AcceptForm token={token} />

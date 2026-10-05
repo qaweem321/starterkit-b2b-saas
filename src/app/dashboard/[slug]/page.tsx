@@ -23,14 +23,14 @@ export default async function OverviewPage({ params }: { params: Promise<{ slug:
   return (
     <div>
       <h1 className="text-2xl font-bold">Overview</h1>
-      <p className="mt-1 text-gray-600">
+      <p className="mt-1 text-muted-foreground">
         Welcome back. Here is what is happening in {organization.name}.
       </p>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-3">
         {stats.map((stat) => (
-          <div key={stat.label} className="rounded-xl border border-gray-200 p-5">
-            <p className="text-sm text-gray-500">{stat.label}</p>
+          <div key={stat.label} className="rounded-xl border border-border p-5">
+            <p className="text-sm text-subtle-foreground">{stat.label}</p>
             <p className="mt-1 text-3xl font-semibold capitalize">{stat.value}</p>
           </div>
         ))}

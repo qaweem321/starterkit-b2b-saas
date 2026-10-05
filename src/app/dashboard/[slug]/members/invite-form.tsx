@@ -22,9 +22,9 @@ export function InviteForm({ slug, roles }: Props) {
           required
           defaultValue={state.email}
           placeholder="teammate@company.com"
-          className="flex-1 min-w-56 rounded-lg border border-gray-300 px-3 py-2"
+          className="flex-1 min-w-56 rounded-lg border border-input px-3 py-2"
         />
-        <select name="role" defaultValue="member" className="rounded-lg border border-gray-300 px-3 py-2">
+        <select name="role" defaultValue="member" className="rounded-lg border border-input px-3 py-2">
           {roles.map((role) => (
             <option key={role} value={role}>
               {role}
@@ -39,8 +39,8 @@ export function InviteForm({ slug, roles }: Props) {
         </button>
       </div>
 
-      {state.error && <p className="mt-2 text-sm text-red-600">{state.error}</p>}
-      {state.success && <p className="mt-2 text-sm text-green-700">{state.success}</p>}
+      {state.error && <p className="mt-2 text-sm text-danger">{state.error}</p>}
+      {state.success && <p className="mt-2 text-sm text-success">{state.success}</p>}
     </form>
   );
 }

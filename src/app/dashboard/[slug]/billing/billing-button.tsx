@@ -21,7 +21,7 @@ export function BillingButton({ slug, label, action }: Props) {
       >
         {isPending ? "Redirecting..." : label}
       </button>
-      {state.error && <p className="mt-2 text-sm text-red-600">{state.error}</p>}
+      {state.error && <p className="mt-2 text-sm text-danger">{state.error}</p>}
     </form>
   );
 }

@@ -20,8 +20,8 @@ export default async function ResetPasswordPage({ searchParams }: Props) {
           <ResetPasswordForm token={token} />
         ) : (
           <>
-            <p className="text-gray-600">This reset link is invalid or has expired.</p>
-            <Link href="/forgot-password" className="block text-sm text-blue-600 hover:underline">
+            <p className="text-muted-foreground">This reset link is invalid or has expired.</p>
+            <Link href="/forgot-password" className="block text-sm text-link hover:underline">
               Request a new link
             </Link>
           </>

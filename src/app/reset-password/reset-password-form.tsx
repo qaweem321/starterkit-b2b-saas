@@ -35,7 +35,7 @@ export function ResetPasswordForm({ token }: { token: string }) {
   if (done) {
     return (
       <div className="space-y-4">
-        <p className="text-green-700">Your password has been changed. You can now log in with it.</p>
+        <p className="text-success">Your password has been changed. You can now log in with it.</p>
         <Link href="/login" className="block w-full rounded-lg bg-blue-600 py-2 text-center font-medium text-white hover:bg-blue-700">
           Log in
         </Link>
@@ -48,7 +48,7 @@ export function ResetPasswordForm({ token }: { token: string }) {
       <PasswordInput name="password" minLength={8} autoComplete="new-password" placeholder="New password (8+ characters)" />
       <PasswordInput name="confirmPassword" minLength={8} autoComplete="new-password" placeholder="Confirm new password" />
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p className="text-sm text-danger">{error}</p>}
 
       <button
         disabled={loading}

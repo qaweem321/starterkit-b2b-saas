@@ -19,17 +19,17 @@ export default async function BillingPage({ params }: { params: Promise<{ slug: 
   return (
     <div className="max-w-lg">
       <h1 className="text-2xl font-bold">Billing</h1>
-      <p className="mt-1 text-gray-600">Manage the plan for {organization.name}.</p>
+      <p className="mt-1 text-muted-foreground">Manage the plan for {organization.name}.</p>
 
-      <div className="mt-8 rounded-xl border border-gray-200 p-6">
-        <p className="text-sm text-gray-500">Current plan</p>
+      <div className="mt-8 rounded-xl border border-border p-6">
+        <p className="text-sm text-subtle-foreground">Current plan</p>
         <p className="mt-1 text-3xl font-semibold">{plan.name}</p>
-        <p className="mt-1 text-sm text-gray-600">
+        <p className="mt-1 text-sm text-muted-foreground">
           {plan.memberLimit === Infinity ? "Unlimited members" : `Up to ${plan.memberLimit} members`}
         </p>
 
         {subscription?.currentPeriodEnd && (
-          <p className="mt-3 text-sm text-gray-600">
+          <p className="mt-3 text-sm text-muted-foreground">
             {subscription.cancelAtPeriodEnd ? "Ends on " : "Renews on "}
             {subscription.currentPeriodEnd.toLocaleDateString()}
           </p>
@@ -42,7 +42,7 @@ export default async function BillingPage({ params }: { params: Promise<{ slug: 
             <BillingButton slug={slug} action={startCheckout} label={`Upgrade to Pro (${plans.pro.price})`} />
           )
         ) : (
-          <p className="mt-6 text-sm text-gray-500">Only owners can change the plan.</p>
+          <p className="mt-6 text-sm text-subtle-foreground">Only owners can change the plan.</p>
         )}
       </div>
     </div>

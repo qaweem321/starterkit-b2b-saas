@@ -15,7 +15,7 @@ export function AcceptForm({ token }: { token: string }) {
       >
         {isPending ? "Joining..." : "Accept invitation"}
       </button>
-      {state.error && <p className="mt-3 text-sm text-red-600">{state.error}</p>}
+      {state.error && <p className="mt-3 text-sm text-danger">{state.error}</p>}
     </form>
   );
 }

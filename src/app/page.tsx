@@ -18,13 +18,13 @@ const features = [
 export default function HomePage() {
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="border-b border-gray-200">
+      <header className="border-b border-border">
         <nav className="mx-auto max-w-6xl px-6 h-16 flex items-center justify-between">
           <Link href="/" className="text-lg font-bold">
-            Starter<span className="text-blue-600">Kit</span>
+            Starter<span className="text-link">Kit</span>
           </Link>
           <div className="flex items-center gap-4">
-            <Link href="/login" className="text-sm text-gray-600 hover:text-gray-900">
+            <Link href="/login" className="text-sm text-muted-foreground hover:text-foreground">
               Log in
             </Link>
             <Link
@@ -42,7 +42,7 @@ export default function HomePage() {
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">
             The fastest way to launch your B2B SaaS
           </h1>
-          <p className="mt-6 text-lg text-gray-600">
+          <p className="mt-6 text-lg text-muted-foreground">
             Teams, roles, and billing are already done. You build the part that makes your
             product unique.
           </p>
@@ -55,26 +55,26 @@ export default function HomePage() {
             </Link>
             <a
               href="#features"
-              className="border border-gray-300 px-6 py-3 rounded-lg font-medium hover:bg-gray-50"
+              className="border border-input px-6 py-3 rounded-lg font-medium hover:bg-surface"
             >
               Learn more
             </a>
           </div>
         </section>
 
-        <section id="features" className="bg-gray-50 py-20">
+        <section id="features" className="bg-surface py-20">
           <div className="mx-auto max-w-6xl px-6 grid gap-8 sm:grid-cols-3">
             {features.map((feature) => (
-              <div key={feature.title} className="bg-white p-6 rounded-xl border border-gray-200">
+              <div key={feature.title} className="bg-background p-6 rounded-xl border border-border">
                 <h3 className="font-semibold">{feature.title}</h3>
-                <p className="mt-2 text-sm text-gray-600">{feature.description}</p>
+                <p className="mt-2 text-sm text-muted-foreground">{feature.description}</p>
               </div>
             ))}
           </div>
         </section>
       </main>
 
-      <footer className="border-t border-gray-200 py-6 text-center text-sm text-gray-500">
+      <footer className="border-t border-border py-6 text-center text-sm text-subtle-foreground">
         © {new Date().getFullYear()} StarterKit
       </footer>
     </div>

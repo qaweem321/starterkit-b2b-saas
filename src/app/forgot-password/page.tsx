@@ -28,19 +28,19 @@ export default function ForgotPasswordPage() {
         <h1 className="text-2xl font-bold">Forgot your password?</h1>
 
         {sent ? (
-          <p className="text-gray-600">
+          <p className="text-muted-foreground">
             If an account exists for that email, we&apos;ve sent a link to reset your password. Check your inbox
             and spam folder.
           </p>
         ) : (
           <form method="post" onSubmit={handleSubmit} className="space-y-4">
-            <p className="text-gray-600">Enter your email and we&apos;ll send you a reset link.</p>
+            <p className="text-muted-foreground">Enter your email and we&apos;ll send you a reset link.</p>
             <input
               name="email"
               type="email"
               required
               placeholder="Email"
-              className="w-full rounded-lg border border-gray-300 px-3 py-2"
+              className="w-full rounded-lg border border-input px-3 py-2"
             />
             <button
               disabled={loading}
@@ -51,7 +51,7 @@ export default function ForgotPasswordPage() {
           </form>
         )}
 
-        <Link href="/login" className="block text-sm text-blue-600 hover:underline">
+        <Link href="/login" className="block text-sm text-link hover:underline">
           Back to log in
         </Link>
       </div>

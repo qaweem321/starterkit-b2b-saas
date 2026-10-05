@@ -37,19 +37,19 @@ export default function SignUpPage() {
       <form method="post" onSubmit={handleSubmit} className="w-full max-w-sm space-y-4">
         <h1 className="text-2xl font-bold">Create your account</h1>
 
-        <input name="name" required placeholder="Full name" className="w-full rounded-lg border border-gray-300 px-3 py-2" />
-        <input name="email" type="email" required placeholder="Email" className="w-full rounded-lg border border-gray-300 px-3 py-2" />
+        <input name="name" required placeholder="Full name" className="w-full rounded-lg border border-input px-3 py-2" />
+        <input name="email" type="email" required placeholder="Email" className="w-full rounded-lg border border-input px-3 py-2" />
         <PasswordInput name="password" minLength={8} autoComplete="new-password" placeholder="Password (8+ characters)" />
 
-        {error && <p className="text-sm text-red-600">{error}</p>}
+        {error && <p className="text-sm text-danger">{error}</p>}
 
         <button disabled={loading} className="w-full rounded-lg bg-blue-600 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-50">
           {loading ? "Creating account..." : "Sign up"}
         </button>
 
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-muted-foreground">
           Already have an account?{" "}
-          <Link href="/login" className="text-blue-600 hover:underline">
+          <Link href="/login" className="text-link hover:underline">
             Log in
           </Link>
         </p>
