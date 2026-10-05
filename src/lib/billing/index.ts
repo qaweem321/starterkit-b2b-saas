@@ -55,3 +55,14 @@ export async function getOrganizationPlan(organizationId: string): Promise<PlanI
   const subscription = await getOrganizationSubscription(organizationId);
   return planFromStatus(subscription?.status);
 }
+
+// True while the organization would be charged again. Deleting it now would leave a
+// subscription running, so the owner must cancel it in the billing portal first.
+export async function hasRenewingSubscription(organizationId: string) {
+  const subscription = await getOrganizationSubscription(organizationId);
+  return (
+    subscription !== null &&
+    planFromStatus(subscription.status) === "pro" &&
+    !subscription.cancelAtPeriodEnd
+  );
+}

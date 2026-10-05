@@ -1,12 +1,28 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { APIError } from "better-auth/api";
 import { nextCookies } from "better-auth/next-js";
 import { db } from "@/db";
 import * as schema from "@/db/schema";
+import { deleteOrganizations, planAccountDeletion } from "@/lib/account";
 import { buttonEmailHtml, sendEmail } from "@/lib/email";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, { provider: "pg", schema, usePlural: true }),
+  user: {
+    // "Delete account" on the Account page. Needs the user's password.
+    // Memberships and sessions are removed automatically (ON DELETE CASCADE).
+    deleteUser: {
+      enabled: true,
+      beforeDelete: async (user) => {
+        const { blockers, soloOrganizations } = await planAccountDeletion(user.id);
+        if (blockers.length > 0) {
+          throw new APIError("BAD_REQUEST", { message: blockers.join(" ") });
+        }
+        await deleteOrganizations(soloOrganizations.map((organization) => organization.id));
+      },
+    },
+  },
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: true,

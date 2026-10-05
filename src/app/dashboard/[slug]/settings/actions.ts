@@ -5,8 +5,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { db } from "@/db";
 import { memberships, organizations } from "@/db/schema";
-import { getOrganizationSubscription } from "@/lib/billing";
-import { planFromStatus } from "@/lib/billing/plans";
+import { hasRenewingSubscription } from "@/lib/billing";
 import { requireMembership, requirePermission } from "@/lib/session";
 
 export async function renameOrganization(formData: FormData) {
@@ -61,12 +60,7 @@ export async function deleteOrganization(
     return { error: `Type "${organization.name}" exactly to confirm.` };
   }
 
-  const subscription = await getOrganizationSubscription(organization.id);
-  if (
-    subscription &&
-    planFromStatus(subscription.status) === "pro" &&
-    !subscription.cancelAtPeriodEnd
-  ) {
+  if (await hasRenewingSubscription(organization.id)) {
     return {
       error:
         "This organization has an active subscription. Cancel it under Billing > Manage subscription first, so you aren't charged again.",

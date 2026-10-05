@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { ThemeSelect } from "@/components/theme";
+import { planAccountDeletion } from "@/lib/account";
 import { requireMembership } from "@/lib/session";
+import { DeleteAccountForm } from "./delete-account-form";
 import { PasswordForm } from "./password-form";
 import { ProfileForm } from "./profile-form";
 
@@ -10,6 +12,7 @@ export const metadata: Metadata = { title: "Account" };
 export default async function AccountPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const { user } = await requireMembership(slug);
+  const deletion = await planAccountDeletion(user.id);
 
   return (
     <div className="max-w-lg">
@@ -37,6 +40,30 @@ export default async function AccountPage({ params }: { params: Promise<{ slug: 
           Theme
         </label>
         <ThemeSelect />
+      </Section>
+
+      <Section
+        title="Delete account"
+        description="Permanently deletes your account and removes you from every organization."
+      >
+        {deletion.blockers.length > 0 ? (
+          <ul className="space-y-1 text-sm text-muted-foreground">
+            {deletion.blockers.map((blocker) => (
+              <li key={blocker}>{blocker}</li>
+            ))}
+          </ul>
+        ) : (
+          <>
+            {deletion.soloOrganizations.length > 0 && (
+              <p className="text-sm text-muted-foreground">
+                This also deletes{" "}
+                {deletion.soloOrganizations.map((organization) => organization.name).join(", ")},
+                since you&apos;re the only member.
+              </p>
+            )}
+            <DeleteAccountForm />
+          </>
+        )}
       </Section>
     </div>
   );
