@@ -1,0 +1,43 @@
+# Changelog
+
+Notable changes for buyers of the kit. The format follows
+[Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and versions follow
+[Semantic Versioning](https://semver.org/).
+
+## [Unreleased]
+
+First public version (will be released as 1.0.0).
+
+### Accounts
+- Email and password sign-up with email verification, log in, forgot and reset password.
+- Account page: change name and password, light/dark/system theme, delete account
+  (organizations where you're the only member are deleted with it).
+- After logging in you return to the page you asked for, or your last-used organization;
+  people in several organizations choose one on a new device.
+- Logged-in visitors skip the login and sign-up pages, and the back button never shows
+  pages from before logging in or out.
+
+### Organizations
+- Multi-tenant workspaces at `/dashboard/<organization>`, onboarding for new users.
+- Owner, admin and member roles with permissions in one file.
+- Email invitations (7 days, single use), change roles, remove members, Free plan member limit.
+- Rename, leave and delete an organization (blocked while a paid subscription is active).
+
+### Billing
+- One Pro plan per organization with Polar or Stripe (`BILLING_PROVIDER`), checkout,
+  customer portal and webhooks; optional free trial.
+- Billing page shows both plans; warnings for failed payments; never a second subscription.
+
+### Product
+- Landing page with features and pricing, Terms and Privacy templates.
+- Dashboard with sidebar, mobile menu, user menu, loading skeletons, error and 404 pages.
+- Example Projects feature to copy for your own features.
+- Transactional emails with Resend (printed in the terminal without a key).
+- SEO: generated preview image, sitemap, robots.txt, favicon, page titles.
+
+### Quality and security
+- One place to rebrand (`src/config/site.ts`); environment variables checked at startup.
+- Security headers, database-backed rate limits for login and emails.
+- Confirmation on destructive actions, no double submits, clear dates ("Oct 11, 2026").
+- TypeScript strict mode, Biome lint and format, unit tests, GitHub Actions CI,
+  `npm run check` for everything at once.
