@@ -29,3 +29,11 @@ const PAID_STATUSES = ["active", "trialing"];
 export function planFromStatus(status: string | null | undefined): PlanId {
   return status && PAID_STATUSES.includes(status) ? "pro" : "free";
 }
+
+// The subscription still exists but the last payment failed (e.g. an expired card).
+// The owner should update the card in the billing portal, not start a new subscription.
+const PAYMENT_PROBLEM_STATUSES = ["past_due", "unpaid", "incomplete"];
+
+export function hasPaymentProblem(status: string | null | undefined) {
+  return Boolean(status && PAYMENT_PROBLEM_STATUSES.includes(status));
+}

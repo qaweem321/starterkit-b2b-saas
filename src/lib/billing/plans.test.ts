@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { memberLimitLabel, planFromStatus } from "./plans";
+import { hasPaymentProblem, memberLimitLabel, planFromStatus } from "./plans";
 
 test("active and trialing subscriptions are Pro", () => {
   assert.equal(planFromStatus("active"), "pro");
@@ -16,4 +16,13 @@ test("everything else is Free", () => {
 test("describes member limits", () => {
   assert.equal(memberLimitLabel(3), "Up to 3 members");
   assert.equal(memberLimitLabel(Infinity), "Unlimited members");
+});
+
+test("failed payments are detected", () => {
+  for (const status of ["past_due", "unpaid", "incomplete"]) {
+    assert.equal(hasPaymentProblem(status), true, status);
+  }
+  for (const status of ["active", "trialing", "canceled", null, undefined]) {
+    assert.equal(hasPaymentProblem(status), false, String(status));
+  }
 });

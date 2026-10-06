@@ -2,7 +2,8 @@
 
 import { redirect } from "next/navigation";
 import { absoluteUrl } from "@/config/site";
-import { getBillingProvider } from "@/lib/billing";
+import { getBillingProvider, getOrganizationSubscription } from "@/lib/billing";
+import { hasPaymentProblem, planFromStatus } from "@/lib/billing/plans";
 import { requirePermission } from "@/lib/session";
 
 export type BillingActionState = { error?: string };
@@ -15,6 +16,12 @@ export async function startCheckout(
 ): Promise<BillingActionState> {
   const slug = String(formData.get("slug"));
   const { organization } = await requirePermission(slug, "billing:manage");
+
+  // Never start a second subscription for the same organization.
+  const subscription = await getOrganizationSubscription(organization.id);
+  if (planFromStatus(subscription?.status) === "pro" || hasPaymentProblem(subscription?.status)) {
+    return { error: "This organization already has a subscription. Use Manage subscription." };
+  }
 
   let url: string;
   try {

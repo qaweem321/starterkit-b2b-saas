@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import { PaymentProblemNotice } from "@/components/payment-problem-notice";
 import { PlanCard } from "@/components/plan-card";
 import { getOrganizationSubscription } from "@/lib/billing";
-import { planFromStatus, plans } from "@/lib/billing/plans";
+import { hasPaymentProblem, planFromStatus, plans } from "@/lib/billing/plans";
 import { formatDate } from "@/lib/format";
 import { can } from "@/lib/permissions";
 import { requireMembership } from "@/lib/session";
@@ -16,6 +17,7 @@ export default async function BillingPage({ params }: { params: Promise<{ slug: 
   const subscription = await getOrganizationSubscription(organization.id);
   const planId = planFromStatus(subscription?.status);
   const canManage = can(role, "billing:manage");
+  const paymentProblem = hasPaymentProblem(subscription?.status);
 
   return (
     <div className="max-w-3xl">
@@ -35,6 +37,8 @@ export default async function BillingPage({ params }: { params: Promise<{ slug: 
           </>
         )}
       </p>
+
+      {paymentProblem && <PaymentProblemNotice slug={slug} canManage={canManage} />}
 
       <div className="mt-8 grid gap-6 sm:grid-cols-2">
         <PlanCard
@@ -56,7 +60,7 @@ export default async function BillingPage({ params }: { params: Promise<{ slug: 
         >
           {!canManage ? (
             <p className="text-sm text-subtle-foreground">Only owners can change the plan.</p>
-          ) : planId === "pro" ? (
+          ) : planId === "pro" || paymentProblem ? (
             <BillingButton slug={slug} action={openBillingPortal} label="Manage subscription" />
           ) : (
             <BillingButton slug={slug} action={startCheckout} label="Upgrade to Pro" />
