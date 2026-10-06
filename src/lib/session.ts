@@ -9,9 +9,12 @@ import { auth } from "@/lib/auth";
 import { can, type Permission } from "@/lib/permissions";
 
 export const requireUser = cache(async () => {
-  const session = await auth.api.getSession({ headers: await headers() });
+  const requestHeaders = await headers();
+  const session = await auth.api.getSession({ headers: requestHeaders });
   if (!session) {
-    redirect("/login");
+    // Session expired: log in again, then come back to the same page (set by src/proxy.ts).
+    const path = requestHeaders.get("x-pathname");
+    redirect(path ? `/login?next=${encodeURIComponent(path)}` : "/login");
   }
   return session.user;
 });
