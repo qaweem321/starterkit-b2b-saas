@@ -27,7 +27,7 @@ function NavContent({ slug, organizations, onNavigate }: NavProps) {
 
   return (
     <>
-      <Logo onClick={onNavigate} className="block px-2 mb-8" />
+      <Logo href={base} onClick={onNavigate} className="block px-2 mb-8" />
 
       <nav className="flex flex-col gap-1">
         {navItems.map((item) => {

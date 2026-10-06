@@ -1,3 +1,5 @@
+import { getSessionCookie } from "better-auth/cookies";
+import { headers } from "next/headers";
 import Link from "next/link";
 import { Logo } from "@/components/logo";
 import { PlanCard } from "@/components/plan-card";
@@ -20,7 +22,12 @@ const features = [
   },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  // Only checks that a login cookie exists (no database call), to keep this page fast.
+  // If the session has expired, /dashboard sends the visitor to the login page.
+  const loggedIn = getSessionCookie(await headers()) !== null;
+  const startHref = loggedIn ? "/dashboard" : "/signup";
+
   return (
     <div className="min-h-screen flex flex-col">
       <header className="border-b border-border">
@@ -30,10 +37,16 @@ export default function HomePage() {
             <a href="#pricing" className="text-sm text-muted-foreground hover:text-foreground">
               Pricing
             </a>
-            <Link href="/login" className="text-sm text-muted-foreground hover:text-foreground">
-              Log in
-            </Link>
-            <ButtonLink href="/signup">Get started</ButtonLink>
+            {loggedIn ? (
+              <ButtonLink href="/dashboard">Go to dashboard</ButtonLink>
+            ) : (
+              <>
+                <Link href="/login" className="text-sm text-muted-foreground hover:text-foreground">
+                  Log in
+                </Link>
+                <ButtonLink href="/signup">Get started</ButtonLink>
+              </>
+            )}
           </div>
         </nav>
       </header>
@@ -48,8 +61,8 @@ export default function HomePage() {
             unique.
           </p>
           <div className="mt-10 flex justify-center gap-4">
-            <ButtonLink href="/signup" size="lg">
-              Start free
+            <ButtonLink href={startHref} size="lg">
+              {loggedIn ? "Go to dashboard" : "Start free"}
             </ButtonLink>
             <a href="#features" className={buttonClasses({ variant: "outline", size: "lg" })}>
               See features
@@ -80,7 +93,7 @@ export default function HomePage() {
             <div className="mt-12 grid gap-8 sm:grid-cols-2">
               {Object.entries(plans).map(([id, plan]) => (
                 <PlanCard key={id} plan={plan} highlighted={id === "pro"}>
-                  <ButtonLink href="/signup" variant={id === "pro" ? "primary" : "outline"}>
+                  <ButtonLink href={startHref} variant={id === "pro" ? "primary" : "outline"}>
                     {id === "pro" ? "Start with Pro" : "Start free"}
                   </ButtonLink>
                 </PlanCard>
