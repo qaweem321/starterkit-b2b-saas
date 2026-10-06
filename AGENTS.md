@@ -47,6 +47,8 @@ Read the docs that ship with the package before using a Next.js API:
   `src/app/dashboard/[slug]/projects/actions.ts`, the reference feature).
 - Validate and trim all input on the server. Compare emails in lowercase.
 - Redirects to user-supplied paths go through `safeNextPath()`.
+- Anything that sends email or can be repeated cheaply gets a limit: `rateLimit(key, max,
+  windowSeconds)` from `src/lib/rate-limit.ts`.
 - New environment variables: add them to `.env.example` and to `checkEnv()` in `src/lib/env.ts`.
 
 **Speed**

@@ -37,7 +37,10 @@ First public version (will be released as 1.0.0).
 
 ### Quality and security
 - One place to rebrand (`src/config/site.ts`); environment variables checked at startup.
-- Security headers, database-backed rate limits for login and emails.
+- Security headers, database-backed rate limits for login and emails, and at most 20
+  invitation emails per organization per hour (stops the app being used for spam).
+- Redirects after login only go to pages on your own site, even with hidden characters
+  in the link.
 - Confirmation on destructive actions, no double submits, clear dates ("Oct 11, 2026").
 - Friendly inline messages for every form mistake (never an error page), including clear
   wording for a wrong current password.

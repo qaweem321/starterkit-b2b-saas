@@ -10,6 +10,7 @@ import { getOrganizationPlan } from "@/lib/billing";
 import { plans } from "@/lib/billing/plans";
 import { buttonEmailHtml, sendEmail } from "@/lib/email";
 import { isRole } from "@/lib/permissions";
+import { rateLimit } from "@/lib/rate-limit";
 import { requirePermission } from "@/lib/session";
 
 const INVITE_DAYS = 7;
@@ -106,6 +107,12 @@ export async function inviteMember(
       error: `The ${plan.name} plan allows up to ${plan.memberLimit} members (including pending invites). Upgrade to Pro for unlimited members.`,
       email,
     };
+  }
+
+  // Stop the app being used to send spam: at most 20 invitation emails per organization per hour.
+  const { allowed } = await rateLimit(`invite:${organization.id}`, 20, 60 * 60);
+  if (!allowed) {
+    return { error: "Too many invitations sent. Please try again in an hour.", email };
   }
 
   const token = randomBytes(32).toString("base64url");
