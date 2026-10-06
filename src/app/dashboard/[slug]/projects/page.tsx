@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { SubmitButton } from "@/components/ui/submit-button";
 import { db } from "@/db";
 import { projects, users } from "@/db/schema";
+import { formatDate } from "@/lib/format";
 import { can } from "@/lib/permissions";
 import { requireMembership } from "@/lib/session";
 import { deleteProject } from "./actions";
@@ -57,7 +58,7 @@ export default async function ProjectsPage({ params }: { params: Promise<{ slug:
                   <p className="mt-1 text-sm text-muted-foreground">{project.description}</p>
                 )}
                 <p className="mt-1 text-xs text-subtle-foreground">
-                  Added {project.createdAt.toLocaleDateString()}
+                  Added {formatDate(project.createdAt)}
                   {project.createdBy && ` by ${project.createdBy}`}
                 </p>
               </div>

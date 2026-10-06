@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { PlanCard } from "@/components/plan-card";
 import { getOrganizationSubscription } from "@/lib/billing";
 import { planFromStatus, plans } from "@/lib/billing/plans";
+import { formatDate } from "@/lib/format";
 import { can } from "@/lib/permissions";
 import { requireMembership } from "@/lib/session";
 import { openBillingPortal, startCheckout } from "./actions";
@@ -30,7 +31,7 @@ export default async function BillingPage({ params }: { params: Promise<{ slug: 
               : subscription.cancelAtPeriodEnd
                 ? "Ends on "
                 : "Renews on "}
-            {subscription.currentPeriodEnd.toLocaleDateString()}.
+            {formatDate(subscription.currentPeriodEnd)}.
           </>
         )}
       </p>
