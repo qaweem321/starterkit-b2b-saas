@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { PasswordInput } from "@/components/password-input";
 import { Button } from "@/components/ui/button";
@@ -10,7 +9,6 @@ import { authClient } from "@/lib/auth-client";
 import { getNextPath } from "@/lib/safe-redirect";
 
 export default function LoginPage() {
-  const router = useRouter();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -36,7 +34,9 @@ export default function LoginPage() {
       );
       return;
     }
-    router.push(getNextPath());
+    // A full page load (not an in-app jump) throws away pages saved while logged out,
+    // and replace() keeps the login page out of the back-button history.
+    window.location.replace(getNextPath());
   }
 
   return (

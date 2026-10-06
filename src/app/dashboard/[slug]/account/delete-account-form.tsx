@@ -25,7 +25,7 @@ export function DeleteAccountForm() {
       setError(error.message ?? "Could not delete your account.");
       return;
     }
-    window.location.href = "/";
+    window.location.replace("/");
   }
 
   return (

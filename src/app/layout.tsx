@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { FreshOnBack } from "@/components/fresh-on-back";
 import { ThemeSync } from "@/components/theme";
 import { siteConfig } from "@/config/site";
 import { themeScript } from "@/lib/theme";
@@ -26,6 +27,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </head>
       <body>
         <ThemeSync />
+        <FreshOnBack />
         {children}
       </body>
     </html>

@@ -1,19 +1,17 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
 
 // Shared by the log out button and the user menu.
 export function useSignOut() {
-  const router = useRouter();
   const [loading, setLoading] = useState(false);
 
   async function signOut() {
     setLoading(true);
     await authClient.signOut();
-    router.push("/login");
-    router.refresh();
+    // A full page load throws away saved dashboard pages, so the back button can't show them.
+    window.location.replace("/login");
   }
 
   return { signOut, loading };

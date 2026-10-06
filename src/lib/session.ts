@@ -1,3 +1,4 @@
+import { getSessionCookie } from "better-auth/cookies";
 import { and, asc, eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
@@ -14,6 +15,19 @@ export const requireUser = cache(async () => {
   }
   return session.user;
 });
+
+// For the login, signup and forgot-password pages: logged-in users go to their dashboard.
+// Logged-out visitors have no session cookie, so they skip the database check entirely.
+export async function redirectIfLoggedIn() {
+  const requestHeaders = await headers();
+  if (!getSessionCookie(requestHeaders)) {
+    return;
+  }
+  const session = await auth.api.getSession({ headers: requestHeaders });
+  if (session) {
+    redirect("/dashboard");
+  }
+}
 
 export async function getUserOrganizations(userId: string) {
   return db
