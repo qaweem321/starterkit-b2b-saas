@@ -9,10 +9,19 @@ test("reads the organization slug from dashboard paths only", () => {
   assert.equal(organizationSlugFromPath("/onboarding"), null);
 });
 
-test("prefers the last-used organization, if the user still belongs to it", () => {
+test("opens the last-used organization, if the user still belongs to it", () => {
   const organizations = [{ slug: "acme" }, { slug: "studio" }];
   assert.equal(pickOrganization(organizations, "studio")?.slug, "studio");
-  assert.equal(pickOrganization(organizations, "left-long-ago")?.slug, "acme");
-  assert.equal(pickOrganization(organizations, undefined)?.slug, "acme");
+});
+
+test("opens the only organization without asking", () => {
+  assert.equal(pickOrganization([{ slug: "acme" }], undefined)?.slug, "acme");
+  assert.equal(pickOrganization([{ slug: "acme" }], "left-long-ago")?.slug, "acme");
+});
+
+test("asks when there are several and no valid last-used one", () => {
+  const organizations = [{ slug: "acme" }, { slug: "studio" }];
+  assert.equal(pickOrganization(organizations, undefined), undefined);
+  assert.equal(pickOrganization(organizations, "left-long-ago"), undefined);
   assert.equal(pickOrganization([], "acme"), undefined);
 });

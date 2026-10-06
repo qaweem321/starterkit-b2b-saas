@@ -8,10 +8,13 @@ export function organizationSlugFromPath(pathname: string) {
   return first === "dashboard" && slug ? slug : null;
 }
 
-// Prefer the last-used organization if the user still belongs to it, else the first one.
+// Which organization to open after login: the last-used one if the user still belongs to it,
+// or their only one. Returns undefined when they must choose (several organizations and no
+// last-used one, e.g. on a new device) or have none yet.
 export function pickOrganization<T extends { slug: string }>(
   organizations: T[],
   lastSlug: string | undefined,
 ) {
-  return organizations.find((organization) => organization.slug === lastSlug) ?? organizations[0];
+  const last = organizations.find((organization) => organization.slug === lastSlug);
+  return last ?? (organizations.length === 1 ? organizations[0] : undefined);
 }
