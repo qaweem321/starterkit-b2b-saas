@@ -14,9 +14,11 @@ export function BillingButton({ slug, label, action }: Props) {
   const [state, formAction, isPending] = useActionState(action, {});
 
   return (
-    <form action={formAction} className="mt-6">
+    <form action={formAction}>
       <input type="hidden" name="slug" value={slug} />
-      <Button disabled={isPending}>{isPending ? "Redirecting..." : label}</Button>
+      <Button disabled={isPending} size="full">
+        {isPending ? "Redirecting..." : label}
+      </Button>
       {state.error && <p className="mt-2 text-sm text-danger">{state.error}</p>}
     </form>
   );

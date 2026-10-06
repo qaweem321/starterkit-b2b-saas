@@ -1,4 +1,5 @@
-import { and, eq, inArray } from "drizzle-orm";
+import { and, count, eq, inArray, sql } from "drizzle-orm";
+import { alias } from "drizzle-orm/pg-core";
 import { db } from "@/db";
 import { memberships, organizations } from "@/db/schema";
 import { hasRenewingSubscription } from "@/lib/billing";
@@ -12,30 +13,38 @@ type AccountDeletionPlan = {
 
 // Decides what happens to the user's organizations when they delete their account.
 export async function planAccountDeletion(userId: string): Promise<AccountDeletionPlan> {
+  // One query: every organization the user owns, with its member and owner counts.
+  const everyone = alias(memberships, "everyone");
   const owned = await db
-    .select({ id: organizations.id, name: organizations.name })
+    .select({
+      id: organizations.id,
+      name: organizations.name,
+      members: count(everyone.id),
+      owners: sql<number>`count(*) filter (where ${everyone.role} = 'owner')`.mapWith(Number),
+    })
     .from(memberships)
     .innerJoin(organizations, eq(memberships.organizationId, organizations.id))
-    .where(and(eq(memberships.userId, userId), eq(memberships.role, "owner")));
+    .innerJoin(everyone, eq(everyone.organizationId, organizations.id))
+    .where(and(eq(memberships.userId, userId), eq(memberships.role, "owner")))
+    .groupBy(organizations.id, organizations.name);
+
+  const solo = owned.filter((organization) => organization.members === 1);
+  const renewing = await Promise.all(
+    solo.map((organization) => hasRenewingSubscription(organization.id)),
+  );
 
   const plan: AccountDeletionPlan = { blockers: [], soloOrganizations: [] };
-
+  solo.forEach((organization, index) => {
+    if (renewing[index]) {
+      plan.blockers.push(
+        `${organization.name} has an active subscription. Cancel it under Billing > Manage subscription first.`,
+      );
+    } else {
+      plan.soloOrganizations.push({ id: organization.id, name: organization.name });
+    }
+  });
   for (const organization of owned) {
-    const members = await db.$count(memberships, eq(memberships.organizationId, organization.id));
-    const owners = await db.$count(
-      memberships,
-      and(eq(memberships.organizationId, organization.id), eq(memberships.role, "owner")),
-    );
-
-    if (members === 1) {
-      if (await hasRenewingSubscription(organization.id)) {
-        plan.blockers.push(
-          `${organization.name} has an active subscription. Cancel it under Billing > Manage subscription first.`,
-        );
-      } else {
-        plan.soloOrganizations.push(organization);
-      }
-    } else if (owners === 1) {
+    if (organization.members > 1 && organization.owners === 1) {
       plan.blockers.push(
         `You're the only owner of ${organization.name}. Make another member an owner first.`,
       );

@@ -18,6 +18,7 @@ export const plans = {
 } as const;
 
 export type PlanId = keyof typeof plans;
+export type Plan = (typeof plans)[PlanId];
 
 export function memberLimitLabel(memberLimit: number) {
   return memberLimit === Infinity ? "Unlimited members" : `Up to ${memberLimit} members`;

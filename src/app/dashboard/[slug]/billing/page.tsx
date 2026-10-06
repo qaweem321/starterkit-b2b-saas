@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
+import { PlanCard } from "@/components/plan-card";
 import { getOrganizationSubscription } from "@/lib/billing";
-import { memberLimitLabel, planFromStatus, plans } from "@/lib/billing/plans";
+import { planFromStatus, plans } from "@/lib/billing/plans";
 import { can } from "@/lib/permissions";
 import { requireMembership } from "@/lib/session";
 import { openBillingPortal, startCheckout } from "./actions";
@@ -13,39 +14,53 @@ export default async function BillingPage({ params }: { params: Promise<{ slug: 
   const { organization, role } = await requireMembership(slug);
   const subscription = await getOrganizationSubscription(organization.id);
   const planId = planFromStatus(subscription?.status);
-  const plan = plans[planId];
   const canManage = can(role, "billing:manage");
 
   return (
-    <div className="max-w-lg">
+    <div className="max-w-3xl">
       <h1 className="text-2xl font-bold">Billing</h1>
-      <p className="mt-1 text-muted-foreground">Manage the plan for {organization.name}.</p>
-
-      <div className="mt-8 rounded-xl border border-border p-6">
-        <p className="text-sm text-subtle-foreground">Current plan</p>
-        <p className="mt-1 text-3xl font-semibold">{plan.name}</p>
-        <p className="mt-1 text-sm text-muted-foreground">{memberLimitLabel(plan.memberLimit)}</p>
-
+      <p className="mt-1 text-muted-foreground">
+        {organization.name} is on the{" "}
+        <strong className="text-foreground">{plans[planId].name}</strong> plan.
         {subscription?.currentPeriodEnd && (
-          <p className="mt-3 text-sm text-muted-foreground">
-            {subscription.cancelAtPeriodEnd ? "Ends on " : "Renews on "}
-            {subscription.currentPeriodEnd.toLocaleDateString()}
-          </p>
+          <>
+            {" "}
+            {subscription.status === "trialing"
+              ? "Free trial ends on "
+              : subscription.cancelAtPeriodEnd
+                ? "Ends on "
+                : "Renews on "}
+            {subscription.currentPeriodEnd.toLocaleDateString()}.
+          </>
         )}
+      </p>
 
-        {canManage ? (
-          planId === "pro" ? (
+      <div className="mt-8 grid gap-6 sm:grid-cols-2">
+        <PlanCard
+          plan={plans.free}
+          highlighted={planId === "free"}
+          badge={planId === "free" ? "Current plan" : undefined}
+        >
+          {planId === "pro" && (
+            <p className="text-sm text-subtle-foreground">
+              To switch back, cancel under Manage subscription. You keep Pro until the period ends.
+            </p>
+          )}
+        </PlanCard>
+
+        <PlanCard
+          plan={plans.pro}
+          highlighted={planId === "pro"}
+          badge={planId === "pro" ? "Current plan" : undefined}
+        >
+          {!canManage ? (
+            <p className="text-sm text-subtle-foreground">Only owners can change the plan.</p>
+          ) : planId === "pro" ? (
             <BillingButton slug={slug} action={openBillingPortal} label="Manage subscription" />
           ) : (
-            <BillingButton
-              slug={slug}
-              action={startCheckout}
-              label={`Upgrade to Pro (${plans.pro.price})`}
-            />
-          )
-        ) : (
-          <p className="mt-6 text-sm text-subtle-foreground">Only owners can change the plan.</p>
-        )}
+            <BillingButton slug={slug} action={startCheckout} label="Upgrade to Pro" />
+          )}
+        </PlanCard>
       </div>
     </div>
   );

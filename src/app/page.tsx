@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { Logo } from "@/components/logo";
+import { PlanCard } from "@/components/plan-card";
 import { ButtonLink, buttonClasses } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
-import { memberLimitLabel, plans } from "@/lib/billing/plans";
-import { cn } from "@/lib/cn";
+import { plans } from "@/lib/billing/plans";
 
 const features = [
   {
@@ -79,34 +79,11 @@ export default function HomePage() {
             </p>
             <div className="mt-12 grid gap-8 sm:grid-cols-2">
               {Object.entries(plans).map(([id, plan]) => (
-                <div
-                  key={id}
-                  className={cn(
-                    "flex flex-col rounded-xl border p-8",
-                    id === "pro" ? "border-link" : "border-border",
-                  )}
-                >
-                  <h3 className="text-lg font-semibold">{plan.name}</h3>
-                  <p className="mt-1 text-sm text-muted-foreground">{plan.description}</p>
-                  <p className="mt-6 text-4xl font-bold">{plan.price}</p>
-                  <ul className="mt-6 flex-1 space-y-2 text-sm">
-                    {[memberLimitLabel(plan.memberLimit), ...plan.features].map((feature) => (
-                      <li key={feature} className="flex gap-2">
-                        <span aria-hidden="true" className="text-success">
-                          ✓
-                        </span>
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                  <ButtonLink
-                    href="/signup"
-                    variant={id === "pro" ? "primary" : "outline"}
-                    className="mt-8"
-                  >
+                <PlanCard key={id} plan={plan} highlighted={id === "pro"}>
+                  <ButtonLink href="/signup" variant={id === "pro" ? "primary" : "outline"}>
                     {id === "pro" ? "Start with Pro" : "Start free"}
                   </ButtonLink>
-                </div>
+                </PlanCard>
               ))}
             </div>
           </div>
