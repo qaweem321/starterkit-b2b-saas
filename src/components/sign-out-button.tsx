@@ -4,21 +4,28 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
 
-export function SignOutButton() {
+// Shared by the log out button and the user menu.
+export function useSignOut() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
-  async function handleSignOut() {
+  async function signOut() {
     setLoading(true);
     await authClient.signOut();
     router.push("/login");
     router.refresh();
   }
 
+  return { signOut, loading };
+}
+
+export function SignOutButton() {
+  const { signOut, loading } = useSignOut();
+
   return (
     <button
       type="button"
-      onClick={handleSignOut}
+      onClick={signOut}
       disabled={loading}
       className="inline-flex items-center gap-1.5 rounded-lg border border-input bg-background px-3 py-1.5 text-sm font-medium text-secondary-foreground transition duration-150 hover:border-input-hover hover:bg-muted hover:text-foreground active:scale-95 active:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:opacity-60"
     >
