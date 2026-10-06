@@ -1,12 +1,22 @@
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { LAST_ORGANIZATION_COOKIE, pickOrganization } from "@/lib/last-organization";
 import { getUserOrganizations, requireUser } from "@/lib/session";
 
+// Opens the organization the user used last (or their first one).
 export default async function DashboardIndexPage() {
   const user = await requireUser();
-  const userOrganizations = await getUserOrganizations(user.id);
+  const [userOrganizations, cookieStore] = await Promise.all([
+    getUserOrganizations(user.id),
+    cookies(),
+  ]);
 
-  if (userOrganizations.length === 0) {
+  const organization = pickOrganization(
+    userOrganizations,
+    cookieStore.get(LAST_ORGANIZATION_COOKIE)?.value,
+  );
+  if (!organization) {
     redirect("/onboarding");
   }
-  redirect(`/dashboard/${userOrganizations[0].slug}`);
+  redirect(`/dashboard/${organization.slug}`);
 }

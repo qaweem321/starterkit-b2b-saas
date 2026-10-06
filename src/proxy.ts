@@ -1,5 +1,6 @@
 import { getSessionCookie } from "better-auth/cookies";
 import { type NextRequest, NextResponse } from "next/server";
+import { LAST_ORGANIZATION_COOKIE, organizationSlugFromPath } from "@/lib/last-organization";
 
 // Runs before private pages render. Visitors without a login cookie go to the login page,
 // which sends them back here after they log in. This is a fast cookie check only; the
@@ -17,7 +18,20 @@ export function proxy(request: NextRequest) {
   // back to the same page after logging in again.
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set("x-pathname", path);
-  return NextResponse.next({ request: { headers: requestHeaders } });
+  const response = NextResponse.next({ request: { headers: requestHeaders } });
+
+  // Remember which organization was opened, so the next login goes straight back to it.
+  const slug = organizationSlugFromPath(request.nextUrl.pathname);
+  if (slug && request.cookies.get(LAST_ORGANIZATION_COOKIE)?.value !== slug) {
+    response.cookies.set(LAST_ORGANIZATION_COOKIE, slug, {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: request.nextUrl.protocol === "https:",
+      maxAge: 60 * 60 * 24 * 365,
+      path: "/",
+    });
+  }
+  return response;
 }
 
 export const config = {
