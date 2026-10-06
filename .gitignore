@@ -5,3 +5,6 @@ node_modules
 next-env.d.ts
 *.tsbuildinfo
 .claude
+
+# Local AI tool connectors (read secrets from environment variables)
+.mcp.json
