@@ -45,7 +45,8 @@ Read the docs that ship with the package before using a Next.js API:
   trust IDs or roles sent by the browser.
 - Every query on organization data filters by `organizationId` (see
   `src/app/dashboard/[slug]/projects/actions.ts`, the reference feature).
-- Validate and trim all input on the server. Compare emails in lowercase.
+- Validate and trim all input on the server. Compare emails in lowercase and check them with
+  `isValidEmail()` (`src/lib/email-address.ts`). Avoid regexes that can backtrack heavily.
 - Redirects to user-supplied paths go through `safeNextPath()`.
 - Anything that sends email or can be repeated cheaply gets a limit: `rateLimit(key, max,
   windowSeconds)` from `src/lib/rate-limit.ts`.

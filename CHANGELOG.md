@@ -41,6 +41,8 @@ First public version (will be released as 1.0.0).
   invitation emails per organization per hour (stops the app being used for spam).
 - Redirects after login only go to pages on your own site, even with hidden characters
   in the link.
+- Email addresses are checked with a length limit and a pattern that can't be slowed down
+  by huge fake input; CI installs packages without running their install scripts.
 - Confirmation on destructive actions, no double submits, clear dates ("Oct 11, 2026").
 - Friendly inline messages for every form mistake (never an error page), including clear
   wording for a wrong current password.

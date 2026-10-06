@@ -9,6 +9,7 @@ import { invitations, memberships, users } from "@/db/schema";
 import { getOrganizationPlan } from "@/lib/billing";
 import { plans } from "@/lib/billing/plans";
 import { buttonEmailHtml, sendEmail } from "@/lib/email";
+import { isValidEmail } from "@/lib/email-address";
 import { isRole } from "@/lib/permissions";
 import { rateLimit } from "@/lib/rate-limit";
 import { requirePermission } from "@/lib/session";
@@ -77,7 +78,7 @@ export async function inviteMember(
   const role = String(formData.get("role"));
   const { user, role: myRole, organization } = await requirePermission(slug, "member:invite");
 
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  if (!isValidEmail(email)) {
     return { error: "Please enter a valid email address.", email };
   }
   if (!isRole(role)) {
