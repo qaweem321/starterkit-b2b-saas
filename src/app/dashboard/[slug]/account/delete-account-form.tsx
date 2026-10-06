@@ -22,7 +22,11 @@ export function DeleteAccountForm() {
 
     if (error) {
       setLoading(false);
-      setError(error.message ?? "Could not delete your account.");
+      setError(
+        error.code === "INVALID_PASSWORD"
+          ? "That password is incorrect."
+          : (error.message ?? "Could not delete your account."),
+      );
       return;
     }
     window.location.replace("/");

@@ -39,5 +39,7 @@ First public version (will be released as 1.0.0).
 - One place to rebrand (`src/config/site.ts`); environment variables checked at startup.
 - Security headers, database-backed rate limits for login and emails.
 - Confirmation on destructive actions, no double submits, clear dates ("Oct 11, 2026").
+- Friendly inline messages for every form mistake (never an error page), including clear
+  wording for a wrong current password.
 - TypeScript strict mode, Biome lint and format, unit tests, GitHub Actions CI,
   `npm run check` for everything at once.

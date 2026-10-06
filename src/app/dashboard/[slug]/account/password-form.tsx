@@ -30,7 +30,13 @@ export function PasswordForm() {
     setLoading(false);
 
     if (error) {
-      setMessage({ type: "error", text: error.message ?? "Could not change your password." });
+      setMessage({
+        type: "error",
+        text:
+          error.code === "INVALID_PASSWORD"
+            ? "Your current password is incorrect."
+            : (error.message ?? "Could not change your password."),
+      });
       return;
     }
     form.reset();

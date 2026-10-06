@@ -59,6 +59,8 @@ Read the docs that ship with the package before using a Next.js API:
   `text-danger`, ...) so dark mode works. Don't use raw `gray-*` colors.
 - Reuse `src/components/ui` instead of styling new buttons and inputs.
 - Submit buttons: `SubmitButton` (disabled while sending), with `confirm` for destructive actions.
+- Form actions return user mistakes as state for `useActionState` (`{ error }`), shown next to
+  the form. Only `throw` for things the UI never allows (tampered requests).
 - Dates: `formatDate()` from `src/lib/format.ts`.
 - Give icon-only buttons an `aria-label`, mark decorative SVGs `aria-hidden="true"`.
 - After logging in or out, use a full page load (`window.location.replace`), not the router.

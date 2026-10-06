@@ -10,8 +10,10 @@ export const metadata: Metadata = { title: "Invitation" };
 
 export default async function InvitePage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params;
-  const found = await findValidInvitation(token);
-  const session = await auth.api.getSession({ headers: await headers() });
+  const [found, session] = await Promise.all([
+    findValidInvitation(token),
+    headers().then((requestHeaders) => auth.api.getSession({ headers: requestHeaders })),
+  ]);
 
   if (!found) {
     return (

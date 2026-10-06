@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
-import { Input } from "@/components/ui/input";
-import { SubmitButton } from "@/components/ui/submit-button";
 import { can } from "@/lib/permissions";
 import { requireMembership } from "@/lib/session";
-import { renameOrganization } from "./actions";
 import { DangerZone } from "./danger-zone";
+import { RenameForm } from "./rename-form";
 
 export const metadata: Metadata = { title: "Settings" };
 
@@ -20,27 +18,7 @@ export default async function SettingsPage({ params }: { params: Promise<{ slug:
         Manage your organization. Personal settings are under Account.
       </p>
 
-      <form action={renameOrganization} className="mt-8 space-y-3">
-        <input type="hidden" name="slug" value={slug} />
-        <label htmlFor="name" className="block text-sm font-medium">
-          Organization name
-        </label>
-        <Input
-          id="name"
-          name="name"
-          required
-          maxLength={60}
-          defaultValue={organization.name}
-          disabled={!canEdit}
-        />
-        {canEdit ? (
-          <SubmitButton pendingText="Saving...">Save</SubmitButton>
-        ) : (
-          <p className="text-sm text-subtle-foreground">
-            Only owners and admins can change these settings.
-          </p>
-        )}
-      </form>
+      <RenameForm slug={slug} name={organization.name} canEdit={canEdit} />
 
       <DangerZone
         slug={slug}

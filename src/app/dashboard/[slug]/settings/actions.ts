@@ -6,19 +6,29 @@ import { redirect } from "next/navigation";
 import { db } from "@/db";
 import { memberships, organizations } from "@/db/schema";
 import { hasRenewingSubscription } from "@/lib/billing";
+import { checkOrganizationName } from "@/lib/organization-name";
 import { requireMembership, requirePermission } from "@/lib/session";
 
-export async function renameOrganization(formData: FormData) {
+export type RenameState = { error?: string; saved?: boolean };
+
+export async function renameOrganization(
+  _previous: RenameState,
+  formData: FormData,
+): Promise<RenameState> {
   const slug = String(formData.get("slug"));
   const { organization } = await requirePermission(slug, "organization:update");
 
-  const name = String(formData.get("name") ?? "").trim();
-  if (!name || name.length > 60) {
-    throw new Error("Name must be between 1 and 60 characters.");
+  const checked = checkOrganizationName(formData.get("name"));
+  if ("error" in checked) {
+    return { error: checked.error };
   }
 
-  await db.update(organizations).set({ name }).where(eq(organizations.id, organization.id));
+  await db
+    .update(organizations)
+    .set({ name: checked.name })
+    .where(eq(organizations.id, organization.id));
   revalidatePath(`/dashboard/${slug}`, "layout");
+  return { saved: true };
 }
 
 export type DangerZoneState = { error?: string };
