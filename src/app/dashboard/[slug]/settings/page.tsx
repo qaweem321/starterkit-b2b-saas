@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { SubmitButton } from "@/components/ui/submit-button";
 import { can } from "@/lib/permissions";
 import { requireMembership } from "@/lib/session";
 import { renameOrganization } from "./actions";
@@ -34,7 +34,7 @@ export default async function SettingsPage({ params }: { params: Promise<{ slug:
           disabled={!canEdit}
         />
         {canEdit ? (
-          <Button>Save</Button>
+          <SubmitButton pendingText="Saving...">Save</SubmitButton>
         ) : (
           <p className="text-sm text-subtle-foreground">
             Only owners and admins can change these settings.

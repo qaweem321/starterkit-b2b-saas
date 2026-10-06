@@ -1,5 +1,6 @@
 import { asc, eq } from "drizzle-orm";
 import type { Metadata } from "next";
+import { SubmitButton } from "@/components/ui/submit-button";
 import { db } from "@/db";
 import { invitations, memberships, users } from "@/db/schema";
 import { can, roles } from "@/lib/permissions";
@@ -91,13 +92,14 @@ export default async function MembersPage({ params }: { params: Promise<{ slug: 
                         </option>
                       ))}
                     </select>
-                    <button
-                      type="submit"
+                    <SubmitButton
+                      variant="link"
+                      size="inline"
+                      pendingText="Saving..."
                       aria-label={`Save role for ${member.name}`}
-                      className="text-sm text-link hover:underline"
                     >
                       Save
-                    </button>
+                    </SubmitButton>
                   </form>
                 ) : (
                   <span
@@ -111,13 +113,15 @@ export default async function MembersPage({ params }: { params: Promise<{ slug: 
                   <form action={removeMember}>
                     <input type="hidden" name="slug" value={slug} />
                     <input type="hidden" name="membershipId" value={member.id} />
-                    <button
-                      type="submit"
+                    <SubmitButton
+                      variant="danger-link"
+                      size="inline"
+                      pendingText="Removing..."
+                      confirm={`Remove ${member.name} from ${organization.name}?`}
                       aria-label={`Remove ${member.name}`}
-                      className="text-sm text-danger hover:underline"
                     >
                       Remove
-                    </button>
+                    </SubmitButton>
                   </form>
                 )}
               </div>
@@ -151,13 +155,15 @@ export default async function MembersPage({ params }: { params: Promise<{ slug: 
                   <form action={revokeInvitation}>
                     <input type="hidden" name="slug" value={slug} />
                     <input type="hidden" name="invitationId" value={invitation.id} />
-                    <button
-                      type="submit"
+                    <SubmitButton
+                      variant="danger-link"
+                      size="inline"
+                      pendingText="Revoking..."
+                      confirm={`Revoke the invitation for ${invitation.email}?`}
                       aria-label={`Revoke invitation for ${invitation.email}`}
-                      className="text-sm text-danger hover:underline"
                     >
                       Revoke
-                    </button>
+                    </SubmitButton>
                   </form>
                 </li>
               );

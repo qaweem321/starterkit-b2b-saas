@@ -10,12 +10,17 @@ const variants = {
   outline: "border border-input hover:bg-surface",
   danger: "bg-red-600 text-white hover:bg-red-700",
   "danger-outline": "border border-danger/60 text-danger hover:bg-danger/10",
+  // Text-only buttons for small row actions like "Save" or "Remove".
+  link: "text-link hover:underline",
+  "danger-link": "text-danger hover:underline",
 };
 
 const sizes = {
   md: "px-4 py-2 text-sm",
   lg: "px-6 py-3",
   full: "w-full px-4 py-2",
+  // No padding, for the text-only variants.
+  inline: "text-sm",
 };
 
 export type ButtonStyle = {

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { SubmitButton } from "@/components/ui/submit-button";
 import { requireUser } from "@/lib/session";
 import { createOrganization } from "./actions";
 
@@ -26,7 +26,9 @@ export default async function OnboardingPage() {
           autoComplete="organization"
         />
 
-        <Button size="full">Create organization</Button>
+        <SubmitButton size="full" pendingText="Creating...">
+          Create organization
+        </SubmitButton>
       </form>
     </main>
   );

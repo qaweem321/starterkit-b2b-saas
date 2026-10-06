@@ -1,5 +1,6 @@
 import { desc, eq } from "drizzle-orm";
 import type { Metadata } from "next";
+import { SubmitButton } from "@/components/ui/submit-button";
 import { db } from "@/db";
 import { projects, users } from "@/db/schema";
 import { can } from "@/lib/permissions";
@@ -64,13 +65,15 @@ export default async function ProjectsPage({ params }: { params: Promise<{ slug:
                 <form action={deleteProject}>
                   <input type="hidden" name="slug" value={slug} />
                   <input type="hidden" name="projectId" value={project.id} />
-                  <button
-                    type="submit"
+                  <SubmitButton
+                    variant="danger-link"
+                    size="inline"
+                    pendingText="Deleting..."
+                    confirm={`Delete "${project.name}"? This cannot be undone.`}
                     aria-label={`Delete ${project.name}`}
-                    className="text-sm text-danger hover:underline"
                   >
                     Delete
-                  </button>
+                  </SubmitButton>
                 </form>
               )}
             </li>
