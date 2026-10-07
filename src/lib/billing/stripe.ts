@@ -37,14 +37,14 @@ export async function findOrganizationIdByStripeCustomer(customerId: string) {
   return row?.organizationId ?? null;
 }
 
-async function getOrCreateCustomerId(organizationId: string) {
+async function getOrCreateCustomerId(organizationId: string, email: string) {
   const existing = await findCustomerId(organizationId);
   if (existing) {
     return existing;
   }
 
   const customer = await getStripeClient().customers.create(
-    { metadata: { organizationId } },
+    { email, metadata: { organizationId } },
     { idempotencyKey: `customer-for-organization-${organizationId}` },
   );
   await db
@@ -63,10 +63,10 @@ function trialDays() {
 export const stripeProvider: BillingProvider = {
   name: "stripe",
 
-  async createCheckoutUrl({ organizationId, successUrl, cancelUrl }) {
+  async createCheckoutUrl({ organizationId, customerEmail, successUrl, cancelUrl }) {
     const session = await getStripeClient().checkout.sessions.create({
       mode: "subscription",
-      customer: await getOrCreateCustomerId(organizationId),
+      customer: await getOrCreateCustomerId(organizationId, customerEmail),
       client_reference_id: organizationId,
       line_items: [{ price: requireEnv("STRIPE_PRO_PRICE_ID"), quantity: 1 }],
       subscription_data: { metadata: { organizationId }, trial_period_days: trialDays() },

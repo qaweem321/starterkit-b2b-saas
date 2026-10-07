@@ -15,7 +15,7 @@ export async function startCheckout(
   formData: FormData,
 ): Promise<BillingActionState> {
   const slug = String(formData.get("slug"));
-  const { organization } = await requirePermission(slug, "billing:manage");
+  const { user, organization } = await requirePermission(slug, "billing:manage");
 
   // Never start a second subscription for the same organization.
   const subscription = await getOrganizationSubscription(organization.id);
@@ -27,6 +27,7 @@ export async function startCheckout(
   try {
     url = await getBillingProvider().createCheckoutUrl({
       organizationId: organization.id,
+      customerEmail: user.email,
       successUrl: absoluteUrl(`/dashboard/${slug}/billing/success`),
       cancelUrl: absoluteUrl(`/dashboard/${slug}/billing`),
     });

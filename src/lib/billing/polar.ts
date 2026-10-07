@@ -13,14 +13,26 @@ function getClient() {
 export const polarProvider: BillingProvider = {
   name: "polar",
 
-  async createCheckoutUrl({ organizationId, successUrl, cancelUrl }) {
-    const checkout = await getClient().checkouts.create({
-      products: [requireEnv("POLAR_PRO_PRODUCT_ID")],
-      external_customer_id: organizationId,
-      success_url: successUrl,
-      return_url: cancelUrl,
-    });
-    return checkout.url;
+  async createCheckoutUrl({ organizationId, customerEmail, successUrl, cancelUrl }) {
+    const create = (email?: string) =>
+      getClient().checkouts.create({
+        products: [requireEnv("POLAR_PRO_PRODUCT_ID")],
+        external_customer_id: organizationId,
+        customer_email: email,
+        success_url: successUrl,
+        return_url: cancelUrl,
+      });
+
+    try {
+      return (await create(customerEmail)).url;
+    } catch (error) {
+      // Polar refuses some addresses (e.g. reserved test domains like example.test).
+      // Then the payer simply types their email on the checkout page.
+      if (error instanceof PolarClientError && error.statusCode === 422) {
+        return (await create()).url;
+      }
+      throw error;
+    }
   },
 
   async createPortalUrl({ organizationId, returnUrl }) {

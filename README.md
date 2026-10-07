@@ -24,7 +24,7 @@ freely, not a framework you have to fight.
 **Billing**
 - One paid plan ("Pro") with an optional free trial, billed per organization
 - **Polar** or **Stripe**, switched with one environment variable
-- Checkout, customer portal (change card, cancel, invoices), webhooks
+- Checkout (email pre-filled), customer portal (change card, cancel, invoices), webhooks
 - Member limit on the Free plan, failed-payment warnings, no duplicate subscriptions
 
 **Product basics**

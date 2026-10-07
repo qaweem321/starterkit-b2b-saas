@@ -5,3 +5,9 @@ const dateFormat = new Intl.DateTimeFormat("en-US", { dateStyle: "medium", timeZ
 export function formatDate(date: Date) {
   return dateFormat.format(date);
 }
+
+// Ends a sentence with a full stop, unless the text already ends with one (or ! or ?),
+// so a name like "Acme Inc." doesn't become "Acme Inc..".
+export function endSentence(text: string) {
+  return /[.!?]$/.test(text) ? text : `${text}.`;
+}

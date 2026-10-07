@@ -5,6 +5,7 @@ import { db } from "@/db";
 import { memberships } from "@/db/schema";
 import { getOrganizationSubscription } from "@/lib/billing";
 import { hasPaymentProblem, planFromStatus, plans } from "@/lib/billing/plans";
+import { endSentence } from "@/lib/format";
 import { can } from "@/lib/permissions";
 import { requireMembership } from "@/lib/session";
 
@@ -30,7 +31,7 @@ export default async function OverviewPage({ params }: { params: Promise<{ slug:
     <div>
       <h1 className="text-2xl font-bold">Overview</h1>
       <p className="mt-1 text-muted-foreground">
-        Welcome back. Here is what is happening in {organization.name}.
+        Welcome back. Here is what is happening in {endSentence(organization.name)}
       </p>
 
       {hasPaymentProblem(subscription?.status) && (

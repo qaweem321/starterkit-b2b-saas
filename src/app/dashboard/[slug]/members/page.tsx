@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { SubmitButton } from "@/components/ui/submit-button";
 import { db } from "@/db";
 import { invitations, memberships, users } from "@/db/schema";
-import { formatDate } from "@/lib/format";
+import { endSentence, formatDate } from "@/lib/format";
 import { can, roles } from "@/lib/permissions";
 import { requireMembership } from "@/lib/session";
 import { removeMember, revokeInvitation, updateMemberRole } from "./actions";
@@ -49,7 +49,9 @@ export default async function MembersPage({ params }: { params: Promise<{ slug: 
   return (
     <div>
       <h1 className="text-2xl font-bold">Members</h1>
-      <p className="mt-1 text-muted-foreground">Everyone who has access to {organization.name}.</p>
+      <p className="mt-1 text-muted-foreground">
+        Everyone who has access to {endSentence(organization.name)}
+      </p>
 
       {canInvite && <InviteForm slug={slug} roles={invitableRoles} />}
 

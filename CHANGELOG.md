@@ -27,10 +27,11 @@ First public version (will be released as 1.0.0).
 - One Pro plan per organization with Polar or Stripe (`BILLING_PROVIDER`), checkout,
   customer portal and webhooks; optional free trial.
 - Billing page shows both plans; warnings for failed payments; never a second subscription.
+- Checkout pre-fills the payer's email (they can still change it).
 
 ### Product
 - Demo mode (`DEMO_MODE="true"`) for a public demo without a domain: no emails or
-  verification, invite links shown on screen, a banner for visitors.
+  verification, invite links shown on screen, a banner with test-card instructions.
 - Landing page with features and pricing, Terms and Privacy templates.
 - Dashboard with sidebar, mobile menu, user menu, loading skeletons, error and 404 pages.
 - Example Projects feature to copy for your own features.

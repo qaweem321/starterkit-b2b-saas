@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { endSentence } from "@/lib/format";
 import { deleteOrganization, leaveOrganization } from "./actions";
 
 type Props = {
@@ -34,7 +35,7 @@ export function DangerZone({ slug, organizationName, canDelete }: Props) {
         <div>
           <p className="font-medium">Leave organization</p>
           <p className="text-sm text-muted-foreground">
-            You will lose access to {organizationName}.
+            You will lose access to {endSentence(organizationName)}
           </p>
         </div>
         <Button disabled={leaving} variant="danger-outline">
