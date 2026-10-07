@@ -28,6 +28,7 @@ First public version (will be released as 1.0.0).
   customer portal and webhooks; optional free trial.
 - Billing page shows both plans; warnings for failed payments; never a second subscription.
 - Checkout pre-fills the payer's email (they can still change it).
+- Polar setup step: allow multiple subscriptions, so one person can pay for several organizations.
 
 ### Product
 - Demo mode (`DEMO_MODE="true"`) for a public demo without a domain: no emails or

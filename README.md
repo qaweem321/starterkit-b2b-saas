@@ -102,6 +102,10 @@ app: anyone could sign up with an email address they don't own.
    and `POLAR_PRO_PRODUCT_ID`.
 4. Add a webhook to `https://<your-domain>/api/webhooks/polar` with the `subscription.*` and
    `customer.state_changed` events, and copy its secret into `POLAR_WEBHOOK_SECRET`.
+5. Settings > Subscriptions: turn on **Allow multiple subscriptions**. Polar's default allows one
+   subscription per email, so someone who owns two organizations couldn't upgrade the second
+   ("You already have an active subscription"). The app itself still blocks a second
+   subscription for the same organization.
 
 ### Billing with Stripe
 
