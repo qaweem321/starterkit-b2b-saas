@@ -1,3 +1,5 @@
+import { isDemoMode } from "./demo";
+
 type Env = Record<string, string | undefined>;
 
 // Returns a list of problems with the environment variables. An empty list means all good.
@@ -29,8 +31,14 @@ export function checkEnv(env: Env = process.env) {
     problems.push("BETTER_AUTH_URL must not end with a slash.");
   }
 
+  const demo = env.DEMO_MODE;
+  if (demo && demo !== "true" && demo !== "false") {
+    problems.push(`DEMO_MODE must be "true" or "false", not "${demo}".`);
+  }
+
   // Without Resend, emails are only printed to the terminal, so nobody could verify their email.
-  if (isProduction) {
+  // Demo mode sends no emails and skips verification, so it doesn't need Resend.
+  if (isProduction && !isDemoMode(env)) {
     required("RESEND_API_KEY");
   }
 

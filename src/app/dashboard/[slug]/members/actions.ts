@@ -8,6 +8,7 @@ import { db } from "@/db";
 import { invitations, memberships, users } from "@/db/schema";
 import { getOrganizationPlan } from "@/lib/billing";
 import { plans } from "@/lib/billing/plans";
+import { isDemoMode } from "@/lib/demo";
 import { buttonEmailHtml, sendEmail } from "@/lib/email";
 import { isValidEmail } from "@/lib/email-address";
 import { isRole } from "@/lib/permissions";
@@ -65,6 +66,8 @@ export type InviteState = {
   error?: string;
   success?: string;
   email?: string;
+  // Demo mode sends no emails, so the inviter gets the link to share themselves.
+  link?: string;
 };
 
 export async function inviteMember(
@@ -137,6 +140,12 @@ export async function inviteMember(
   revalidatePath(`/dashboard/${slug}/members`);
 
   const link = absoluteUrl(`/invite/${token}`);
+  if (isDemoMode()) {
+    return {
+      success: `Invitation created for ${email}. Emails are off in this demo, so open this link in another browser to accept it:`,
+      link,
+    };
+  }
   try {
     await sendEmail({
       to: email,

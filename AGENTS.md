@@ -33,6 +33,8 @@ Read the docs that ship with the package before using a Next.js API:
 - `src/lib/permissions.ts`: the only place roles and permissions are defined (`can(role, perm)`).
 - `src/lib/billing/`: provider interface (`types.ts`), Polar and Stripe, plans and statuses.
 - `src/lib/env.ts`: environment checks at startup (`src/instrumentation.ts`).
+- `src/lib/demo.ts`: `isDemoMode()` (`DEMO_MODE="true"`): no emails, no verification, banner.
+  Anything new that sends email needs a demo-mode path (see invitations).
 - `src/proxy.ts`: logged-out redirect with `?next=`, last-used organization cookie.
 - `src/config/site.ts`: name, branding, `absoluteUrl()`.
 - `src/components/ui/`: `Button`/`ButtonLink` (variants), `Input`/`Select`, `SubmitButton`,

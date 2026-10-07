@@ -70,6 +70,7 @@ anything missing or invalid, so you are never left guessing.
 | `BETTER_AUTH_URL` | yes | Where the app runs, no trailing slash: `http://localhost:3000` or `https://yourapp.com` |
 | `RESEND_API_KEY` | production | Resend API key. Without it emails are printed in the terminal |
 | `EMAIL_FROM` | production | Sender, e.g. `YourApp <hello@yourapp.com>`, on a domain verified in Resend |
+| `DEMO_MODE` | no | `true` for a public demo without emails (see below). Leave unset for a real app |
 | `BILLING_PROVIDER` | yes | `polar` or `stripe` |
 | `POLAR_*` / `STRIPE_*` | for your provider | See below |
 
@@ -84,6 +85,13 @@ node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
 1. Create an account at https://resend.com and an API key.
 2. For production, verify your domain in Resend and set `EMAIL_FROM` to an address on it.
    (`onboarding@resend.dev` only delivers to your own Resend email address.)
+
+### Public demo without a domain (`DEMO_MODE`)
+
+Want a live demo before you own a domain? Set `DEMO_MODE="true"` on the demo deployment:
+sign-up skips email verification, no emails are sent (Resend isn't needed), invitations show
+their link on screen to share by hand, and a banner tells visitors. Never turn it on for a real
+app: anyone could sign up with an email address they don't own.
 
 ### Billing with Polar (default)
 
