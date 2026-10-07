@@ -193,6 +193,12 @@ drizzle/          database migrations
 - In development the database is far away compared to production, so pages feel slower locally.
 - AI coding tools: `AGENTS.md` explains the project's rules to Cursor, Claude Code and others.
 
+## Support
+
+Questions, bugs or setup help: email **qaweem321@gmail.com**. Please include your order email
+and, for bugs, the steps to reproduce and any error message. Updates (fixes and new versions)
+are listed in [CHANGELOG.md](CHANGELOG.md).
+
 ## License
 
 Commercial license; see [LICENSE](LICENSE). You may build and sell your own products with it,

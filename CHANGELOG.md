@@ -6,7 +6,9 @@ Notable changes for buyers of the kit. The format follows
 
 ## [Unreleased]
 
-First public version (will be released as 1.0.0).
+## [1.0.0] - 2026-10-07
+
+First public version.
 
 ### Accounts
 - Email and password sign-up with email verification, log in, forgot and reset password.

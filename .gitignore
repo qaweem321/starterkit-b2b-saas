@@ -8,3 +8,6 @@ next-env.d.ts
 
 # Local AI tool connectors (read secrets from environment variables)
 .mcp.json
+
+# Release zips and sales notes (not part of the kit)
+releases/
