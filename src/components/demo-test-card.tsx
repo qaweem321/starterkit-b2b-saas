@@ -1,40 +1,54 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { demoTestCard } from "@/lib/demo";
+
+const messages = {
+  idle: "",
+  copied: "Copied. Paste it into the card number box.",
+  select: "Selected. Press Ctrl+C (or ⌘C on a Mac) to copy.",
+};
 
 // Shown next to "Upgrade to Pro" in demo mode. The checkout page belongs to the payment
 // provider, so we can't show these details there: copy them before leaving.
 export function DemoTestCard() {
-  const [copied, setCopied] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [status, setStatus] = useState<keyof typeof messages>("idle");
 
   async function copyNumber() {
     try {
       await navigator.clipboard.writeText(demoTestCard.number.replaceAll(" ", ""));
-      setCopied(true);
+      setStatus("copied");
+      return;
     } catch {
-      // Clipboard can be blocked; the number is still on screen to type.
+      // Some browsers block the clipboard API. Fall back to selecting the number.
     }
+    inputRef.current?.select();
+    setStatus(document.execCommand("copy") ? "copied" : "select");
   }
 
   return (
     <div className="mt-4 rounded-lg border border-border bg-muted p-3 text-sm">
       <p className="font-medium">Demo test card (no real money)</p>
-      <dl className="mt-2 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-muted-foreground">
-        <dt>Card</dt>
-        <dd className="flex flex-wrap items-center gap-2 font-mono text-foreground">
-          {demoTestCard.number}
-          <Button
-            type="button"
-            variant="link"
-            size="inline"
-            onClick={copyNumber}
-            aria-label="Copy card number"
-          >
-            {copied ? "Copied" : "Copy"}
-          </Button>
-        </dd>
+      <div className="mt-2 flex gap-2">
+        <Input
+          ref={inputRef}
+          readOnly
+          value={demoTestCard.number}
+          aria-label="Test card number"
+          onFocus={(event) => event.currentTarget.select()}
+          className="min-w-0 flex-1 font-mono"
+        />
+        <Button type="button" variant="outline" onClick={copyNumber}>
+          Copy
+        </Button>
+      </div>
+      <p aria-live="polite" className="mt-1 min-h-5 text-success">
+        {messages[status]}
+      </p>
+      <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-muted-foreground">
         <dt>Expiry</dt>
         <dd className="font-mono text-foreground">{demoTestCard.expiry} (any future date)</dd>
         <dt>CVC</dt>
