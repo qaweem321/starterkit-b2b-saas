@@ -31,7 +31,8 @@ First public version (will be released as 1.0.0).
 
 ### Product
 - Demo mode (`DEMO_MODE="true"`) for a public demo without a domain: no emails or
-  verification, invite links shown on screen, a banner with test-card instructions.
+  verification, invite links shown on screen, a banner with test-card instructions, and the
+  test card (with a Copy button) next to "Upgrade to Pro".
 - Landing page with features and pricing, Terms and Privacy templates.
 - Dashboard with sidebar, mobile menu, user menu, loading skeletons, error and 404 pages.
 - Example Projects feature to copy for your own features.

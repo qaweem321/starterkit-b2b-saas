@@ -5,3 +5,6 @@ type Env = Record<string, string | undefined>;
 export function isDemoMode(env: Env = process.env) {
   return env.DEMO_MODE === "true";
 }
+
+// Card details that work in Polar's sandbox and Stripe's test mode (no real money).
+export const demoTestCard = { number: "4242 4242 4242 4242", expiry: "12/34", cvc: "123" };

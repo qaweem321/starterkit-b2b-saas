@@ -90,7 +90,8 @@ node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
 
 Want a live demo before you own a domain? Set `DEMO_MODE="true"` on the demo deployment:
 sign-up skips email verification, no emails are sent (Resend isn't needed), invitations show
-their link on screen to share by hand, and a banner tells visitors. Never turn it on for a real
+their link on screen to share by hand, a banner tells visitors, and the Billing page shows
+the test card to pay with. Never turn it on for a real
 app: anyone could sign up with an email address they don't own.
 
 ### Billing with Polar (default)
