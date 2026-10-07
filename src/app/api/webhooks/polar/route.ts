@@ -1,5 +1,6 @@
 import { webhooks } from "@polar-sh/sdk/2026-10";
 import { getBillingProvider, syncSubscription } from "@/lib/billing";
+import { ORGANIZATION_KEY } from "@/lib/billing/polar";
 
 export async function POST(request: Request) {
   const secret = process.env.POLAR_WEBHOOK_SECRET;
@@ -27,14 +28,13 @@ export async function POST(request: Request) {
     return Response.json({ error: "Invalid payload" }, { status: 400 });
   }
 
-  let organizationId: string | null | undefined;
-  if (event.type === "customer.state_changed") {
-    organizationId = event.data.external_id;
-  } else if (event.type.startsWith("subscription.") && "customer" in event.data) {
-    organizationId = event.data.customer.external_id;
+  // Each subscription carries its organization in metadata (see src/lib/billing/polar.ts).
+  let organizationId: unknown;
+  if (event.type.startsWith("subscription.") && "metadata" in event.data) {
+    organizationId = event.data.metadata[ORGANIZATION_KEY];
   }
 
-  if (organizationId && getBillingProvider().name === "polar") {
+  if (typeof organizationId === "string" && getBillingProvider().name === "polar") {
     await syncSubscription(organizationId);
   }
   return new Response(null, { status: 202 });
