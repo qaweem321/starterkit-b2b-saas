@@ -46,5 +46,6 @@ First public version (will be released as 1.0.0).
 - Confirmation on destructive actions, no double submits, clear dates ("Oct 11, 2026").
 - Friendly inline messages for every form mistake (never an error page), including clear
   wording for a wrong current password.
+- Next.js 16.4 (latest security fixes).
 - TypeScript strict mode, Biome lint and format, unit tests, GitHub Actions CI,
   `npm run check` for everything at once.
