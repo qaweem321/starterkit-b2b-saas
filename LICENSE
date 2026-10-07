@@ -2,11 +2,13 @@ StarterKit Commercial License
 
 Copyright (c) 2026 Qaweem Ahmad. All rights reserved.
 
-[TEMPLATE: have this license reviewed by a lawyer before you sell the kit, and replace the
-name above with your legal or business name.]
+Qaweem Ahmad (the "Licensor") grants this license to the one person or one company that bought
+a StarterKit license from the Licensor, directly or through a store the Licensor sells on (such
+as Lemon Squeezy or Gumroad) (the "Licensee"). "The Software" means the StarterKit source code,
+documentation and other files supplied with it, including any updates the Licensor provides.
 
-This license is granted to the person or company that purchased StarterKit (the "Licensee").
-"The Software" means the StarterKit source code, documentation and other files supplied with it.
+A license bought by a person covers that person. A license bought by a company covers the
+company and its employees and contractors. The license cannot be transferred or resold.
 
 1. What you may do
 
@@ -57,3 +59,8 @@ This license is granted to the person or company that purchased StarterKit (the 
 7. Third-party software
 
    The Software uses open-source packages (listed in package.json) that keep their own licenses.
+
+8. Governing law
+
+   This license is governed by the laws of Pakistan. If any part of it can't be enforced, the
+   rest still applies.
