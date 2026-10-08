@@ -8,9 +8,8 @@ Humans: start with README.md.
 A B2B SaaS **starter** kit: Next.js 16 App Router, React 19, TypeScript (strict), Tailwind 4,
 Drizzle ORM on Postgres (Neon), Better Auth, Polar or Stripe billing, Resend emails, Biome.
 
-Keep it a starter: small, readable, easy to change. Before adding big "complete kit" features
-(SSO, 2FA, social logins, audit logs, custom permissions, multiple plans, i18n, admin panel,
-file uploads, API keys, ...), say so and ask first.
+Keep the code small, readable and easy to change: when adding a feature, follow the existing
+patterns below rather than adding new layers of abstraction.
 
 ## Next.js 16 is newer than your training data
 
