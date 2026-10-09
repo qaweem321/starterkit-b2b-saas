@@ -6,11 +6,7 @@ Notable changes for buyers of the kit. The format follows
 
 ## [Unreleased]
 
-### Fixed
-- Billing page now says when a subscription is cancelled ("Pro ends on ..., then you're back on
-  Free"), also during a free trial, instead of still showing the trial end date.
-
-## [1.0.0] - 2026-10-07
+## [1.0.0] - 2026-10-09
 
 First public version.
 
@@ -33,6 +29,8 @@ First public version.
 - One Pro plan per organization with Polar or Stripe (`BILLING_PROVIDER`), checkout,
   customer portal and webhooks; optional free trial.
 - Billing page shows both plans; warnings for failed payments; never a second subscription.
+- Billing page shows when the trial ends, when Pro renews, or that a cancelled subscription
+  keeps Pro until the period ends and then returns to Free.
 - Checkout pre-fills the payer's email (they can still change it).
 - Polar: each subscription is linked to its organization (metadata), so one person can pay for
   several organizations with the same email; webhooks use the `subscription.*` events.
