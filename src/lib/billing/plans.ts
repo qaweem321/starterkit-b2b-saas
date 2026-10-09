@@ -1,3 +1,5 @@
+import { formatDate } from "@/lib/format";
+
 // Plan details used by the pricing section, billing page and member limits.
 // The real price is set in Polar or Stripe; keep `price` here in sync with it.
 export const plans = {
@@ -36,4 +38,19 @@ const PAYMENT_PROBLEM_STATUSES = ["past_due", "unpaid", "incomplete"];
 
 export function hasPaymentProblem(status: string | null | undefined) {
   return Boolean(status && PAYMENT_PROBLEM_STATUSES.includes(status));
+}
+
+type PeriodInfo = { status: string; cancelAtPeriodEnd: boolean; currentPeriodEnd: Date | null };
+
+// What happens when the current period ends, shown on the Billing page.
+// A cancelled subscription keeps Pro until then, so say that clearly (also during a trial).
+export function periodNote({ status, cancelAtPeriodEnd, currentPeriodEnd }: PeriodInfo) {
+  if (!currentPeriodEnd) {
+    return null;
+  }
+  const date = formatDate(currentPeriodEnd);
+  if (cancelAtPeriodEnd) {
+    return `Cancelled: Pro ends on ${date}, then you're back on Free.`;
+  }
+  return status === "trialing" ? `Free trial ends on ${date}.` : `Renews on ${date}.`;
 }

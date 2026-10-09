@@ -3,9 +3,8 @@ import { DemoTestCard } from "@/components/demo-test-card";
 import { PaymentProblemNotice } from "@/components/payment-problem-notice";
 import { PlanCard } from "@/components/plan-card";
 import { getOrganizationSubscription } from "@/lib/billing";
-import { hasPaymentProblem, planFromStatus, plans } from "@/lib/billing/plans";
+import { hasPaymentProblem, periodNote, planFromStatus, plans } from "@/lib/billing/plans";
 import { isDemoMode } from "@/lib/demo";
-import { formatDate } from "@/lib/format";
 import { can } from "@/lib/permissions";
 import { requireMembership } from "@/lib/session";
 import { openBillingPortal, startCheckout } from "./actions";
@@ -20,6 +19,7 @@ export default async function BillingPage({ params }: { params: Promise<{ slug: 
   const planId = planFromStatus(subscription?.status);
   const canManage = can(role, "billing:manage");
   const paymentProblem = hasPaymentProblem(subscription?.status);
+  const note = subscription && periodNote(subscription);
 
   return (
     <div className="max-w-3xl">
@@ -27,17 +27,7 @@ export default async function BillingPage({ params }: { params: Promise<{ slug: 
       <p className="mt-1 text-muted-foreground">
         {organization.name} is on the{" "}
         <strong className="text-foreground">{plans[planId].name}</strong> plan.
-        {subscription?.currentPeriodEnd && (
-          <>
-            {" "}
-            {subscription.status === "trialing"
-              ? "Free trial ends on "
-              : subscription.cancelAtPeriodEnd
-                ? "Ends on "
-                : "Renews on "}
-            {formatDate(subscription.currentPeriodEnd)}.
-          </>
-        )}
+        {note && ` ${note}`}
       </p>
 
       {paymentProblem && <PaymentProblemNotice slug={slug} canManage={canManage} />}
@@ -50,7 +40,9 @@ export default async function BillingPage({ params }: { params: Promise<{ slug: 
         >
           {planId === "pro" && (
             <p className="text-sm text-subtle-foreground">
-              To switch back, cancel under Manage subscription. You keep Pro until the period ends.
+              {subscription?.cancelAtPeriodEnd
+                ? "Your organization moves here when Pro ends. Changed your mind? Resume under Manage subscription."
+                : "To switch back, cancel under Manage subscription. You keep Pro until the period ends."}
             </p>
           )}
         </PlanCard>

@@ -6,6 +6,10 @@ Notable changes for buyers of the kit. The format follows
 
 ## [Unreleased]
 
+### Fixed
+- Billing page now says when a subscription is cancelled ("Pro ends on ..., then you're back on
+  Free"), also during a free trial, instead of still showing the trial end date.
+
 ## [1.0.0] - 2026-10-07
 
 First public version.
