@@ -6,11 +6,7 @@ Notable changes for buyers of the kit. The format follows
 
 ## [Unreleased]
 
-### Changed
-- Demo banner: tells visitors to enter their own email at checkout (Polar refuses made-up
-  addresses at payment).
-
-## [1.0.0] - 2026-10-09
+## [1.0.0] - 2026-10-10
 
 First public version.
 
@@ -41,8 +37,9 @@ First public version.
 
 ### Product
 - Demo mode (`DEMO_MODE="true"`) for a public demo without a domain: no emails or
-  verification, invite links shown on screen, a banner with test-card instructions, and the
-  test card (with a Copy button) next to "Upgrade to Pro".
+  verification, invite links shown on screen, a banner with test-card instructions and a
+  reminder to enter your own email at checkout, and the test card (with a Copy button) next
+  to "Upgrade to Pro".
 - Landing page with features and pricing, Terms and Privacy templates.
 - Dashboard with sidebar, mobile menu, user menu, loading skeletons, error and 404 pages.
 - Example Projects feature to copy for your own features.
