@@ -6,6 +6,10 @@ Notable changes for buyers of the kit. The format follows
 
 ## [Unreleased]
 
+### Changed
+- Demo banner: tells visitors to enter their own email at checkout (Polar refuses made-up
+  addresses at payment).
+
 ## [1.0.0] - 2026-10-09
 
 First public version.
