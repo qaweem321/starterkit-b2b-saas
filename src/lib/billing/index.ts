@@ -1,7 +1,7 @@
-import { eq } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 import { db } from "@/db";
 import { organizations, subscriptions } from "@/db/schema";
-import { type PlanId, planFromStatus } from "./plans";
+import { keepsCharging, type PlanId, planFromStatus } from "./plans";
 import { polarProvider } from "./polar";
 import { stripeProvider } from "./stripe";
 import type { BillingProvider } from "./types";
@@ -56,13 +56,19 @@ export async function getOrganizationPlan(organizationId: string): Promise<PlanI
   return planFromStatus(subscription?.status);
 }
 
-// True while the organization would be charged again. Deleting it now would leave a
-// subscription running, so the owner must cancel it in the billing portal first.
-export async function hasRenewingSubscription(organizationId: string) {
-  const subscription = await getOrganizationSubscription(organizationId);
-  return (
-    subscription !== null &&
-    planFromStatus(subscription.status) === "pro" &&
-    !subscription.cancelAtPeriodEnd
-  );
+// Organizations (of these) whose subscription would charge again, also after a failed payment.
+// One query for any number of organizations.
+export async function organizationsStillCharged(organizationIds: string[]) {
+  if (organizationIds.length === 0) {
+    return new Set<string>();
+  }
+  const rows = await db
+    .select({
+      organizationId: subscriptions.organizationId,
+      status: subscriptions.status,
+      cancelAtPeriodEnd: subscriptions.cancelAtPeriodEnd,
+    })
+    .from(subscriptions)
+    .where(inArray(subscriptions.organizationId, organizationIds));
+  return new Set(rows.filter(keepsCharging).map((row) => row.organizationId));
 }

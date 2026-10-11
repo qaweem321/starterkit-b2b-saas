@@ -4,6 +4,7 @@ import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { db } from "@/db";
 import { projects } from "@/db/schema";
+import { rateLimit } from "@/lib/rate-limit";
 import { requirePermission } from "@/lib/session";
 
 // On error, the typed values are sent back so the form can show them again.
@@ -25,6 +26,12 @@ export async function createProject(
   }
   if (description.length > 500) {
     return { error: "Description must be 500 characters or less.", name, description };
+  }
+
+  // Anything cheap to repeat gets a limit (see AGENTS.md).
+  const { allowed } = await rateLimit(`create-project:${user.id}`, 60, 60 * 60);
+  if (!allowed) {
+    return { error: "Too many new projects. Please try again in an hour.", name, description };
   }
 
   // 3. Always save the organization ID, so the row belongs to this organization only.

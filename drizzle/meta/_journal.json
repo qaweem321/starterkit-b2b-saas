@@ -57,6 +57,13 @@
       "when": 1791221945495,
       "tag": "0007_shiny_toad",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1791732714040,
+      "tag": "0008_nice_nightmare",
+      "breakpoints": true
     }
   ]
 }

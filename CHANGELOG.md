@@ -22,8 +22,10 @@ First public version.
 ### Organizations
 - Multi-tenant workspaces at `/dashboard/<organization>`, onboarding for new users.
 - Owner, admin and member roles with permissions in one file.
-- Email invitations (7 days, single use), change roles, remove members, Free plan member limit.
-- Rename, leave and delete an organization (blocked while a paid subscription is active).
+- Email invitations (7 days, single use), change roles, remove members, Free plan member limit
+  (expired invitations don't take a seat).
+- Rename, leave and delete an organization (blocked while its subscription would still charge,
+  also after a failed payment).
 
 ### Billing
 - One Pro plan per organization with Polar or Stripe (`BILLING_PROVIDER`), checkout,
@@ -49,14 +51,17 @@ First public version.
 ### Quality and security
 - One place to rebrand (`src/config/site.ts`); environment variables checked at startup.
 - Security headers, database-backed rate limits for login and emails, and at most 20
-  invitation emails per organization per hour (stops the app being used for spam).
+  invitation emails per organization per hour (stops the app being used for spam); limits on
+  creating organizations and projects.
+- Names are checked on the server (length, no line breaks), since they appear in emails.
 - Redirects after login only go to pages on your own site, even with hidden characters
   in the link.
 - Email addresses are checked with a length limit and a pattern that can't be slowed down
   by huge fake input; CI installs packages without running their install scripts.
 - Confirmation on destructive actions, no double submits, clear dates ("Oct 11, 2026").
 - Friendly inline messages for every form mistake (never an error page), including clear
-  wording for a wrong current password.
+  wording for a wrong current password. In demo mode, "Forgot password" explains that emails
+  are off instead of promising a link.
 - Next.js 16.4 (latest security fixes).
 - TypeScript strict mode, Biome lint and format, unit tests, GitHub Actions CI,
   `npm run check` for everything at once.

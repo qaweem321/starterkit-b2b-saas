@@ -40,6 +40,15 @@ export function hasPaymentProblem(status: string | null | undefined) {
   return Boolean(status && PAYMENT_PROBLEM_STATUSES.includes(status));
 }
 
+// Statuses where Stripe or Polar charges the card again, or keeps retrying a failed payment.
+const CHARGING_STATUSES = ["active", "trialing", "past_due", "unpaid"];
+
+// True while the organization would be charged again. Deleting it then would leave the
+// subscription running, so the owner must cancel it in the billing portal first.
+export function keepsCharging(subscription: { status: string; cancelAtPeriodEnd: boolean }) {
+  return CHARGING_STATUSES.includes(subscription.status) && !subscription.cancelAtPeriodEnd;
+}
+
 type PeriodInfo = { status: string; cancelAtPeriodEnd: boolean; currentPeriodEnd: Date | null };
 
 // What happens when the current period ends, shown on the Billing page.

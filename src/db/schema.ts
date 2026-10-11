@@ -43,7 +43,11 @@ export const memberships = pgTable(
     role: roleEnum("role").notNull().default("member"),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
-  (table) => [unique().on(table.organizationId, table.userId)],
+  (table) => [
+    unique().on(table.organizationId, table.userId),
+    // "Which organizations is this user in?" runs on every dashboard page.
+    index("memberships_user_id_idx").on(table.userId),
+  ],
 );
 
 export const invitations = pgTable(
