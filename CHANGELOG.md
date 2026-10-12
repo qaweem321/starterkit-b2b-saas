@@ -18,6 +18,7 @@ First public version.
   people in several organizations choose one on a new device.
 - Logged-in visitors skip the login and sign-up pages, and the back button never shows
   pages from before logging in or out.
+- The "Log in" / "Sign up" links keep where you were going (for example an invitation).
 
 ### Organizations
 - Multi-tenant workspaces at `/dashboard/<organization>`, onboarding for new users.
