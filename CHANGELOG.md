@@ -34,6 +34,8 @@ First public version.
 - Billing page shows when the trial ends, when Pro renews, or that a cancelled subscription
   keeps Pro until the period ends and then returns to Free.
 - Checkout pre-fills the payer's email (they can still change it).
+- Polar's billing portal opens only for the person who pays (it shows all of their
+  subscriptions, also for other organizations); other owners are told who to ask.
 - Polar: each subscription is linked to its organization (metadata), so one person can pay for
   several organizations with the same email; webhooks use the `subscription.*` events.
 
