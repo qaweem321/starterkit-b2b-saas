@@ -25,15 +25,21 @@ First public version.
 - Owner, admin and member roles with permissions in one file.
 - Email invitations (7 days, single use), change roles, remove members, Free plan member limit
   (expired invitations don't take a seat).
+- An organization always keeps an owner, also when two owners remove or demote each other at
+  the same moment.
 - Rename, leave and delete an organization (blocked while its subscription would still charge,
   also after a failed payment).
 
 ### Billing
 - One Pro plan per organization with Polar or Stripe (`BILLING_PROVIDER`), checkout,
   customer portal and webhooks; optional free trial.
-- Billing page shows both plans; warnings for failed payments; never a second subscription.
+- Billing page shows both plans; warnings for failed payments (and Stripe's paused
+  subscriptions) that say what happened, with no "Renews on" next to them.
+- Never a second subscription: checkout asks Polar or Stripe for the live subscription first,
+  and Stripe closes the organization's other open checkout pages.
 - Billing page shows when the trial ends, when Pro renews, or that a cancelled subscription
   keeps Pro until the period ends and then returns to Free.
+- Stripe's free trial is for an organization's first subscription only.
 - Checkout pre-fills the payer's email (they can still change it).
 - Polar's billing portal opens only for the person who pays (it shows all of their
   subscriptions, also for other organizations); other owners are told who to ask.
@@ -53,9 +59,10 @@ First public version.
 
 ### Quality and security
 - One place to rebrand (`src/config/site.ts`); environment variables checked at startup.
-- Security headers, database-backed rate limits for login and emails, and at most 20
-  invitation emails per organization per hour (stops the app being used for spam); limits on
-  creating organizations and projects.
+- Security headers, database-backed rate limits for login (per IP address and per account)
+  and emails, and at most 20 invitation emails per organization and 30 per person per hour
+  (stops the app being used for spam); limits on creating organizations and projects.
+- An error page also when the root layout fails (`global-error.tsx`).
 - Names are checked on the server (length, no line breaks), since they appear in emails.
 - Redirects after login only go to pages on your own site, even with hidden characters
   in the link.

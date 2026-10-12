@@ -11,6 +11,7 @@ import { plans } from "@/lib/billing/plans";
 import { isDemoMode } from "@/lib/demo";
 import { buttonEmailHtml, sendEmail } from "@/lib/email";
 import { isValidEmail } from "@/lib/email-address";
+import { changeRoleKeepingOwner, removeMembershipKeepingOwner } from "@/lib/owners";
 import { isRole } from "@/lib/permissions";
 import { rateLimit } from "@/lib/rate-limit";
 import { requirePermission } from "@/lib/session";
@@ -42,7 +43,9 @@ export async function updateMemberRole(formData: FormData) {
     throw new Error("You can't change your own role.");
   }
 
-  await db.update(memberships).set({ role: newRole }).where(eq(memberships.id, target.id));
+  if (!(await changeRoleKeepingOwner(organization.id, target.id, newRole, user.id))) {
+    throw new Error("The organization must keep at least one owner.");
+  }
   revalidatePath(`/dashboard/${slug}/members`);
 }
 
@@ -58,7 +61,9 @@ export async function removeMember(formData: FormData) {
     throw new Error("Only owners can remove an owner.");
   }
 
-  await db.delete(memberships).where(eq(memberships.id, target.id));
+  if (!(await removeMembershipKeepingOwner(organization.id, target.id, user.id))) {
+    throw new Error("The organization must keep at least one owner.");
+  }
   revalidatePath(`/dashboard/${slug}/members`);
 }
 
@@ -120,9 +125,13 @@ export async function inviteMember(
     };
   }
 
-  // Stop the app being used to send spam: at most 20 invitation emails per organization per hour.
-  const { allowed } = await rateLimit(`invite:${organization.id}`, 20, 60 * 60);
-  if (!allowed) {
+  // Stop the app being used to send spam: at most 20 invitation emails per organization and 30
+  // per person per hour (so creating more organizations doesn't allow more).
+  const [perOrganization, perUser] = await Promise.all([
+    rateLimit(`invite:${organization.id}`, 20, 60 * 60),
+    rateLimit(`invite-user:${user.id}`, 30, 60 * 60),
+  ]);
+  if (!perOrganization.allowed || !perUser.allowed) {
     return { error: "Too many invitations sent. Please try again in an hour.", email };
   }
 

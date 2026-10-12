@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { absoluteUrl } from "@/config/site";
-import { getBillingProvider, getOrganizationSubscription } from "@/lib/billing";
+import { getBillingProvider, syncSubscription } from "@/lib/billing";
 import { hasPaymentProblem, planFromStatus } from "@/lib/billing/plans";
 import { PortalNotAllowedError } from "@/lib/billing/types";
 import { requirePermission } from "@/lib/session";
@@ -18,14 +18,14 @@ export async function startCheckout(
   const slug = String(formData.get("slug"));
   const { user, organization } = await requirePermission(slug, "billing:manage");
 
-  // Never start a second subscription for the same organization.
-  const subscription = await getOrganizationSubscription(organization.id);
-  if (planFromStatus(subscription?.status) === "pro" || hasPaymentProblem(subscription?.status)) {
-    return { error: "This organization already has a subscription. Use Manage subscription." };
-  }
-
   let url: string;
   try {
+    // Never start a second subscription for the same organization. Asks the payment provider,
+    // not only the database: a checkout paid a moment ago may not have reached the webhook yet.
+    const subscription = await syncSubscription(organization.id);
+    if (planFromStatus(subscription?.status) === "pro" || hasPaymentProblem(subscription?.status)) {
+      return { error: "This organization already has a subscription. Use Manage subscription." };
+    }
     url = await getBillingProvider().createCheckoutUrl({
       organizationId: organization.id,
       customerEmail: user.email,
