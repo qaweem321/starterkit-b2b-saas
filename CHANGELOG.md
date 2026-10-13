@@ -6,6 +6,10 @@ Notable changes for buyers of the kit. The format follows
 
 ## [Unreleased]
 
+### Fixed
+- The Billing page no longer says "Renews on ..." for a subscription that has ended
+  (`canceled`, `incomplete_expired`): only an active or trialing Pro plan shows a date.
+
 ## [1.0.0] - 2026-10-10
 
 First public version.
