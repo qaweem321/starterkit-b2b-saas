@@ -6,6 +6,13 @@ Notable changes for buyers of the kit. The format follows
 
 ## [Unreleased]
 
+### Added
+- Runs on any Postgres, not only Neon: Neon's HTTP driver for `*.neon.tech` addresses, a normal
+  connection (postgres.js) for everything else, or choose with `DATABASE_DRIVER`. Related
+  writes go through `atomic()` (`src/db/atomic.ts`), which works with both.
+- Docker: `Dockerfile` and `docker-compose.yml` run the app with its own Postgres (migrations on
+  every start), plus `deploy/Caddyfile` for automatic HTTPS. See "Deploy option B" in the README.
+
 ### Fixed
 - The Billing page no longer says "Renews on ..." for a subscription that has ended
   (`canceled`, `incomplete_expired`): only an active or trialing Pro plan shows a date.

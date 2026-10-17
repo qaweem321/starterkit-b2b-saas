@@ -6,7 +6,7 @@ Humans: start with README.md.
 ## The project
 
 A B2B SaaS **starter** kit: Next.js 16 App Router, React 19, TypeScript (strict), Tailwind 4,
-Drizzle ORM on Postgres (Neon), Better Auth, Polar or Stripe billing, Resend emails, Biome.
+Drizzle ORM on Postgres (Neon over HTTP, or any Postgres), Better Auth, Polar or Stripe billing, Resend emails, Biome.
 
 Keep the code small, readable and easy to change: when adding a feature, follow the existing
 patterns below rather than adding new layers of abstraction.
@@ -35,6 +35,12 @@ Read the docs that ship with the package before using a Next.js API:
 - `src/lib/billing/`: provider interface (`types.ts`), Polar and Stripe, plans and statuses.
   Billing is per organization: Polar subscriptions carry `organizationId` in metadata (Polar has
   one customer per email); Stripe has one customer per organization.
+- `src/db/index.ts`: picks the driver (`src/db/driver.ts`): Neon HTTP or postgres.js. Write
+  several related changes with `atomic((tx) => [...])` (`src/db/atomic.ts`), never `db.batch`
+  or `db.transaction` directly, so both drivers work. In raw `sql` templates pass dates as
+  ISO strings (`date.toISOString()`): postgres.js rejects a `Date` there.
+- Self-hosting: `Dockerfile`, `docker-compose.yml`, `deploy/Caddyfile`. Scripts load `.env` only
+  if it exists (`src/db/load-env.ts`) and must call `closeDb()` when done.
 - `src/lib/env.ts`: environment checks at startup (`src/instrumentation.ts`).
 - `src/lib/demo.ts`: `isDemoMode()` (`DEMO_MODE="true"`): no emails, no verification, banner.
   Anything new that sends email needs a demo-mode path (see invitations).

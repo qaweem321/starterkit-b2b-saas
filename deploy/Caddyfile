@@ -1,0 +1,10 @@
+# Caddy in front of the app (docker compose or any server), with automatic HTTPS.
+# Replace app.example.com and the email address, then run: caddy run --config deploy/Caddyfile
+
+{
+	email you@example.com
+}
+
+app.example.com {
+	reverse_proxy localhost:3000
+}

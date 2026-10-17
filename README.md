@@ -40,12 +40,13 @@ freely, not a framework you have to fight.
 
 ## Tech stack
 
-Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS 4 · Postgres (Neon) with
-Drizzle ORM · Better Auth · Polar or Stripe · Resend · Biome
+Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS 4 · Postgres (Neon or any
+Postgres) with Drizzle ORM · Better Auth · Polar or Stripe · Resend · Biome
 
 ## Quick start
 
-You need **Node.js 20.12 or newer** and a free **Neon** account (https://neon.tech).
+You need **Node.js 20.12 or newer** and a Postgres database: a free **Neon** account
+(https://neon.tech) is the easiest, but any Postgres works (see Docker below).
 
 ```bash
 npm install
@@ -65,7 +66,8 @@ anything missing or invalid, so you are never left guessing.
 
 | Variable | Required | What it is |
 | --- | --- | --- |
-| `DATABASE_URL` | yes | Neon connection string (Neon dashboard > Connect) |
+| `DATABASE_URL` | yes | Postgres connection string: Neon (dashboard > Connect), Supabase, RDS, your own server |
+| `DATABASE_DRIVER` | no | `neon` or `postgres`. Empty: Neon's HTTP driver for `*.neon.tech`, a normal connection otherwise |
 | `BETTER_AUTH_SECRET` | yes | Random string, 32+ characters (see the command below) |
 | `BETTER_AUTH_URL` | yes | Where the app runs, no trailing slash: `http://localhost:3000` or `https://yourapp.com` |
 | `RESEND_API_KEY` | production | Resend API key. Without it emails are printed in the terminal |
@@ -174,9 +176,10 @@ src/
   lib/            auth, sessions, permissions, billing, emails, helpers (+ tests)
   proxy.ts        sends logged-out visitors to log in, remembers the last organization
 drizzle/          database migrations
+Dockerfile, docker-compose.yml, deploy/Caddyfile   self-hosting with Docker
 ```
 
-## Deploying (Vercel + Neon)
+## Deploy option A: Vercel + Neon
 
 1. Push the code to a private GitHub repository and import it in Vercel.
 2. In Neon, create a production branch/database and run `npm run db:migrate` against it.
@@ -185,6 +188,24 @@ drizzle/          database migrations
 4. Point your provider's webhook at `https://<your-domain>/api/webhooks/<polar|stripe>`.
 5. Pick a Vercel region close to your Neon database; every page talks to it.
 6. Sign up on the live site and test the whole flow once, including an upgrade.
+
+## Deploy option B: Docker (any server, any Postgres)
+
+`docker-compose.yml` runs the app with its own Postgres and applies migrations on every start.
+
+```bash
+cp .env.example .env            # fill it in; DATABASE_URL is set by docker-compose.yml
+docker compose up -d --build    # the app listens on 127.0.0.1:3000 (only this machine)
+docker compose run --rm migrate npm run db:seed   # optional: demo organization
+```
+
+Set `POSTGRES_PASSWORD` in your shell or a `.env` next to the compose file to change the
+database password. Use your own Postgres instead by removing the `db` service and setting
+`DATABASE_URL` in `.env`.
+
+**HTTPS:** put [Caddy](https://caddyserver.com) in front. `deploy/Caddyfile` gets a certificate
+for your domain automatically. Point your billing provider's webhook at
+`https://<your-domain>/api/webhooks/<polar|stripe>` as with Vercel.
 
 ## Good to know
 

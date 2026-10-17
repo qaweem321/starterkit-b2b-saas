@@ -4,6 +4,7 @@ import { randomUUID } from "node:crypto";
 import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { db } from "@/db";
+import { atomic } from "@/db/atomic";
 import { memberships, organizations } from "@/db/schema";
 import { isUniqueViolation } from "@/lib/db-errors";
 import { checkOrganizationName } from "@/lib/organization-name";
@@ -54,8 +55,8 @@ function withSuffix(slug: string) {
 
 async function insertOrganization(name: string, slug: string, ownerId: string) {
   const organizationId = randomUUID();
-  await db.batch([
-    db.insert(organizations).values({ id: organizationId, name, slug }),
-    db.insert(memberships).values({ organizationId, userId: ownerId, role: "owner" }),
+  await atomic((tx) => [
+    tx.insert(organizations).values({ id: organizationId, name, slug }),
+    tx.insert(memberships).values({ organizationId, userId: ownerId, role: "owner" }),
   ]);
 }

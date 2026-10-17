@@ -1,0 +1,50 @@
+# Run the app with its own Postgres database:
+#   cp .env.example .env   (fill it in; DATABASE_URL is set below)
+#   docker compose up -d --build
+# The app listens on port 3000. Put a reverse proxy with HTTPS (Caddy, Nginx, Traefik) in front.
+
+services:
+  db:
+    image: postgres:17.11-alpine3.24
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-this-password}
+      POSTGRES_DB: app
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app -d app"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # Applies database migrations, then exits. The app starts after it succeeds.
+  migrate:
+    build:
+      context: .
+      target: migrator
+    environment:
+      DATABASE_URL: postgresql://app:${POSTGRES_PASSWORD:-change-this-password}@db:5432/app
+    depends_on:
+      db:
+        condition: service_healthy
+
+  app:
+    build:
+      context: .
+      target: runner
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://app:${POSTGRES_PASSWORD:-change-this-password}@db:5432/app
+    ports:
+      # Only this machine can reach the app directly; the internet goes through the proxy,
+      # so visitors can't fake their IP address (X-Forwarded-For) and skip rate limits.
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+
+volumes:
+  db-data:

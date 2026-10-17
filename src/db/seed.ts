@@ -1,6 +1,8 @@
+// Must come first: the database connection reads DATABASE_URL when it is imported.
+import "./load-env";
 import { randomUUID } from "node:crypto";
 import { eq, inArray } from "drizzle-orm";
-import { db } from "./index";
+import { closeDb, db } from "./index";
 import { memberships, organizations, projects, users } from "./schema";
 
 const demoMembers = [
@@ -64,7 +66,9 @@ async function seed() {
   console.log(`Seeded ${acme.name} with ${demoMembers.length} members and demo projects.`);
 }
 
-seed().catch((error) => {
-  console.error("Seed failed:", error);
-  process.exit(1);
-});
+seed()
+  .catch((error) => {
+    console.error("Seed failed:", error);
+    process.exitCode = 1;
+  })
+  .finally(closeDb);
