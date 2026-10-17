@@ -216,11 +216,9 @@ for your domain automatically. Point your billing provider's webhook at
 
 ## Support
 
-Questions, bugs or setup help: email **qaweem321@gmail.com**. Please include your order email
-and, for bugs, the steps to reproduce and any error message. Updates (fixes and new versions)
-are listed in [CHANGELOG.md](CHANGELOG.md).
+Questions and bug reports are welcome as GitHub issues. For bugs, include the steps to
+reproduce and any error message. Changes are listed in [CHANGELOG.md](CHANGELOG.md).
 
 ## License
 
-Commercial license; see [LICENSE](LICENSE). You may build and sell your own products with it,
-but you may not resell or share the kit itself.
+MIT; see [LICENSE](LICENSE).

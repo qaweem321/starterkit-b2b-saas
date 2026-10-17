@@ -6,6 +6,9 @@ Notable changes for buyers of the kit. The format follows
 
 ## [Unreleased]
 
+### Changed
+- The code is now open source under the MIT license (it was a paid, commercial license).
+
 ### Added
 - Runs on any Postgres, not only Neon: Neon's HTTP driver for `*.neon.tech` addresses, a normal
   connection (postgres.js) for everything else, or choose with `DATABASE_DRIVER`. Related
