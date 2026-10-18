@@ -217,7 +217,7 @@ for your domain automatically. Point your billing provider's webhook at
 ## Support
 
 Questions and bug reports are welcome as GitHub issues. For bugs, include the steps to
-reproduce and any error message. Changes are listed in [CHANGELOG.md](CHANGELOG.md).
+reproduce and any error message.
 
 ## License
 
