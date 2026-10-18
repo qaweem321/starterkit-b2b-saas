@@ -1,5 +1,4 @@
 import { siteConfig } from "@/config/site";
-import { isDemoMode } from "@/lib/demo";
 
 type Email = {
   to: string;
@@ -11,9 +10,9 @@ type Email = {
 export async function sendEmail({ to, subject, text, html }: Email) {
   const apiKey = process.env.RESEND_API_KEY;
 
-  if (!apiKey || isDemoMode()) {
+  if (!apiKey) {
     console.log(
-      `\n--- Email (${apiKey ? "demo" : "dev"} mode, not sent) ---\nTo: ${to}\nSubject: ${subject}\n\n${text}\n---------------------------------\n`,
+      `\n--- Email (dev mode, not sent) ---\nTo: ${to}\nSubject: ${subject}\n\n${text}\n---------------------------------\n`,
     );
     return;
   }
