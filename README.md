@@ -49,7 +49,7 @@ You need **Node.js 20.12 or newer** and a Postgres database: a free **Neon** acc
 (https://neon.tech) is the easiest, but any Postgres works (see Docker below).
 
 ```bash
-npm install
+npm ci
 cp .env.example .env        # then fill in .env (see below)
 npm run db:migrate          # creates the tables
 npm run db:seed             # optional: demo organization "Acme Inc." with members and projects
