@@ -1,7 +1,5 @@
 # StarterKit: B2B SaaS starter kit
 
-[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=qaweem321_starterkit-b2b-saas&token=cb8077ce49fa140c2b213393cbdded1d3dc16475)](https://sonarcloud.io/summary/new_code?id=qaweem321_starterkit-b2b-saas)
-
 A Next.js starter for selling software to **teams**. Sign-up, organizations, roles, invitations
 and monthly billing are done, so you can start on the part that makes your product unique.
 
