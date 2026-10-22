@@ -54,8 +54,19 @@ npm run db:seed             # optional: demo organization "Acme Inc." with membe
 npm run dev                 # http://localhost:3000
 ```
 
-Sign up at http://localhost:3000/signup. Without a Resend key the verification email is printed
+Log in at http://localhost:3000/login with one of the demo logins below (after `npm run db:seed`),
+or sign up at http://localhost:3000/signup. Without a Resend key the verification email is printed
 in the terminal; open the link from there.
+
+| Email | Password | Role |
+| --- | --- | --- |
+| `owner@acme.test` | `kit-demo` | Owner: everything, including billing, role changes and deleting the organization |
+| `admin@acme.test` | `kit-demo` | Admin: rename the organization, invite and remove members, delete projects (no billing) |
+| `maya@acme.test` | `kit-demo` | Member: adds projects, no settings |
+| `sam@acme.test` | `kit-demo` | Member: adds projects, no settings |
+
+These passwords are for local use only. The seed refuses to run on a database that already has
+other accounts, so they never end up in a real installation.
 
 ## Environment variables
 
@@ -126,7 +137,7 @@ ngrok for Polar.
 | `npm run db:generate` | Create a migration after you change `src/db/schema.ts` |
 | `npm run db:migrate` | Apply migrations to the database in `DATABASE_URL` |
 | `npm run db:studio` | Browse your data in Drizzle Studio |
-| `npm run db:seed` | Add demo data (safe to run again) |
+| `npm run db:seed` | Add demo data and logins (fresh database only; safe to run again) |
 
 ## Make it yours
 

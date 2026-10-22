@@ -1,9 +1,13 @@
 // Must come first: the database connection reads DATABASE_URL when it is imported.
 import "./load-env";
 import { randomUUID } from "node:crypto";
-import { eq, inArray } from "drizzle-orm";
+import { hashPassword } from "better-auth/crypto";
+import { eq, inArray, notInArray } from "drizzle-orm";
 import { closeDb, db } from "./index";
-import { memberships, organizations, projects, users } from "./schema";
+import { accounts, memberships, organizations, projects, users } from "./schema";
+
+// The password every demo member logs in with (see the README's quick start).
+const demoPassword = "kit-demo";
 
 const demoMembers = [
   { name: "Olivia Owner", email: "owner@acme.test", role: "owner" },
@@ -12,7 +16,25 @@ const demoMembers = [
   { name: "Sam Member", email: "sam@acme.test", role: "member" },
 ] as const;
 
+// The demo logins have a published password, so never add them to a real installation:
+// only to a fresh database (no other accounts yet).
+async function refuseRealInstall() {
+  const others = await db.$count(
+    users,
+    notInArray(
+      users.email,
+      demoMembers.map((member) => member.email),
+    ),
+  );
+  if (others > 0) {
+    throw new Error(
+      "This database already has real accounts. The demo data adds logins with a published password, so it only runs on a fresh database.",
+    );
+  }
+}
+
 async function seed() {
+  await refuseRealInstall();
   await db
     .insert(organizations)
     .values({ name: "Acme Inc.", slug: "acme" })
@@ -41,6 +63,21 @@ async function seed() {
         demoMembers.map((m) => m.email),
       ),
     );
+
+  // Password logins for the demo members, so the dashboard can be tried right away.
+  const passwordHash = await hashPassword(demoPassword);
+  await db
+    .insert(accounts)
+    .values(
+      savedUsers.map((user) => ({
+        id: `seed-${user.id}`,
+        userId: user.id,
+        accountId: user.id,
+        providerId: "credential",
+        password: passwordHash,
+      })),
+    )
+    .onConflictDoNothing({ target: accounts.id });
 
   await db
     .insert(memberships)
