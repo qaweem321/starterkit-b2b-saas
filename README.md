@@ -209,8 +209,9 @@ for your domain automatically. Point your billing provider's webhook at
 
 ## Good to know
 
-- `npm audit` reports 0 vulnerabilities. `package.json` pins a newer `esbuild` for `drizzle-kit`
-  through `overrides`; re-check `npm audit` after installing new packages.
+- `package.json` pins a newer `esbuild` for `drizzle-kit` through `overrides`, because the
+  version `drizzle-kit` asks for has a known security issue. Run `npm audit` after installing or
+  updating packages.
 - In development the database is far away compared to production, so pages feel slower locally.
 - AI coding tools: `AGENTS.md` explains the project's rules to Cursor, Claude Code and others.
 
